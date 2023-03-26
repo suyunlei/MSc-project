@@ -48,45 +48,31 @@ export default {
     },
     // add a CZML
     addCZML() {
-      const czml = [
+      // Add a blank CzmlDataSource to hold our multi-part entity/entities.
+      const dataSource = new Cesium.CzmlDataSource();
+      window.viewer.dataSources.add(dataSource);
+      window.CZMLDataSource = dataSource;
+      const partsToLoad = [
         {
-          id: "document",
-          name: "CZML Geometries: Box",
-          version: "1.0",
-        },
-        {
-          id: "red box",
-          name: "Red box with black outline",
-          position: {
-            epoch: "2012-08-04T10:00:00Z",
-            cartographicDegrees: [
-              0, -122.93797, 39.50935, 1776, 10, -122.93822, 39.50918, 1773, 20,
-              -122.9385, 39.50883, 1772, 30,
-            ],
-          },
-          box: {
-            dimensions: {
-              cartesian: [1000, 1000, 1000],
-            },
-            material: {
-              solidColor: {
-                color: {
-                  rgba: [255, 0, 0, 128],
-                },
-              },
-            },
-            outline: true,
-            outlineColor: {
-              rgba: [0, 0, 0, 255],
-            },
-          },
+          range: [0, 1000],
+          requested: false,
+          loaded: false,
         },
       ];
-      window.viewer.dataSources
-        .add(Cesium.CzmlDataSource.load(czml))
-        .then(function (ds) {
-          viewer.trackedEntity = ds.entities.getById("red box");
-        });
+      this.processPart(partsToLoad[0]);
+    },
+    processPart(part) {
+      let vehicleEntity;
+      console.log(vehicleEntity);
+      const czmlPath = require("../../assets/testpart.czml");
+      part.requested = true;
+      window.CZMLDataSource.process(czmlPath).then(function () {
+        part.loaded = true;
+        if (!window.viewer.trackedEntity) {
+          window.viewer.trackedEntity = vehicleEntity =
+            window.dataSource.entities.getById("Vehicle");
+        }
+      });
     },
   },
 };
