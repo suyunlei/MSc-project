@@ -1,6 +1,7 @@
 [
   {
     "id":"document",
+    "name": "CZML Path",
     "version":"1.0"
   },
   {
