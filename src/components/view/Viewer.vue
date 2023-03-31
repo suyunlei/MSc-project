@@ -25,10 +25,11 @@ export default {
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1MGNiNDIzYy1hYzNjLTRmYzItOTk4ZS0wZjJjYzhjMDAwMTAiLCJpZCI6NzE0ODYsImlhdCI6MTYzNTIzNzg3Mn0.i0iTqEVPssK9EGZWU5_wdYSN_1ZObmwsu00Y29b6N0A";
       const viewer = new Cesium.Viewer("cesiumContainer", {
         shouldAnimate: true, // open animation
-        terrainProvider: Cesium.createWorldTerrain(),
+        // terrainProvider: Cesium.createWorldTerrain(),
       });
       // 变量提升
       window.viewer = viewer;
+      // window.viewer.scene.primitives.add(Cesium.createOsmBuildings());
     },
   },
 };

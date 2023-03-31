@@ -14,6 +14,10 @@ export default {
           name: "addCZML",
           label: "Animation",
         },
+        {
+          name: "addGeoJSON",
+          label: "addGeoJSON",
+        },
       ],
     },
   ],

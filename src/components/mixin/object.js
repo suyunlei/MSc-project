@@ -26,16 +26,17 @@ export default {
       );
       window.tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
     },
-    // load the NUS building model
+    // load the NUS building model (3D Tiles, not cloud point model)
     loadNUS() {
       console.log("start load NUS model");
       const tileset = new Cesium.Cesium3DTileset({
-        url: "http://localhost:9003/model/lNpPgHzM/tileset.json",
+        url: "http://localhost:9003/model/aBoGDJnV/tileset.json", // Cesiumlab
       });
       window.tileset = tileset;
       window.tileset.readyPromise.then((tileset) => {
-        this.changeHeight(-120);
+        // this.changeHeight(-120);
         window.viewer.scene.primitives.add(tileset);
+        console.log(tileset);
         window.viewer.zoomTo(
           tileset,
           new Cesium.HeadingPitchRange(
@@ -155,6 +156,16 @@ export default {
           window.viewer.trackedEntity = vehicleEntity =
             window.dataSource.entities.getById("Vehicle");
         }
+      });
+    },
+    // still not working
+    addGeoJSON() {
+      const tileset = new Cesium.Cesium3DTileset({
+        url: Cesium.IonResource.fromAssetId(1606578),
+      });
+      tileset.readyPromise.then((tileset) => {
+        window.viewer.scene.primitives.add(tileset);
+        console.log(tileset);
       });
     },
   },
