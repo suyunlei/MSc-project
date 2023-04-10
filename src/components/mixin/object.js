@@ -1,6 +1,6 @@
 export default {
   methods: {
-    // let the model to stick at the ground
+    // let the point cloud model to stick at the ground
     changeHeight(height) {
       height = Number(height);
       if (isNaN(height)) {
