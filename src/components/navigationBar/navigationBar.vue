@@ -4,6 +4,7 @@
       <div class="fileContainer">
         <div class="fileBtn">
           <i class="el-icon-menu"></i>
+          <input type="file" id="fileInput" @change="json2CZML" />
         </div>
       </div>
       <el-tabs type="border-card" v-model="activeName">
@@ -34,10 +35,11 @@
 // 工具栏配置
 import tabs from "../config/config.vue";
 import object from "../mixin/object";
+import json2CZML from "../mixin/json2CZML";
 export default {
   name: "navigationBar",
   components: {},
-  mixins: [object],
+  mixins: [object, json2CZML],
   data() {
     return {
       tabs: [],
@@ -162,5 +164,16 @@ export default {
 /deep/ .popper__arrow,
 /deep/ .popper__arrow:after {
   border-style: none !important; //bug
+}
+
+#fileInput {
+  opacity: 0;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  cursor: pointer;
 }
 </style>
