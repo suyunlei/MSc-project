@@ -55,7 +55,7 @@ export default {
       window.CZMLDataSource = dataSource;
       const partsToLoad = [
         {
-          range: [0, 1000],
+          range: [0, 84000],
           requested: false,
           loaded: false,
         },
@@ -63,94 +63,8 @@ export default {
       this.processPart(partsToLoad[0]);
     },
     async processPart(part) {
-      let vehicleEntity = await Cesium.IonResource.fromAssetId(1598324);
-      const czmlPath = [
-        {
-          id: "document",
-          name: "CZML Path",
-          version: "1.0",
-        },
-        {
-          id: "Vehicle",
-          availability:
-            "2012-08-04T16:00:00Z/2012-08-04T17:04:54.9962195740191Z",
-          label: {
-            fillColor: [
-              {
-                interval: "2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
-                rgba: [255, 255, 0, 255],
-              },
-            ],
-            font: "bold 10pt Segoe UI Semibold",
-            horizontalOrigin: "CENTER",
-            outlineColor: {
-              rgba: [0, 0, 0, 255],
-            },
-            pixelOffset: {
-              cartesian2: [0.0, 20.0],
-            },
-            scale: 1.0,
-            show: [
-              {
-                interval: "2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
-                boolean: true,
-              },
-            ],
-            style: "FILL",
-            text: "Test Vehicle",
-            verticalOrigin: "CENTER",
-          },
-          model: {
-            uri: vehicleEntity,
-            minimumPixelSize: 100,
-            maximumScale: 50,
-          },
-          orientation: {
-            velocityReference: "#position",
-          },
-          viewFrom: {
-            cartesian: [-2080, -1715, 779],
-          },
-          properties: {
-            fuel_remaining: {
-              epoch: "2012-08-04T16:00:00Z",
-              number: [0, 22.5, 1000, 21.2],
-            },
-          },
-          path: {
-            material: {
-              solidColor: {
-                color: {
-                  interval: "2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
-                  rgba: [255, 255, 0, 255],
-                },
-              },
-            },
-            width: [
-              {
-                interval: "2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
-                number: 5.0,
-              },
-            ],
-            show: [
-              {
-                interval: "2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
-                boolean: true,
-              },
-            ],
-          },
-          position: {
-            interpolationAlgorithm: "LAGRANGE",
-            interpolationDegree: 1,
-            epoch: "2012-08-04T16:00:00Z",
-            cartographicDegrees: [
-              0, 103.77601, 1.29735, 100, 1000.0, 103.77071, 1.291, 200,
-            ],
-          },
-        },
-      ];
       part.requested = true;
-      window.CZMLDataSource.process(czmlPath).then(function () {
+      window.CZMLDataSource.process(window.czmlPath).then(function () {
         part.loaded = true;
         if (!window.viewer.trackedEntity) {
           window.viewer.trackedEntity = vehicleEntity =

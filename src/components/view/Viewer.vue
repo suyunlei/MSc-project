@@ -8,7 +8,6 @@ export default {
   data() {
     return {
       viewer: "",
-      tileset: "",
     };
   },
   mounted() {
