@@ -49,13 +49,26 @@ export default {
     },
     // add a CZML
     addCZML() {
+      // set the Cesium Clock time to match the CZML data time interval
+      window.viewer.clock.startTime = Cesium.JulianDate.fromIso8601(
+        "2012-08-04T16:00:00Z"
+      );
+      window.viewer.clock.stopTime = Cesium.JulianDate.fromIso8601(
+        "2012-08-04T18:00:00Z"
+      );
+      window.viewer.clock.currentTime = Cesium.JulianDate.fromIso8601(
+        "2012-08-04T16:00:00Z"
+      );
+      window.viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP; // loop at the end
+      window.viewer.clock.multiplier = 1;
+
       // Add a blank CzmlDataSource to hold our multi-part entity/entities.
       const dataSource = new Cesium.CzmlDataSource();
       window.viewer.dataSources.add(dataSource);
       window.CZMLDataSource = dataSource;
       const partsToLoad = [
         {
-          range: [0, 84000],
+          range: [0, 500000],
           requested: false,
           loaded: false,
         },
@@ -65,6 +78,7 @@ export default {
     async processPart(part) {
       part.requested = true;
       window.CZMLDataSource.process(window.czmlPath).then(function () {
+        console.log(window.czmlPath);
         part.loaded = true;
         if (!window.viewer.trackedEntity) {
           window.viewer.trackedEntity = vehicleEntity =

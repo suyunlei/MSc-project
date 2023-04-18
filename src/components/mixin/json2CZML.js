@@ -11,7 +11,7 @@ export default {
         const data = JSON.parse(content);
         // add "time" attribute into each data point
         for (let i = 0; i < data.length; i++) {
-          data[i].time = i * 1000;
+          data[i].time = parseFloat(i * 10);
         }
 
         // init the vehicle model
@@ -26,8 +26,7 @@ export default {
           },
           {
             id: "Vehicle",
-            availability:
-              "2012-08-04T16:00:00Z/2012-08-04T17:04:54.9962195740191Z",
+            availability: "2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
             label: {
               fillColor: [
                 {
@@ -46,7 +45,7 @@ export default {
               scale: 1.0,
               show: [
                 {
-                  interval: "2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
+                  interval: "2012-08-04T16:00:00Z/2012-08-04T22:00:00Z",
                   boolean: true,
                 },
               ],
@@ -102,35 +101,37 @@ export default {
               interpolationDegree: 1,
               epoch: "2012-08-04T16:00:00Z",
               cartographicDegrees: [
-                // 0, 103.77601, 1.29735, 100, 1000.0, 103.77071, 1.291, 200,
+                // 0, 103.7702304, 1.296996802, 50.0, 1000.0, 103.7702192,
+                // 1.297058369, 50.0, 2000.0, 103.7701632, 1.297110608, 50.0,
               ],
             },
           },
         ];
 
+        // add data points into CZML file
         for (let i = 0; i < data.length; i++) {
           czmlPath[1].position.cartographicDegrees.push(data[i].time);
-          czmlPath[1].position.cartographicDegrees.push(parseFloat(data[i].Y));
           czmlPath[1].position.cartographicDegrees.push(parseFloat(data[i].X));
+          czmlPath[1].position.cartographicDegrees.push(parseFloat(data[i].Y));
           czmlPath[1].position.cartographicDegrees.push(
-            parseFloat(data[i].Altitudes)
+            // parseFloat(data[i].Altitudes)
+            0
           );
-          czmlPath[1].properties.heart_rate.number.push(
-            parseFloat(data[i].time)
-          );
-          czmlPath[1].properties.heart_rate.number
-            .push
-            // parseFloat(data[i].heart_rate)
-            ();
+          // czmlPath[1].properties.heart_rate.number.push(
+          //   parseFloat(data[i].time)
+          // );
+          // czmlPath[1].properties.heart_rate.number
+          //   .push
+          //   // parseFloat(data[i].heart_rate)
+          //   ();
         }
 
+        // if already have a CZML file, then replace it
         if (window.czmlPath) {
           window.czmlPath = {};
         } else {
           window.czmlPath = czmlPath;
         }
-
-        console.log(czmlPath);
       };
       reader.readAsText(file);
     },
