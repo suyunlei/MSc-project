@@ -1,6 +1,6 @@
 export default {
   methods: {
-    // let the point cloud model to stick at the ground
+    // let the point cloud model to stick at the ground (no use now)
     changeHeight(height) {
       height = Number(height);
       if (isNaN(height)) {
@@ -74,6 +74,18 @@ export default {
         },
       ];
       this.processPart(partsToLoad[0]);
+
+      // set the clock and get the attribute
+      window.viewer.clock.onTick.addEventListener(function (clock) {
+        if (window.czmlPath && window.checked_name) {
+          const properties = window.czmlPath[1].properties;
+          const name = window.checked_name;
+          debugger;
+          // not working, no getValue function
+          // const value = properties[name].getValue(clock.currentTime);
+          console.log(value);
+        }
+      });
     },
     async processPart(part) {
       part.requested = true;

@@ -56,13 +56,13 @@
 <script>
 import Bus from "@tools/Bus";
 import Popup from "@tools/Popup";
-
 // 工程树工具
 let _treeTool;
 export default {
   name: "Layer",
   components: {
     Popup,
+    Bus,
   },
   data() {
     const treeData = [
@@ -163,8 +163,12 @@ export default {
   },
   methods: {
     // check the node
-    handleCheckChange() {
-      // load or delete each kind of data...
+    handleCheckChange(data, checked, indeterminate) {
+      if (checked) {
+        window.checked_id = data.id;
+        window.checked_name = data.name;
+      }
+      console.log(data, checked, indeterminate);
     },
     // close the popup
     close() {

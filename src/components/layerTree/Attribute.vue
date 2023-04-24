@@ -52,6 +52,14 @@ export default {
     close() {
       this.$refs.pop.close();
     },
+    // change the number and color of the progress bar according to the attribute value
+    change() {
+      const name = window.checked_name;
+      const value = window.czmlPath.properties[name].getValue(
+        window.viewer.clock.currentTime
+      );
+      console.log(value);
+    },
   },
 };
 </script>
@@ -60,5 +68,9 @@ export default {
 .el-progress {
   margin-top: 20px;
   margin-left: 30px;
+  /deep/ .el-progress__text {
+    color: white;
+    font-size: 20px !important;
+  }
 }
 </style>
