@@ -15,22 +15,16 @@
           :data="treeData"
           show-checkbox
           node-key="id"
-          draggable
-          :allow-drop="allowDrop"
           :expand-on-click-node="false"
           :auto-expand-parent="false"
           :default-expanded-keys="defaultExpanded"
           :default-checked-keys="defaultCheck"
-          @node-expand="changeNodeExpand($event, true)"
-          @node-collapse="changeNodeExpand($event, false)"
           @check="check"
-          @node-contextmenu="rightClick"
         >
           <span
             class="custom-tree-node"
             slot-scope="{ data }"
             @dblclick="flyTo(data)"
-            @click="select(data)"
           >
             <span>
               <i v-if="data.children" class="el-icon-folder"></i>
@@ -55,17 +49,6 @@
           </span>
         </el-tree>
       </div>
-
-      <div
-        class="rightClickMenu"
-        v-if="rightClickMenuDisplay"
-        :style="{ ...rightClickMenuStyle }"
-      >
-        <ul>
-          <li @click="openRename"><i class="el-icon-edit"></i>Rename</li>
-          <li @click="deleteTreeNode"><i class="el-icon-delete"></i>Delete</li>
-        </ul>
-      </div>
     </Popup>
   </div>
 </template>
@@ -82,6 +65,78 @@ export default {
     Popup,
   },
   data() {
+    const treeData = [
+      {
+        id: 1,
+        name: "Thermal Comfort",
+        children: [
+          {
+            id: 2,
+            name: "Heart Rate",
+          },
+          {
+            id: 3,
+            name: "Solar Intensity",
+          },
+          {
+            id: 4,
+            name: "Noise",
+          },
+          {
+            id: 5,
+            name: "Cars",
+          },
+          {
+            id: 6,
+            name: "Pedestrains",
+          },
+          {
+            id: 7,
+            name: "building",
+          },
+          {
+            id: 8,
+            name: "wall",
+          },
+          {
+            id: 9,
+            name: "fence",
+          },
+          {
+            id: 10,
+            name: "pole",
+          },
+          {
+            id: 11,
+            name: "traffic light",
+          },
+          {
+            id: 12,
+            name: "traffic sign",
+          },
+          {
+            id: 13,
+            name: "vegetation",
+          },
+          {
+            id: 14,
+            name: "terrain",
+          },
+          {
+            id: 15,
+            name: "sky",
+          },
+          {
+            id: 16,
+            name: "Altitudes",
+          },
+        ],
+      },
+      {
+        id: 101,
+        name: "NUS Building",
+      },
+    ];
     return {
       title: "Layer Manager",
       left: "10px",
@@ -90,61 +145,10 @@ export default {
       defaultCheck: [],
       defaultExpanded: [],
       selectNode: undefined,
-      rightClickMenuDisplay: false,
-      rightClickMenuStyle: {},
       isClickParent: false,
       isNewFold: false,
       newFoldName: undefined,
-      treeData: [
-        {
-          id: 1,
-          label: "Level one 1",
-          children: [
-            {
-              id: 4,
-              label: "Level two 1-1",
-              children: [
-                {
-                  id: 9,
-                  label: "Level three 1-1-1",
-                },
-                {
-                  id: 10,
-                  label: "Level three 1-1-2",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          id: 2,
-          label: "Level one 2",
-          children: [
-            {
-              id: 5,
-              label: "Level two 2-1",
-            },
-            {
-              id: 6,
-              label: "Level two 2-2",
-            },
-          ],
-        },
-        {
-          id: 3,
-          label: "Level one 3",
-          children: [
-            {
-              id: 7,
-              label: "Level two 3-1",
-            },
-            {
-              id: 8,
-              label: "Level two 3-2",
-            },
-          ],
-        },
-      ],
+      treeData: JSON.parse(JSON.stringify(treeData)),
     };
   },
   mounted() {
@@ -158,24 +162,14 @@ export default {
     _treeTool = undefined;
   },
   methods: {
-    // 右键菜单元素
-    rightClick(e, data, node, comp) {
-      this.isClickParent = !!data.children;
-      this.selectNode = data;
-      this.rightClickMenuStyle = { top: e.pageY + "px", left: e.pageX + "px" };
-      this.rightClickMenuDisplay = true;
-      document.onclick = () => {
-        this.rightClickMenuDisplay = false;
-        document.onclick = undefined;
-      };
-    },
+    check() {},
     close() {
       Bus.$emit("checkTab", "index/add/treeLayer", false);
     },
-    // 定义中转站事件
+    // init the Bus Event
     initBusEvent() {
       Bus.$off("addLayer");
-      Bus.$on("addLayer", (type) => {
+      Bus.$on("addLayer", () => {
         this.selectNode = this.$refs.tree && this.$refs.tree.getCurrentNode();
       });
       Bus.$off("openLayer");
@@ -187,63 +181,13 @@ export default {
           this.$refs.layer.close();
         }
       });
-      Bus.$off("addFile");
-      Bus.$on("addFile", () => {
-        this.selectNode = this.$refs.tree && this.$refs.tree.getCurrentNode();
-        // 添加文件
-        this.append(this.selectNode);
-      });
-
       Bus.$off("clearFirstParentNode");
       Bus.$on("clearFirstParentNode", (parentName) => {
         // 清除所有对象
         this.clearFirstParentNode(parentName);
       });
     },
-    // 初始化数据
-    initData(data) {
-      if (this.treeData.length) {
-        this.removeChildData(this.treeData);
-      }
-
-      data.name && sessionStorage.setItem("SmartEarthTitle", data.name);
-      // 设置工程树数据
-      this.setTreeData(data.children);
-      // 初始定位
-      if (data.flyTo) {
-        this.setView(data.flyTo);
-      }
-      // 加载场景数据
-      // this.loadDataToScene();
-    },
-    // // 加载数据到场景
-    // loadDataToScene() {
-    //   if (window.sgworld) {
-    //     // 工程树工具
-    //     _treeTool = new window.TreeTool(window.sgworld);
-    //     window.sgworld._treeTool = _treeTool;
-    //     if (this.$refs.tree) {
-    //       this.defaultCheck = [];
-    //       this.defaultExpanded = [];
-    //       // 遍历节点
-    //       this.ergodicNode({ children: this.treeData });
-    //     }
-    //     // 初始定位
-    //     if (this.viewCenter.length) {
-    //       this.flyTo({
-    //         flyTo: this.viewCenter,
-    //       });
-    //     }
-
-    //     document.title =
-    //       sessionStorage.getItem("SmartEarthTitle") || "SmartEarth";
-    //   } else {
-    //     setTimeout(() => {
-    //       this.loadDataToScene();
-    //     }, 500);
-    //   }
-    // },
-    // 遍历节点
+    // ergodic Node
     ergodicNode(node, addData = true) {
       node.rename = false;
       if (node.expanded) {
@@ -268,224 +212,73 @@ export default {
         });
       }
     },
-    // 勾选
-    check(treeNode, data) {
-      let isCheck = data.checkedKeys.indexOf(treeNode.id) > -1;
-      // 勾选节点
-      this.checkTreeNode({ id: treeNode.id, checked: isCheck });
-      // 更新场景数据
-      _treeTool.checkNode(treeNode, isCheck);
+  },
+  // get the parent node by name
+  getParentNodeByName(name) {
+    let index = this.treeData.findIndex((item) => {
+      return item.name === name;
+    });
+    return this.treeData[index];
+  },
 
-      // 只能同时加载一个地形
-      if (
-        isCheck &&
-        treeNode.sourceType &&
-        treeNode.sourceType.indexOf("terrain") > -1
-      ) {
-        let index = data.checkedNodes.findIndex((item) => {
-          return (
-            item.sourceType &&
-            item.sourceType.indexOf("terrain") > -1 &&
-            item.id !== treeNode.id
-          );
-        });
-        if (index > -1) {
-          // 取消勾选
-          this.$refs.tree.setChecked(data.checkedNodes[index].id, false);
-          this.checkTreeNode({
-            id: data.checkedNodes[index].id,
-            checked: false,
-          });
-        }
-      }
-    },
-    // 添加节点|文件夹
-    append(data) {
-      this.$confirm("Select the type", "Message", {
-        confirmButtonText: "Data",
-        cancelButtonText: "Folder",
-        distinguishCancelAndClose: true,
-        closeOnClickModal: false,
-      })
-        .then(() => {
-          // 选择数据
-          this.selectData(data);
-        })
-        .catch((action) => {
-          // 添加文件夹
-          if (action === "cancel") {
-            this.addFolder(data);
-          }
-        });
-    },
-    // 添加文件夹
-    addFolder(data) {
-      this.$prompt("Input Folder Name", "Message", {
-        confirmButtonText: "Confirm",
-        cancelButtonText: "Cancel",
-        inputValue: "New Folder",
-        closeOnClickModal: false,
-      })
-        .then(({ value }) => {
-          let newChild = {
-            id: window.sgworld.Core.getuid(),
-            name: value,
-            rename: false,
-            children: [],
-          };
-          this.addData(data, newChild);
-        })
-        .catch(() => {});
-    },
-    // 选择数据
-    selectData(data) {
-      this.selectNode = data;
-      this.$refs.select.open();
-    },
-
-    // 添加数据到场景
-    addSceneData(data, isEdit) {
-      if (isEdit) {
-        this.updataTreeNode({
-          id: data.id,
-          nodeValue: data,
-        });
-        return;
-      }
-      data.checked = true;
-      // 添加节点
-      this.addData(this.selectNode, data);
-      // 添加数据到场景
-      if (!_treeTool) {
-        // 工程树工具
-        _treeTool = new window.TreeTool(window.sgworld);
-        window.sgworld._treeTool = _treeTool;
-      }
-      _treeTool.addData(data);
-      this.selectNode = undefined;
-    },
-    // 添加树节点
-    addData(data, value) {
-      !value.rename && (value.rename = false);
-      this.addTreeChildren({ pid: data && data.id, item: value });
-      this.expandedNode(data);
-
-      value.checked &&
-        this.$nextTick(() => {
-          this.$refs.tree.setChecked(value, true);
-        });
-    },
-    // 根据名字获取父节点
-    getParentNodeByName(name) {
-      let index = this.treeData.findIndex((item) => {
-        return item.name === name;
-      });
-      return this.treeData[index];
-    },
-
-    // 定位
-    flyTo(treeNode) {
-      if (treeNode.animationDatas) {
-        this.$refs.animationEdit.start(treeNode.animationDatas);
+  // locate the layer
+  flyTo(treeNode) {
+    if (treeNode.animationDatas) {
+      this.$refs.animationEdit.start(treeNode.animationDatas);
+    } else {
+      _treeTool.flyTo(treeNode);
+    }
+  },
+  // remove the layer
+  remove(data) {
+    // remove the tree node
+    this.removeTreeNode({ id: data.id });
+    if (data.children) {
+      this.removeChildData(data.children);
+    } else {
+      // remove the scene data
+      _treeTool.deleteData(data.id);
+    }
+  },
+  removeChildData(nodes) {
+    nodes.forEach((item) => {
+      if (item.children) {
+        this.removeChildData(item.children);
       } else {
-        _treeTool.flyTo(treeNode);
-      }
-    },
-    select() {
-      this.rightClickMenuDisplay = false;
-    },
-    // 移除
-    remove(data) {
-      // 移除节点
-      this.removeTreeNode({ id: data.id });
-      if (data.children) {
-        this.removeChildData(data.children);
-      } else {
-        // 移除场景数据
-        _treeTool.deleteData(data.id);
-        if (data.sourceType === "demoAnimation") {
+        // remove the scene data
+        _treeTool.deleteData(item.id);
+        if (item.sourceType === "demoAnimation") {
           Bus.$emit("closeAnimationEdit");
         }
       }
-    },
-    removeChildData(nodes) {
-      nodes.forEach((item) => {
-        if (item.children) {
-          this.removeChildData(item.children);
-        } else {
-          // 移除场景数据
-          _treeTool.deleteData(item.id);
-          if (item.sourceType === "demoAnimation") {
-            Bus.$emit("closeAnimationEdit");
-          }
-        }
-      });
-    },
-    // 清除所有对象
-    clearFirstParentNode(name) {
-      let parentnode = this.getParentNodeByName(name);
-      parentnode && this.remove(parentnode);
-    },
+    });
+  },
+  // clear all the data
+  clearFirstParentNode(name) {
+    let parentnode = this.getParentNodeByName(name);
+    parentnode && this.remove(parentnode);
+  },
 
-    appendTreeNode() {
-      this.append(this.selectNode);
-    },
-    // 右键删除按钮点击事件
-    deleteTreeNode() {
-      this.remove(this.selectNode);
-    },
-    // 添加目录
-    addFold() {
-      let newChild = {
-        id: window.sgworld.Core.getuid(),
-        name: "New Folder",
-        children: [],
-        rename: true,
-      };
-      this.addData(this.selectNode, newChild);
-    },
-
-    expandedNode(node) {
-      if (node && node.children && !node.expanded) {
-        let treeNode = this.$refs.tree.getNode(node.id);
-        if (treeNode) {
-          treeNode.expanded = true;
-          this.updataTreeNode({
-            id: node.id,
-            key: "expanded",
-            value: true,
-          });
-        }
+  appendTreeNode() {
+    this.append(this.selectNode);
+  },
+  expandedNode(node) {
+    if (node && node.children && !node.expanded) {
+      let treeNode = this.$refs.tree.getNode(node.id);
+      if (treeNode) {
+        treeNode.expanded = true;
+        this.updataTreeNode({
+          id: node.id,
+          key: "expanded",
+          value: true,
+        });
       }
-    },
-    addLayer() {
-      this.selectData(this.selectNode);
-    },
-    openRename() {
-      if (this.selectNode) {
-        this.selectNode.rename = true;
-      }
-    },
-    rename(data) {
-      data.rename = false;
-      this.updataTreeNode({
-        id: data.id,
-        key: "name",
-        value: data.name,
-      });
-    },
-    allowDrop(draggingNode, dropNode, type) {
-      if (type === "inner") {
-        return false;
-      } else {
-        return true;
-      }
-    },
+    }
   },
 };
 </script>
 
-<style scoped lang="less" scoped>
+<style scoped lang="less">
 .treeContainer {
   width: 100%;
   height: 100%;
@@ -528,31 +321,5 @@ export default {
   /deep/ .el-checkbox > .is-disabled {
     display: none;
   }
-}
-.rightClickMenu {
-  position: fixed;
-  display: block;
-  z-index: 10000;
-  background-color: #fff;
-  padding: 5px 0;
-  border: 1px solid #ebeef5;
-  border-radius: 4px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-}
-.rightClickMenu ul {
-  margin: 0;
-  padding: 0;
-}
-.rightClickMenu ul li {
-  list-style: none;
-  margin: 0;
-  padding: 0 15px;
-  font-size: 14px;
-  line-height: 30px;
-  cursor: pointer;
-  color: black;
-}
-.rightClickMenu ul li:hover {
-  background-color: #ebeef5;
 }
 </style>
