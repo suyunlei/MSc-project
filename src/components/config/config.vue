@@ -8,15 +8,15 @@ export default {
       content: [
         {
           name: "loadNUS",
-          label: "loadNUS MOodel",
+          label: "Add Building",
         },
         {
           name: "addCZML",
-          label: "Animation",
+          label: "Thermal Comfort(add first needed)",
         },
         {
           name: "addGeoJSON",
-          label: "addGeoJSON",
+          label: "addGeoJSON (under development)",
         },
       ],
     },

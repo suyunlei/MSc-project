@@ -176,4 +176,7 @@ export default {
   z-index: 999;
   cursor: pointer;
 }
+.TapContainer {
+  font-family: "Microsoft YaHei";
+}
 </style>

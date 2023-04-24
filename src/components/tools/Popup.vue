@@ -146,7 +146,7 @@ export default {
     min-width: 323px;
     color: #fff;
     font-size: 18px;
-    // font-family: 微软雅黑;
+    font-family: "Microsoft YaHei";
 
     .popupTitle {
       cursor: move;

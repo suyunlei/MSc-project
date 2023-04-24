@@ -48,5 +48,6 @@ export default {
 #cesiumContainer {
   width: 100%;
   height: 100%;
+  font-family: "Microsoft YaHei";
 }
 </style>
