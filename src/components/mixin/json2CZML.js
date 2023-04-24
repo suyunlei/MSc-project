@@ -69,10 +69,6 @@ export default {
               //   epoch: "2012-08-04T16:00:00Z",
               //   number: [0, 22.5, 1000, 21.2],
               // },
-              heart_rate: {
-                epoch: "2012-08-04T16:00:00Z",
-                number: [],
-              },
             },
             path: {
               material: {
@@ -108,22 +104,38 @@ export default {
           },
         ];
 
+        // add the attributes
+        const keys = Object.keys(data[1]);
+        for (let j in keys) {
+          let attribute_name = keys[j];
+          Object.defineProperty(czmlPath[1].properties, attribute_name, {
+            value: { number: [] },
+          });
+        }
         // add data points into CZML file
         for (let i = 0; i < data.length; i++) {
-          czmlPath[1].position.cartographicDegrees.push(data[i].time);
-          czmlPath[1].position.cartographicDegrees.push(parseFloat(data[i].X));
-          czmlPath[1].position.cartographicDegrees.push(parseFloat(data[i].Y));
-          czmlPath[1].position.cartographicDegrees.push(
-            // parseFloat(data[i].Altitudes)
-            0
-          );
-          // czmlPath[1].properties.heart_rate.number.push(
-          //   parseFloat(data[i].time)
-          // );
-          // czmlPath[1].properties.heart_rate.number
-          //   .push
-          //   // parseFloat(data[i].heart_rate)
-          //   ();
+          if (data[i].X && data[i].Y) {
+            czmlPath[1].position.cartographicDegrees.push(data[i].time);
+            czmlPath[1].position.cartographicDegrees.push(
+              parseFloat(data[i].X)
+            );
+            czmlPath[1].position.cartographicDegrees.push(
+              parseFloat(data[i].Y)
+            );
+            czmlPath[1].position.cartographicDegrees.push(0);
+          }
+
+          // add the attributes
+          let ks = Object.keys(data[i]);
+          for (let j in ks) {
+            let attribute_name = ks[j];
+            czmlPath[1].properties[attribute_name].number.push(
+              parseFloat(data[i].time)
+            );
+            czmlPath[1].properties[attribute_name].number.push(
+              parseFloat(data[i][attribute_name])
+            );
+          }
         }
 
         // if already have a CZML file, then replace it

@@ -19,7 +19,7 @@
           :auto-expand-parent="false"
           :default-expanded-keys="defaultExpanded"
           :default-checked-keys="defaultCheck"
-          @check="check"
+          @check-change="handleCheckChange"
         >
           <span
             class="custom-tree-node"
@@ -162,7 +162,11 @@ export default {
     _treeTool = undefined;
   },
   methods: {
-    check() {},
+    // check the node
+    handleCheckChange() {
+      // load or delete each kind of data...
+    },
+    // close the popup
     close() {
       Bus.$emit("checkTab", "index/add/treeLayer", false);
     },
@@ -212,68 +216,68 @@ export default {
         });
       }
     },
-  },
-  // get the parent node by name
-  getParentNodeByName(name) {
-    let index = this.treeData.findIndex((item) => {
-      return item.name === name;
-    });
-    return this.treeData[index];
-  },
+    // get the parent node by name
+    getParentNodeByName(name) {
+      let index = this.treeData.findIndex((item) => {
+        return item.name === name;
+      });
+      return this.treeData[index];
+    },
 
-  // locate the layer
-  flyTo(treeNode) {
-    if (treeNode.animationDatas) {
-      this.$refs.animationEdit.start(treeNode.animationDatas);
-    } else {
-      _treeTool.flyTo(treeNode);
-    }
-  },
-  // remove the layer
-  remove(data) {
-    // remove the tree node
-    this.removeTreeNode({ id: data.id });
-    if (data.children) {
-      this.removeChildData(data.children);
-    } else {
-      // remove the scene data
-      _treeTool.deleteData(data.id);
-    }
-  },
-  removeChildData(nodes) {
-    nodes.forEach((item) => {
-      if (item.children) {
-        this.removeChildData(item.children);
+    // locate the layer
+    flyTo(treeNode) {
+      if (treeNode.animationDatas) {
+        this.$refs.animationEdit.start(treeNode.animationDatas);
+      } else {
+        _treeTool.flyTo(treeNode);
+      }
+    },
+    // remove the layer
+    remove(data) {
+      // remove the tree node
+      this.removeTreeNode({ id: data.id });
+      if (data.children) {
+        this.removeChildData(data.children);
       } else {
         // remove the scene data
-        _treeTool.deleteData(item.id);
-        if (item.sourceType === "demoAnimation") {
-          Bus.$emit("closeAnimationEdit");
+        _treeTool.deleteData(data.id);
+      }
+    },
+    removeChildData(nodes) {
+      nodes.forEach((item) => {
+        if (item.children) {
+          this.removeChildData(item.children);
+        } else {
+          // remove the scene data
+          _treeTool.deleteData(item.id);
+          if (item.sourceType === "demoAnimation") {
+            Bus.$emit("closeAnimationEdit");
+          }
+        }
+      });
+    },
+    // clear all the data
+    clearFirstParentNode(name) {
+      let parentnode = this.getParentNodeByName(name);
+      parentnode && this.remove(parentnode);
+    },
+
+    appendTreeNode() {
+      this.append(this.selectNode);
+    },
+    expandedNode(node) {
+      if (node && node.children && !node.expanded) {
+        let treeNode = this.$refs.tree.getNode(node.id);
+        if (treeNode) {
+          treeNode.expanded = true;
+          this.updataTreeNode({
+            id: node.id,
+            key: "expanded",
+            value: true,
+          });
         }
       }
-    });
-  },
-  // clear all the data
-  clearFirstParentNode(name) {
-    let parentnode = this.getParentNodeByName(name);
-    parentnode && this.remove(parentnode);
-  },
-
-  appendTreeNode() {
-    this.append(this.selectNode);
-  },
-  expandedNode(node) {
-    if (node && node.children && !node.expanded) {
-      let treeNode = this.$refs.tree.getNode(node.id);
-      if (treeNode) {
-        treeNode.expanded = true;
-        this.updataTreeNode({
-          id: node.id,
-          key: "expanded",
-          value: true,
-        });
-      }
-    }
+    },
   },
 };
 </script>
