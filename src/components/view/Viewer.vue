@@ -1,10 +1,18 @@
 <template>
-  <div id="cesiumContainer"></div>
+  <div id="cesiumContainer">
+    <Layer />
+  </div>
 </template>
 
 <script>
+import Layer from "../layerTree/Layer.vue";
+import Bus from "@tools/Bus";
 export default {
   name: "Viewer",
+  components: {
+    Layer,
+    Bus,
+  },
   data() {
     return {
       viewer: "",
