@@ -1,17 +1,20 @@
 <template>
   <div id="cesiumContainer">
     <Layer />
+    <Attribute />
   </div>
 </template>
 
 <script>
 import Layer from "../layerTree/Layer.vue";
+import Attribute from "../layerTree/Attribute.vue";
 import Bus from "@tools/Bus";
 export default {
   name: "Viewer",
   components: {
     Layer,
     Bus,
+    Attribute,
   },
   data() {
     return {

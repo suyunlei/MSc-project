@@ -54,7 +54,7 @@ export default {
         "2012-08-04T16:00:00Z"
       );
       window.viewer.clock.stopTime = Cesium.JulianDate.fromIso8601(
-        "2012-08-04T18:00:00Z"
+        "2012-08-04T16:30:00Z"
       );
       window.viewer.clock.currentTime = Cesium.JulianDate.fromIso8601(
         "2012-08-04T16:00:00Z"
@@ -68,7 +68,7 @@ export default {
       window.CZMLDataSource = dataSource;
       const partsToLoad = [
         {
-          range: [0, 500000],
+          range: [0, 1200],
           requested: false,
           loaded: false,
         },
