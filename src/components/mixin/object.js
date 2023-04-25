@@ -119,14 +119,15 @@ export default {
         }
       });
     },
-    async processPart(part) {
+    processPart(part) {
       part.requested = true;
       window.CZMLDataSource.process(window.czmlPath).then(function () {
         console.log(window.czmlPath);
         part.loaded = true;
+        // Follow the vehicle with the camera. something to fix
         if (!window.viewer.trackedEntity) {
-          window.viewer.trackedEntity = vehicleEntity =
-            window.dataSource.entities.getById("Vehicle");
+          window.viewer.trackedEntity =
+            window.CZMLDataSource.entities.getById("Vehicle");
         }
       });
     },

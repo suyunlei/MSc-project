@@ -1,13 +1,13 @@
 import Bus from "@tools/Bus";
 export default {
   methods: {
-    json2CZML(e) {
+    async json2CZML(e) {
       const file = e.target.files[0];
       if (!file) {
         return;
       }
       window.treeData.push({
-        id: 2,
+        id: file.name,
         name: file.name,
         children: [],
       });
@@ -18,7 +18,7 @@ export default {
 
         // get the keys to add to the treeData
         let attributes = Object.keys(data[0]);
-        let foundRecord = window.treeData.find((item) => item.id === 2);
+        let foundRecord = window.treeData.find((item) => item.id === file.name);
         if (foundRecord) {
           let index = window.treeData.indexOf(foundRecord);
           // add the keys to the thermal_comfort in treeData
@@ -32,11 +32,11 @@ export default {
         Bus.$emit("updateTreeData", window.treeData);
         // add "time" attribute into each data point
         for (let i = 0; i < data.length; i++) {
-          data[i].time = parseFloat(i * 10);
+          data[i].time = parseFloat(i * 100);
         }
 
         // init the vehicle model
-        let vehicleEntity = await Cesium.IonResource.fromAssetId(1598324);
+        let vehicleEntity = await Cesium.IonResource.fromAssetId(1669983);
         window.vehicleEntity = vehicleEntity;
         // init a CZML file
         const czmlPath = [
@@ -47,7 +47,7 @@ export default {
           },
           {
             id: "Vehicle",
-            availability: "2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
+            availability: "2012-08-04T16:00:00Z/2012-08-04T20:00:00Z",
             label: {
               fillColor: [
                 {
@@ -71,7 +71,7 @@ export default {
                 },
               ],
               style: "FILL",
-              text: "Test Vehicle",
+              text: "Participant",
               verticalOrigin: "CENTER",
             },
             model: {
@@ -163,11 +163,7 @@ export default {
         }
 
         // if already have a CZML file, then replace it
-        if (window.czmlPath) {
-          window.czmlPath = {};
-        } else {
-          window.czmlPath = czmlPath;
-        }
+        window.czmlPath = czmlPath;
       };
       reader.readAsText(file);
     },
