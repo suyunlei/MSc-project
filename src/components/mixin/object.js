@@ -1,3 +1,5 @@
+import Bus from "@tools/Bus";
+
 export default {
   methods: {
     // let the point cloud model to stick at the ground (no use now)
@@ -80,10 +82,24 @@ export default {
         if (window.czmlPath && window.checked_name) {
           const properties = window.czmlPath[1].properties;
           const name = window.checked_name;
-          debugger;
+          let startTime = Cesium.JulianDate.fromIso8601(properties.epoch);
           // not working, no getValue function
+          let interval = Cesium.JulianDate.secondsDifference(
+            clock.currentTime,
+            startTime
+          );
+          for (let i = 0; i < properties[name].number.length; i++) {
+            if (properties[name].number.indexOf(parseInt(interval)) !== -1) {
+              let timeIndex = properties[name].number.indexOf(
+                parseInt(interval)
+              );
+              let value = properties[name].number[timeIndex + 1];
+              window.thermal_value = value;
+              Bus.$emit("change");
+            }
+          }
+          // change the currentTime to JulianData
           // const value = properties[name].getValue(clock.currentTime);
-          console.log(value);
         }
       });
     },

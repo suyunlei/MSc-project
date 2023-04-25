@@ -65,6 +65,9 @@ export default {
               cartesian: [-2080, -1715, 779],
             },
             properties: {
+              epoch: "2012-08-04T16:00:00Z",
+              interpolationAlgorithm: "LAGRANGE",
+              interpolationDegree: 5,
               // fuel_remaining: {
               //   epoch: "2012-08-04T16:00:00Z",
               //   number: [0, 22.5, 1000, 21.2],

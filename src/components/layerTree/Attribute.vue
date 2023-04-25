@@ -12,6 +12,7 @@
           type="dashboard"
           :percentage="percentage"
           :color="colors"
+          :format="format"
         ></el-progress>
       </div>
     </Popup>
@@ -30,7 +31,8 @@ export default {
   },
   data() {
     return {
-      percentage: 10,
+      name: "",
+      percentage: 0,
       title: "Attribute",
       colors: [
         { color: "#f56c6c", percentage: 20 },
@@ -44,8 +46,13 @@ export default {
   mounted() {
     // 打开弹窗
     this.$refs.pop.open();
+    this.init();
   },
   methods: {
+    init() {
+      Bus.$off("change");
+      Bus.$on("change", this.change);
+    },
     open() {
       this.$refs.pop.open();
     },
@@ -54,11 +61,18 @@ export default {
     },
     // change the number and color of the progress bar according to the attribute value
     change() {
-      const name = window.checked_name;
-      const value = window.czmlPath.properties[name].getValue(
-        window.viewer.clock.currentTime
-      );
-      console.log(value);
+      this.title = window.checked_name;
+      this.percentage = window.thermal_value;
+      this.colors = [
+        { color: "#f56c6c", percentage: 20 },
+        { color: "#e6a23c", percentage: 40 },
+        { color: "#5cb87a", percentage: 60 },
+        { color: "#1989fa", percentage: 80 },
+        { color: "#6f7ad3", percentage: 100 },
+      ];
+    },
+    format(percentage) {
+      return `${percentage}`;
     },
   },
 };
