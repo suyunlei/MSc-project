@@ -58,6 +58,7 @@ export default {
     },
     // add a CZML
     addCZML() {
+      // force the user to select a file
       if (!window.czmlPath) {
         this.$message({
           message: "Please select a Thermal Comfort file first!",

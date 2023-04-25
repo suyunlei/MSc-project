@@ -8,11 +8,11 @@ export default {
       content: [
         {
           name: "loadNUS",
-          label: "Add Building",
+          label: "NUS Building",
         },
         {
           name: "addCZML",
-          label: "Thermal Comfort(add first needed)",
+          label: "Thermal Comfort",
         },
         {
           name: "addGeoJSON",
