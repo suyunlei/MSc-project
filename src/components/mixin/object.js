@@ -58,7 +58,13 @@ export default {
     },
     // add a CZML
     addCZML() {
-      Bus.$emit("updateTreeData", window.treeData);
+      if (!window.czmlPath) {
+        this.$message({
+          message: "Please select a Thermal Comfort file first!",
+          showClose: true,
+          duration: 2000,
+        });
+      }
       // set the Cesium Clock time to match the CZML data time interval
       window.viewer.clock.startTime = Cesium.JulianDate.fromIso8601(
         "2012-08-04T16:00:00Z"
