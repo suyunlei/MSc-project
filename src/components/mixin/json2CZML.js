@@ -1,3 +1,4 @@
+import Bus from "@tools/Bus";
 export default {
   methods: {
     json2CZML(e) {
@@ -17,15 +18,18 @@ export default {
 
         // get the keys to add to the treeData
         let attributes = Object.keys(data[0]);
-
-        // add the keys to the thermal_comfort in treeData
-        for (let i = 3; i < attributes.length; i++) {
-          window.treeData[1].children.push({
-            id: i + 2,
-            name: attributes[i],
-          });
+        let foundRecord = window.treeData.find((item) => item.id === 2);
+        if (foundRecord) {
+          let index = window.treeData.indexOf(foundRecord);
+          // add the keys to the thermal_comfort in treeData
+          for (let i = 3; i < attributes.length; i++) {
+            window.treeData[index].children.push({
+              id: i + 2,
+              name: attributes[i],
+            });
+          }
         }
-
+        Bus.$emit("updateTreeData", window.treeData);
         // add "time" attribute into each data point
         for (let i = 0; i < data.length; i++) {
           data[i].time = parseFloat(i * 10);
