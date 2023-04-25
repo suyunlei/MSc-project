@@ -39,9 +39,10 @@ export default {
         timeline: false,
         // terrainProvider: Cesium.createWorldTerrain(),
       });
-      // 变量提升
+      // add the cesium viewer to the window
       window.viewer = viewer;
-      // window.viewer.scene.primitives.add(Cesium.createOsmBuildings());
+      // init the treeData
+      window.treeData = [];
     },
   },
 };

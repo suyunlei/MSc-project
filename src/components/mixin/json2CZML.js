@@ -5,10 +5,27 @@ export default {
       if (!file) {
         return;
       }
+      window.treeData.push({
+        id: 2,
+        name: file.name,
+        children: [],
+      });
       const reader = new FileReader();
       reader.onload = async () => {
         const content = reader.result;
         const data = JSON.parse(content);
+
+        // get the keys to add to the treeData
+        let attributes = Object.keys(data[0]);
+
+        // add the keys to the thermal_comfort in treeData
+        for (let i = 3; i < attributes.length; i++) {
+          window.treeData[1].children.push({
+            id: i + 2,
+            name: attributes[i],
+          });
+        }
+
         // add "time" attribute into each data point
         for (let i = 0; i < data.length; i++) {
           data[i].time = parseFloat(i * 10);

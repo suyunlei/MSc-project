@@ -62,6 +62,10 @@ export default {
     // change the number and color of the progress bar according to the attribute value
     change() {
       this.title = window.checked_name;
+      let true_val = window.thermal_value;
+      if (true_val > 100) {
+        this.percentage = 100;
+      }
       this.percentage = window.thermal_value;
       this.colors = [
         { color: "#f56c6c", percentage: 20 },

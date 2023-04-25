@@ -15,6 +15,7 @@
           :data="treeData"
           show-checkbox
           node-key="id"
+          empty-text="No Data"
           :expand-on-click-node="false"
           :auto-expand-parent="false"
           :default-expanded-keys="defaultExpanded"
@@ -65,78 +66,78 @@ export default {
     Bus,
   },
   data() {
-    const treeData = [
-      {
-        id: 1,
-        name: "Thermal Comfort",
-        children: [
-          {
-            id: 2,
-            name: "Heart Rate",
-          },
-          {
-            id: 3,
-            name: "Solar Intensity",
-          },
-          {
-            id: 4,
-            name: "Noise",
-          },
-          {
-            id: 5,
-            name: "Cars",
-          },
-          {
-            id: 6,
-            name: "Pedestrains",
-          },
-          {
-            id: 7,
-            name: "building",
-          },
-          {
-            id: 8,
-            name: "wall",
-          },
-          {
-            id: 9,
-            name: "fence",
-          },
-          {
-            id: 10,
-            name: "pole",
-          },
-          {
-            id: 11,
-            name: "traffic light",
-          },
-          {
-            id: 12,
-            name: "traffic sign",
-          },
-          {
-            id: 13,
-            name: "vegetation",
-          },
-          {
-            id: 14,
-            name: "terrain",
-          },
-          {
-            id: 15,
-            name: "sky",
-          },
-          {
-            id: 16,
-            name: "Altitudes",
-          },
-        ],
-      },
-      {
-        id: 101,
-        name: "NUS Building",
-      },
-    ];
+    // const treeData = [
+    //   {
+    //     id: 1,
+    //     name: "Thermal Comfort",
+    //     children: [
+    //       {
+    //         id: 2,
+    //         name: "Heart Rate",
+    //       },
+    //       {
+    //         id: 3,
+    //         name: "Solar Intensity",
+    //       },
+    //       {
+    //         id: 4,
+    //         name: "Noise",
+    //       },
+    //       {
+    //         id: 5,
+    //         name: "Cars",
+    //       },
+    //       {
+    //         id: 6,
+    //         name: "Pedestrains",
+    //       },
+    //       {
+    //         id: 7,
+    //         name: "building",
+    //       },
+    //       {
+    //         id: 8,
+    //         name: "wall",
+    //       },
+    //       {
+    //         id: 9,
+    //         name: "fence",
+    //       },
+    //       {
+    //         id: 10,
+    //         name: "pole",
+    //       },
+    //       {
+    //         id: 11,
+    //         name: "traffic light",
+    //       },
+    //       {
+    //         id: 12,
+    //         name: "traffic sign",
+    //       },
+    //       {
+    //         id: 13,
+    //         name: "vegetation",
+    //       },
+    //       {
+    //         id: 14,
+    //         name: "terrain",
+    //       },
+    //       {
+    //         id: 15,
+    //         name: "sky",
+    //       },
+    //       {
+    //         id: 16,
+    //         name: "Altitudes",
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     id: 101,
+    //     name: "NUS Building",
+    //   },
+    // ];
     return {
       title: "Layer Manager",
       left: "10px",
@@ -148,7 +149,8 @@ export default {
       isClickParent: false,
       isNewFold: false,
       newFoldName: undefined,
-      treeData: JSON.parse(JSON.stringify(treeData)),
+      // treeData: JSON.parse(JSON.stringify(window.treeData)),
+      treeData: [],
     };
   },
   mounted() {
@@ -162,6 +164,10 @@ export default {
     _treeTool = undefined;
   },
   methods: {
+    // update the tree data
+    updateTreeData(data) {
+      this.treeData = data;
+    },
     // check the node
     handleCheckChange(data, checked, indeterminate) {
       if (checked) {
@@ -176,23 +182,15 @@ export default {
     },
     // init the Bus Event
     initBusEvent() {
-      Bus.$off("addLayer");
-      Bus.$on("addLayer", () => {
-        this.selectNode = this.$refs.tree && this.$refs.tree.getCurrentNode();
-      });
-      Bus.$off("openLayer");
-      Bus.$on("openLayer", (open = true) => {
-        // 打开弹窗
-        if (open) {
-          this.$refs.layer.open();
-        } else {
-          this.$refs.layer.close();
-        }
-      });
       Bus.$off("clearFirstParentNode");
       Bus.$on("clearFirstParentNode", (parentName) => {
         // 清除所有对象
         this.clearFirstParentNode(parentName);
+      });
+      Bus.$off("updateTreeData");
+      Bus.$on("updateTreeData", (data) => {
+        // 更新树数据
+        this.updateTreeData(data);
       });
     },
     // ergodic Node

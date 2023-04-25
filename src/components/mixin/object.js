@@ -48,9 +48,17 @@ export default {
           )
         );
       });
+      // add the NUS model to the treeData
+      window.treeData.push({
+        id: 1,
+        name: "NUS Building Model",
+        disabled: true,
+      });
+      Bus.$emit("updateTreeData", window.treeData);
     },
     // add a CZML
     addCZML() {
+      Bus.$emit("updateTreeData", window.treeData);
       // set the Cesium Clock time to match the CZML data time interval
       window.viewer.clock.startTime = Cesium.JulianDate.fromIso8601(
         "2012-08-04T16:00:00Z"
@@ -82,24 +90,25 @@ export default {
         if (window.czmlPath && window.checked_name) {
           const properties = window.czmlPath[1].properties;
           const name = window.checked_name;
+          // get the start time of the CZML
           let startTime = Cesium.JulianDate.fromIso8601(properties.epoch);
-          // not working, no getValue function
           let interval = Cesium.JulianDate.secondsDifference(
             clock.currentTime,
             startTime
           );
+          // get the attribute value according to the time interval
           for (let i = 0; i < properties[name].number.length; i++) {
             if (properties[name].number.indexOf(parseInt(interval)) !== -1) {
               let timeIndex = properties[name].number.indexOf(
                 parseInt(interval)
               );
+              // value is followed by the time interval in the CZML
               let value = properties[name].number[timeIndex + 1];
               window.thermal_value = value;
+              // let the attribute table change
               Bus.$emit("change");
             }
           }
-          // change the currentTime to JulianData
-          // const value = properties[name].getValue(clock.currentTime);
         }
       });
     },
