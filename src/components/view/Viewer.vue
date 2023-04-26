@@ -9,8 +9,10 @@
 import Layer from "../layerTree/Layer.vue";
 import Attribute from "../layerTree/Attribute.vue";
 import Bus from "@tools/Bus";
+import object from "../mixin/object";
 export default {
   name: "Viewer",
+  mixins: [object],
   components: {
     Layer,
     Bus,
@@ -24,6 +26,7 @@ export default {
   mounted() {
     this.$nextTick(() => {
       this.init();
+      this.addAnimation();
     });
   },
   methods: {

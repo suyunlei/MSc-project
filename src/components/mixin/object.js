@@ -34,6 +34,19 @@ export default {
       const tileset = new Cesium.Cesium3DTileset({
         url: "http://localhost:9003/model/aBoGDJnV/tileset.json", // Cesiumlab
       });
+      tileset.style = new Cesium.Cesium3DTileStyle({
+        color: {
+          conditions: [
+            ["${height} >= 20", 'color("ORANGERED")'],
+            ["${height} >= 10", 'color("DARKORANGE")'],
+            ["true", 'color("blue")'],
+          ],
+        },
+        show: "${height} > 0",
+        meta: {
+          description: '"Building id ${id} has height ${height}."',
+        },
+      });
       window.tileset = tileset;
       window.tileset.readyPromise.then((tileset) => {
         // this.changeHeight(-120);
@@ -140,6 +153,82 @@ export default {
         window.viewer.scene.primitives.add(tileset);
         console.log(tileset);
       });
+    },
+    // add more animation to the building model
+    addAnimation() {
+      const handler = new Cesium.ScreenSpaceEventHandler(
+        window.viewer.scene.canvas
+      );
+
+      let enablePicking = true;
+
+      const highlighted = {
+        feature: undefined,
+        originalColor: new Cesium.Color(),
+      };
+
+      const selected = {
+        feature: undefined,
+        originalColor: new Cesium.Color(),
+      };
+
+      handler.setInputAction((movement) => {
+        if (enablePicking) {
+          // If a feature was previously highlighted, undo the highlight
+          if (Cesium.defined(highlighted.feature)) {
+            highlighted.feature.color = highlighted.originalColor;
+            highlighted.feature = undefined;
+          }
+
+          const feature = window.viewer.scene.pick(movement.endPosition);
+          const featurePicked = feature instanceof Cesium.Cesium3DTileFeature;
+
+          const isBuildingFeature =
+            featurePicked && feature.hasProperty("height");
+
+          if (isBuildingFeature) {
+            // Highlight the feature if it's not already selected.
+            if (feature !== selected.feature) {
+              highlighted.feature = feature;
+              Cesium.Color.clone(feature.color, highlighted.originalColor);
+              feature.color = Cesium.Color.MAGENTA;
+            }
+          }
+        }
+      }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+      handler.setInputAction((movement) => {
+        // If a feature was previously selected, undo the highlight
+        if (Cesium.defined(selected.feature)) {
+          selected.feature.color = selected.originalColor;
+          selected.feature = undefined;
+        }
+
+        const feature = window.viewer.scene.pick(movement.position);
+        const featurePicked = feature instanceof Cesium.Cesium3DTileFeature;
+        const isBuildingFeature =
+          featurePicked && feature.hasProperty("height");
+
+        if (isBuildingFeature) {
+          // Select the feature if it's not already selected
+          if (selected.feature === feature) {
+            return;
+          }
+          selected.feature = feature;
+
+          // Save the selected feature's original color
+          if (feature === highlighted.feature) {
+            Cesium.Color.clone(
+              highlighted.originalColor,
+              selected.originalColor
+            );
+            highlighted.feature = undefined;
+          } else {
+            Cesium.Color.clone(feature.color, selected.originalColor);
+          }
+          feature.color = Cesium.Color.LIME;
+        }
+      }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
     },
   },
 };
