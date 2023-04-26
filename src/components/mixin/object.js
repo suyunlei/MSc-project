@@ -77,7 +77,7 @@ export default {
         "2012-08-04T16:00:00Z"
       );
       window.viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP; // loop at the end
-      window.viewer.clock.multiplier = 1;
+      window.viewer.clock.multiplier = 0.1;
 
       // Add a blank CzmlDataSource to hold our multi-part entity/entities.
       const dataSource = new Cesium.CzmlDataSource();

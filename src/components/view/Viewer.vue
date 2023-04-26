@@ -36,9 +36,16 @@ export default {
       const viewer = new Cesium.Viewer("cesiumContainer", {
         shouldAnimate: true, // open animation
         animation: false,
+        shadows: true,
         timeline: false,
+        imageryProvider: new Cesium.OpenStreetMapImageryProvider({
+          url: "https://a.tile.openstreetmap.org/",
+        }),
         // terrainProvider: Cesium.createWorldTerrain(),
       });
+      // HDR rendering
+      viewer.scene.highDynamicRange = true;
+
       // add the cesium viewer to the window
       window.viewer = viewer;
       // init the treeData

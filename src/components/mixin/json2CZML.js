@@ -52,13 +52,13 @@ export default {
               fillColor: [
                 {
                   interval: "2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
-                  rgba: [255, 255, 0, 255],
+                  rgba: [166, 30, 77, 255],
                 },
               ],
               font: "bold 10pt Segoe UI Semibold",
               horizontalOrigin: "CENTER",
               outlineColor: {
-                rgba: [0, 0, 0, 255],
+                rgba: [166, 30, 77, 255],
               },
               pixelOffset: {
                 cartesian2: [0.0, 20.0],
@@ -99,7 +99,7 @@ export default {
                 solidColor: {
                   color: {
                     interval: "2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
-                    rgba: [255, 255, 0, 255],
+                    rgba: [166, 30, 77, 255],
                   },
                 },
               },
