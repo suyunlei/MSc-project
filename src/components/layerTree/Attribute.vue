@@ -44,7 +44,6 @@ export default {
     };
   },
   mounted() {
-    // 打开弹窗
     this.$refs.pop.open();
     this.init();
   },

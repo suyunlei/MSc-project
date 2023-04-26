@@ -2,6 +2,7 @@
   <div id="cesiumContainer">
     <Layer />
     <Attribute />
+    <Perspective />
   </div>
 </template>
 
@@ -10,6 +11,7 @@ import Layer from "../layerTree/Layer.vue";
 import Attribute from "../layerTree/Attribute.vue";
 import Bus from "@tools/Bus";
 import object from "../mixin/object";
+import Perspective from "../adds_on/Perspective.vue";
 export default {
   name: "Viewer",
   mixins: [object],
@@ -17,6 +19,7 @@ export default {
     Layer,
     Bus,
     Attribute,
+    Perspective,
   },
   data() {
     return {
