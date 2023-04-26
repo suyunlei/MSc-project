@@ -140,7 +140,7 @@ export default {
         // Follow the vehicle with the camera. something to fix
         if (!window.viewer.trackedEntity) {
           window.viewer.trackedEntity =
-            window.CZMLDataSource.entities.getById("Vehicle");
+            window.CZMLDataSource.entities.getById("Person");
         }
       });
     },

@@ -46,7 +46,7 @@ export default {
             version: "1.0",
           },
           {
-            id: "Vehicle",
+            id: "Person",
             availability: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
             label: {
               fillColor: [
