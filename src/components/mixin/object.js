@@ -154,7 +154,7 @@ export default {
         console.log(tileset);
       });
     },
-    // add more animation to the building model
+    // add animations to the building model
     addAnimation() {
       const handler = new Cesium.ScreenSpaceEventHandler(
         window.viewer.scene.canvas
@@ -172,6 +172,7 @@ export default {
         originalColor: new Cesium.Color(),
       };
 
+      // mouse move on animation
       handler.setInputAction((movement) => {
         if (enablePicking) {
           // If a feature was previously highlighted, undo the highlight
@@ -197,6 +198,7 @@ export default {
         }
       }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 
+      // mouse click on animation
       handler.setInputAction((movement) => {
         // If a feature was previously selected, undo the highlight
         if (Cesium.defined(selected.feature)) {

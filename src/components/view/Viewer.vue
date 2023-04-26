@@ -25,13 +25,15 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
+      // init the cesium viewer
       this.init();
+      // add the animation to the buildings
       this.addAnimation();
     });
   },
   methods: {
     /**
-     * 初始化地图
+     * init the map
      */
     init() {
       Cesium.Ion.defaultAccessToken =

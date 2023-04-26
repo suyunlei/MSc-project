@@ -47,11 +47,11 @@ export default {
           },
           {
             id: "Vehicle",
-            availability: "2012-08-04T16:00:00Z/2012-08-04T20:00:00Z",
+            availability: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
             label: {
               fillColor: [
                 {
-                  interval: "2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
+                  interval: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
                   rgba: [166, 30, 77, 255],
                 },
               ],
@@ -66,7 +66,7 @@ export default {
               scale: 1.0,
               show: [
                 {
-                  interval: "2012-08-04T16:00:00Z/2012-08-04T22:00:00Z",
+                  interval: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
                   boolean: true,
                 },
               ],
@@ -86,7 +86,7 @@ export default {
               cartesian: [-2080, -1715, 779],
             },
             properties: {
-              epoch: "2012-08-04T16:00:00Z",
+              epoch: "2012-08-04T10:00:00Z",
               interpolationAlgorithm: "LAGRANGE",
               interpolationDegree: 5,
               // fuel_remaining: {
@@ -98,20 +98,20 @@ export default {
               material: {
                 solidColor: {
                   color: {
-                    interval: "2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
+                    interval: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
                     rgba: [166, 30, 77, 255],
                   },
                 },
               },
               width: [
                 {
-                  interval: "2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
+                  interval: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
                   number: 5.0,
                 },
               ],
               show: [
                 {
-                  interval: "2012-08-04T16:00:00Z/2012-08-04T18:00:00Z",
+                  interval: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
                   boolean: true,
                 },
               ],
@@ -119,7 +119,7 @@ export default {
             position: {
               interpolationAlgorithm: "LAGRANGE",
               interpolationDegree: 1,
-              epoch: "2012-08-04T16:00:00Z",
+              epoch: "2012-08-04T10:00:00Z",
               cartographicDegrees: [
                 // 0, 103.7702304, 1.296996802, 50.0, 1000.0, 103.7702192,
                 // 1.297058369, 50.0, 2000.0, 103.7701632, 1.297110608, 50.0,
