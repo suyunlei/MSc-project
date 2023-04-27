@@ -18,6 +18,7 @@
           empty-text="No Data"
           :expand-on-click-node="false"
           :auto-expand-parent="false"
+          :check-strictly="true"
           :default-expanded-keys="defaultExpanded"
           :default-checked-keys="defaultCheck"
           @check-change="handleCheckChange"
@@ -36,16 +37,8 @@
                     ? 'el-icon-location-outline'
                     : ''
                 "
-              ></i>
-              <el-input
-                v-if="data.rename"
-                v-model="data.name"
-                size="mini"
-                placeholder="layer name"
-                @change="rename(data)"
-                @blur="rename(data)"
-              ></el-input>
-              <span v-else>{{ data.name }}</span>
+              >
+              </i>
             </span>
           </span>
         </el-tree>
@@ -57,6 +50,7 @@
 <script>
 import Bus from "@tools/Bus";
 import Popup from "@tools/Popup";
+import { debug } from "console";
 // 工程树工具
 let _treeTool;
 export default {
@@ -66,78 +60,6 @@ export default {
     Bus,
   },
   data() {
-    // const treeData = [
-    //   {
-    //     id: 1,
-    //     name: "Thermal Comfort",
-    //     children: [
-    //       {
-    //         id: 2,
-    //         name: "Heart Rate",
-    //       },
-    //       {
-    //         id: 3,
-    //         name: "Solar Intensity",
-    //       },
-    //       {
-    //         id: 4,
-    //         name: "Noise",
-    //       },
-    //       {
-    //         id: 5,
-    //         name: "Cars",
-    //       },
-    //       {
-    //         id: 6,
-    //         name: "Pedestrains",
-    //       },
-    //       {
-    //         id: 7,
-    //         name: "building",
-    //       },
-    //       {
-    //         id: 8,
-    //         name: "wall",
-    //       },
-    //       {
-    //         id: 9,
-    //         name: "fence",
-    //       },
-    //       {
-    //         id: 10,
-    //         name: "pole",
-    //       },
-    //       {
-    //         id: 11,
-    //         name: "traffic light",
-    //       },
-    //       {
-    //         id: 12,
-    //         name: "traffic sign",
-    //       },
-    //       {
-    //         id: 13,
-    //         name: "vegetation",
-    //       },
-    //       {
-    //         id: 14,
-    //         name: "terrain",
-    //       },
-    //       {
-    //         id: 15,
-    //         name: "sky",
-    //       },
-    //       {
-    //         id: 16,
-    //         name: "Altitudes",
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     id: 101,
-    //     name: "NUS Building",
-    //   },
-    // ];
     return {
       title: "Layer Manager",
       left: "10px",
@@ -148,9 +70,8 @@ export default {
       selectNode: undefined,
       isClickParent: false,
       isNewFold: false,
-      newFoldName: undefined,
-      // treeData: JSON.parse(JSON.stringify(window.treeData)),
       treeData: [],
+      maxChecked: 3, // max checked number of nodes
     };
   },
   mounted() {
@@ -159,6 +80,17 @@ export default {
 
     // 定义中转站事件
     this.initBusEvent();
+  },
+  computed: {
+    checkedCount() {
+      let count = 0;
+      this.$refs.tree.getCheckedNodes().forEach((node) => {
+        if (node.checked) {
+          count++;
+        }
+      });
+      return count;
+    },
   },
   destroyed() {
     _treeTool = undefined;
@@ -170,11 +102,19 @@ export default {
     },
     // check the node
     handleCheckChange(data, checked, indeterminate) {
-      if (checked) {
-        window.checked_id = data.id;
-        window.checked_name = data.name;
+      if (this.checkedCount > this.maxChecked) {
+        // 取消勾选最后一个勾选的节点
+        this.$refs.tree.setChecked(
+          this.$refs.tree.getCheckedNodes().pop().id,
+          false
+        );
+      } else {
+        if (checked) {
+          window.checked_id = data.id;
+          window.checked_name = data.name;
+        }
       }
-      console.log(data, checked, indeterminate);
+      // console.log(data, checked, indeterminate);
     },
     // close the popup
     close() {
