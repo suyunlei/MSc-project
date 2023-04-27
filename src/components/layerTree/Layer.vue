@@ -50,7 +50,6 @@
 <script>
 import Bus from "@tools/Bus";
 import Popup from "@tools/Popup";
-import { debug } from "console";
 // 工程树工具
 let _treeTool;
 export default {
@@ -81,17 +80,6 @@ export default {
     // 定义中转站事件
     this.initBusEvent();
   },
-  computed: {
-    checkedCount() {
-      let count = 0;
-      this.$refs.tree.getCheckedNodes().forEach((node) => {
-        if (node.checked) {
-          count++;
-        }
-      });
-      return count;
-    },
-  },
   destroyed() {
     _treeTool = undefined;
   },
@@ -101,20 +89,24 @@ export default {
       this.treeData = data;
     },
     // check the node
-    handleCheckChange(data, checked, indeterminate) {
-      if (this.checkedCount > this.maxChecked) {
-        // 取消勾选最后一个勾选的节点
+    handleCheckChange(data, checked) {
+      let num = this.$refs.tree.getCheckedNodes().length;
+      if (num > this.maxChecked) {
+        // cancel the last checked node
         this.$refs.tree.setChecked(
           this.$refs.tree.getCheckedNodes().pop().id,
           false
         );
+        this.$message({
+          message: `Maximum of ${this.maxChecked}nodes can be ticked`,
+          type: "warning",
+        });
       } else {
         if (checked) {
           window.checked_id = data.id;
           window.checked_name = data.name;
         }
       }
-      // console.log(data, checked, indeterminate);
     },
     // close the popup
     close() {
