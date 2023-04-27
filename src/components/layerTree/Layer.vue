@@ -22,6 +22,7 @@
           :default-expanded-keys="defaultExpanded"
           :default-checked-keys="defaultCheck"
           @check-change="handleCheckChange"
+          :props="defaultProps"
         >
           <span
             class="custom-tree-node"
@@ -30,15 +31,7 @@
           >
             <span>
               <i v-if="data.children" class="el-icon-folder"></i>
-              <i
-                v-else
-                :class="
-                  data.sourceType === 'location'
-                    ? 'el-icon-location-outline'
-                    : ''
-                "
-              >
-              </i>
+              {{ data.label }}
             </span>
           </span>
         </el-tree>
@@ -66,11 +59,13 @@ export default {
       maxHeight: "800px",
       defaultCheck: [],
       defaultExpanded: [],
-      selectNode: undefined,
-      isClickParent: false,
-      isNewFold: false,
+
       treeData: [],
       maxChecked: 3, // max checked number of nodes
+      defaultProps: {
+        children: "children",
+        label: "label",
+      },
     };
   },
   mounted() {
@@ -195,23 +190,6 @@ export default {
     clearFirstParentNode(name) {
       let parentnode = this.getParentNodeByName(name);
       parentnode && this.remove(parentnode);
-    },
-
-    appendTreeNode() {
-      this.append(this.selectNode);
-    },
-    expandedNode(node) {
-      if (node && node.children && !node.expanded) {
-        let treeNode = this.$refs.tree.getNode(node.id);
-        if (treeNode) {
-          treeNode.expanded = true;
-          this.updataTreeNode({
-            id: node.id,
-            key: "expanded",
-            value: true,
-          });
-        }
-      }
     },
   },
 };
