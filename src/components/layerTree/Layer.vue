@@ -104,7 +104,8 @@ export default {
       } else {
         if (checked) {
           window.checked_id = data.id;
-          window.checked_name = data.name;
+          window.checked_name = data.label;
+          console.log(data);
         }
       }
     },

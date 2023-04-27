@@ -8,7 +8,8 @@ export default {
       }
       window.treeData.push({
         id: file.name,
-        name: file.name,
+        label: file.name,
+        disabled: true,
         children: [],
       });
       const reader = new FileReader();
@@ -25,7 +26,7 @@ export default {
           for (let i = 3; i < attributes.length; i++) {
             window.treeData[index].children.push({
               id: i + 2,
-              name: attributes[i],
+              label: attributes[i],
             });
           }
         }

@@ -64,7 +64,7 @@ export default {
       // add the NUS model to the treeData
       window.treeData.push({
         id: 1,
-        name: "NUS Building Model",
+        label: "NUS Building Model",
         disabled: true,
       });
       Bus.$emit("updateTreeData", window.treeData);
