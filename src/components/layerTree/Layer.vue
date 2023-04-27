@@ -79,11 +79,20 @@ export default {
     _treeTool = undefined;
   },
   methods: {
-    // update the tree data
+    /***
+     * @param {Object} data
+     * @description update the tree node
+     * @returns {void}
+     */
     updateTreeData(data) {
       this.treeData = data;
     },
-    // check the node
+    /***
+     * @param {Object} data
+     * @param {Boolean} checked
+     * @description check the node
+     * @returns {void}
+     */
     handleCheckChange(data, checked) {
       let num = this.$refs.tree.getCheckedNodes().length;
       if (num > this.maxChecked) {
@@ -100,15 +109,24 @@ export default {
         if (checked) {
           window.checked_id = data.id;
           window.checked_name = data.label;
-          console.log(data);
+          Bus.$emit("showAttribute", data.label, data.id);
+        } else {
+          Bus.$emit("closeAttribute", data.id);
         }
       }
     },
     // close the popup
+    /**
+     * @description close the popup
+     * @returns {void}
+     */
     close() {
       Bus.$emit("checkTab", "index/add/treeLayer", false);
     },
-    // init the Bus Event
+    /***
+     * @description init the Bus Event
+     * @returns {void}
+     */
     initBusEvent() {
       Bus.$off("clearFirstParentNode");
       Bus.$on("clearFirstParentNode", (parentName) => {
