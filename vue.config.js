@@ -40,7 +40,7 @@ module.exports = {
   css: {
     loaderOptions: {
       less: {
-        javascriptEnabled: true,
+        // javascriptEnabled: true,
       },
     },
   },
@@ -53,7 +53,7 @@ module.exports = {
     // 这里写你调用接口的基础路径，来解决跨域，如果设置了代理，那你本地开发环境的axios的baseUrl要写为 '' ，即空字符串
     proxy: "http://www.example.com/api",
     // Related: https://github.com/vuejs/vue-cli/issues/2051#issuecomment-449612956
-    disableHostCheck: true,
+    // disableHostCheck: true,
   },
 
   pluginOptions: {
