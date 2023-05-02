@@ -16,7 +16,8 @@
           :percentage="percentage"
           :color="colors"
           :format="format"
-        ></el-progress>
+        >
+        </el-progress>
       </div>
     </Popup>
   </div>
