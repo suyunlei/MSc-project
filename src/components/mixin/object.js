@@ -106,31 +106,31 @@ export default {
       this.processPart(partsToLoad[0]);
 
       // set the clock and get the attribute
-      window.viewer.clock.onTick.addEventListener(function (clock) {
-        if (window.czmlPath && window.checked_name) {
-          const properties = window.czmlPath[1].properties;
-          const name = window.checked_name;
-          // get the start time of the CZML
-          let startTime = Cesium.JulianDate.fromIso8601(properties.epoch);
-          let interval = Cesium.JulianDate.secondsDifference(
-            clock.currentTime,
-            startTime
-          );
-          // get the attribute value according to the time interval
-          for (let i = 0; i < properties[name].number.length; i++) {
-            if (properties[name].number.indexOf(parseInt(interval)) !== -1) {
-              let timeIndex = properties[name].number.indexOf(
-                parseInt(interval)
-              );
-              // value is followed by the time interval in the CZML
-              let value = properties[name].number[timeIndex + 1];
-              window.thermal_value = value;
-              // let the attribute table change
-              Bus.$emit("change");
-            }
-          }
-        }
-      });
+      // window.viewer.clock.onTick.addEventListener(function (clock) {
+      //   if (window.czmlPath && window.checked_name) {
+      //     const properties = window.czmlPath[1].properties;
+      //     const name = window.checked_name;
+      //     // get the start time of the CZML
+      //     let startTime = Cesium.JulianDate.fromIso8601(properties.epoch);
+      //     let interval = Cesium.JulianDate.secondsDifference(
+      //       clock.currentTime,
+      //       startTime
+      //     );
+      //     // get the attribute value according to the time interval
+      //     for (let i = 0; i < properties[name].number.length; i++) {
+      //       if (properties[name].number.indexOf(parseInt(interval)) !== -1) {
+      //         let timeIndex = properties[name].number.indexOf(
+      //           parseInt(interval)
+      //         );
+      //         // value is followed by the time interval in the CZML
+      //         let value = properties[name].number[timeIndex + 1];
+      //         window.thermal_value = value;
+      //         // let the attribute table change
+      //         Bus.$emit("change");
+      //       }
+      //     }
+      //   }
+      // });
     },
     processPart(part) {
       part.requested = true;

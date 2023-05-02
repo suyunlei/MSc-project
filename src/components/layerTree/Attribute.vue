@@ -37,6 +37,7 @@ export default {
     return {
       PopupData: [],
       percentage: 0,
+      thermal_value: 0,
       colors: [
         { color: "#f56c6c", percentage: 20 },
         { color: "#e6a23c", percentage: 40 },
@@ -71,15 +72,45 @@ export default {
      * @param {*} value
      * @param {*} style
      */
-    open(title, value) {
+    open(title, fid) {
       this.PopupData.push({
         id: this.createRandomId(),
         title,
-        value, // this value match the data(checked) id
+        fid, // this value match the data(checked) id
+      });
+      // set the clock and get the attribute
+      window.viewer.clock.onTick.addEventListener((clock) => {
+        if (window.czmlPath && title) {
+          const properties = window.czmlPath[1].properties;
+          const name = title;
+          // get the start time of the CZML
+          let startTime = Cesium.JulianDate.fromIso8601(properties.epoch);
+          let interval = Cesium.JulianDate.secondsDifference(
+            clock.currentTime,
+            startTime
+          );
+          // get the attribute value according to the time interval
+          for (let i = 0; i < properties[name].number.length; i++) {
+            if (properties[name].number.indexOf(parseInt(interval)) !== -1) {
+              let timeIndex = properties[name].number.indexOf(
+                parseInt(interval)
+              );
+              // value is followed by the time interval in the CZML
+              let value = properties[name].number[timeIndex + 1];
+              if (value) {
+                this.thermal_value = value;
+              }
+              // let the attribute table change
+              // Bus.$emit("change");
+              this.change();
+            }
+          }
+        }
       });
       let index = this.PopupData.length - 1;
       this.$nextTick(() => {
         this.$refs.pop[index].open();
+        console.log(this.$refs.pop);
       });
       return this.PopupData[index];
     },
@@ -91,15 +122,18 @@ export default {
      */
     close(value) {
       // if this.PopupDatd doesn't have the item with value, return
-      if (!this.PopupData.some((item) => item.value === value)) {
+      if (!this.PopupData.some((item) => item.fid === value)) {
         return;
       } else {
         let index = this.PopupData.findIndex((item) => {
-          return item.value === value;
+          return item.fid === value;
         });
+
         let data = this.PopupData.splice(index, 1)[0];
         data.close && data.close();
       }
+      this.thermal_value = 0;
+      window.viewer.trackedEntity = undefined;
     },
     /**
      * @description: create a random id
@@ -121,12 +155,14 @@ export default {
      * @return {void}
      */
     change() {
-      this.title = window.checked_name;
-      let true_val = window.thermal_value;
-      if (true_val > 100) {
-        this.percentage = 100;
-      }
-      this.percentage = window.thermal_value;
+      let true_val = this.thermal_value;
+      this.percentage = true_val;
+
+      // if (true_val > 100) {
+      //   this.percentage = 100;
+      // } else {
+      //   this.percentage = this.thermal_value;
+      // }
       this.colors = [
         { color: "#f56c6c", percentage: 20 },
         { color: "#e6a23c", percentage: 40 },

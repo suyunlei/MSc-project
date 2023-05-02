@@ -95,6 +95,8 @@ export default {
      */
     handleCheckChange(data, checked) {
       let num = this.$refs.tree.getCheckedNodes().length;
+      // store the checked nodes
+      window.checkedNodes = this.$refs.tree.getCheckedNodes();
       if (num > this.maxChecked) {
         // cancel the last checked node
         this.$refs.tree.setChecked(
@@ -107,8 +109,8 @@ export default {
         });
       } else {
         if (checked) {
-          window.checked_id = data.id;
-          window.checked_name = data.label;
+          // window.checked_id = data.id;
+          // window.checked_name = data.label;
           Bus.$emit("showAttribute", data.label, data.id);
         } else {
           Bus.$emit("closeAttribute", data.id);

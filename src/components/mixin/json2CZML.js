@@ -72,7 +72,7 @@ export default {
                 },
               ],
               style: "FILL",
-              text: "Participant",
+              text: "Person",
               verticalOrigin: "CENTER",
             },
             model: {

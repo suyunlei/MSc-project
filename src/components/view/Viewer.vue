@@ -1,7 +1,7 @@
 <template>
   <div id="cesiumContainer">
     <Layer />
-    <Attribute />
+    <Attribute ref="attribute_table" v-for="" />
     <Perspective />
   </div>
 </template>
