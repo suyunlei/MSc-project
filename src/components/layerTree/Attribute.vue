@@ -104,7 +104,7 @@ export default {
         legend: {},
         xAxis: {
           type: "category",
-          data: time, // 把时间组成的数组接过来，放在x轴上
+          data: time,
           boundaryGap: true,
         },
         yAxis: {
