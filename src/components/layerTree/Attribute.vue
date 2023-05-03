@@ -5,12 +5,12 @@
       v-for="(data, index) in PopupData"
       :key="data.id"
       :title="data.title || 'Attribute'"
-      left="calc(100% - 300px)"
+      left="calc(100% - 600px)"
       :top="300 + index * 200 + 'px'"
-      width="200px"
+      width="500px"
       @close="close(data.id)"
     >
-      <div class="attributeContainer">
+      <div class="attributeContainer" v-if="Show">
         <el-progress
           type="dashboard"
           :percentage="percentage"
@@ -18,6 +18,7 @@
           :format="format"
         >
         </el-progress>
+        <div id="chart" style="height: 300px" ref="chart"></div>
       </div>
     </Popup>
   </div>
@@ -26,6 +27,7 @@
 <script>
 import Bus from "@tools/Bus";
 import Popup from "@tools/Popup";
+import * as echarts from "echarts";
 
 export default {
   name: "Attribute",
@@ -38,6 +40,10 @@ export default {
       PopupData: [],
       percentage: 0,
       thermal_value: 0,
+      thermal_array: [],
+      title: "",
+      time: [],
+      Show: true,
       colors: [
         { color: "#f56c6c", percentage: 20 },
         { color: "#e6a23c", percentage: 40 },
@@ -49,7 +55,9 @@ export default {
   },
   mounted() {
     // this.$refs.pop.open();
-    this.init();
+    this.$nextTick(() => {
+      this.init();
+    });
   },
   methods: {
     /**
@@ -66,6 +74,89 @@ export default {
       Bus.$off("closeAttribute");
       Bus.$on("closeAttribute", this.close);
     },
+
+    /**
+     * @description: initChart
+     * @param {*}
+     */
+    initChart() {
+      var myChart = echarts.init(document.getElementById("chart"), "dark");
+
+      const time = this.time;
+      const dataOne = this.thermal_array;
+
+      let options = {
+        title: {
+          text: this.title,
+          textStyle: {
+            color: "white",
+          },
+        },
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "cross",
+            label: {
+              backgroundColor: "#283b56",
+            },
+          },
+        },
+        legend: {},
+        xAxis: {
+          type: "category",
+          data: time, // 把时间组成的数组接过来，放在x轴上
+          boundaryGap: true,
+        },
+        yAxis: {
+          type: "value",
+          max: 120,
+          min: 40,
+          interval: 10,
+        },
+        series: [
+          {
+            data: dataOne,
+            type: "line",
+            name: this.title,
+            // markPoint: {
+            //   data: [
+            //     { type: "max", name: "MaxValue" },
+            //     { type: "min", name: "MinValue" },
+            //   ],
+            // },
+            markLine: {
+              data: [{ type: "average", name: "AvgValue" }],
+            },
+          },
+        ],
+      };
+      setInterval(() => {
+        // time.shift();
+        if (window.CZMLDataSource.entities.getById("Person")) {
+          if (window.viewer.clock.currentTime) {
+            time.push(window.viewer.clock.currentTime.toString());
+          }
+          // dataOne.shift();
+          if (this.thermal_value) {
+            dataOne.push(this.thermal_value);
+          }
+        }
+
+        myChart.setOption({
+          xAxis: [
+            {
+              data: time,
+            },
+          ],
+          series: [
+            {
+              data: dataOne,
+            },
+          ],
+        });
+      }, 1);
+      myChart.setOption(options);
+    },
     /**
      *
      * @param {string} title
@@ -73,6 +164,8 @@ export default {
      * @param {*} style
      */
     open(title, fid) {
+      this.title = title;
+
       this.PopupData.push({
         id: this.createRandomId(),
         title,
@@ -80,9 +173,14 @@ export default {
       });
       // set the clock and get the attribute
       window.viewer.clock.onTick.addEventListener((clock) => {
+        if (!window.CZMLDataSource.entities.getById("Person")) {
+          this.Show = false;
+          Cesium.Event.RemoveCallback();
+        }
         if (window.czmlPath && title) {
           const properties = window.czmlPath[1].properties;
           const name = title;
+          this.time.push(clock.currentTime.toString());
           // get the start time of the CZML
           let startTime = Cesium.JulianDate.fromIso8601(properties.epoch);
           let interval = Cesium.JulianDate.secondsDifference(
@@ -99,6 +197,7 @@ export default {
               let value = properties[name].number[timeIndex + 1];
               if (value) {
                 this.thermal_value = value;
+                this.thermal_array.push(value);
               }
               // let the attribute table change
               // Bus.$emit("change");
@@ -107,10 +206,13 @@ export default {
           }
         }
       });
+
+      setTimeout(() => {
+        this.initChart();
+      }, 1);
       let index = this.PopupData.length - 1;
       this.$nextTick(() => {
         this.$refs.pop[index].open();
-        console.log(this.$refs.pop);
       });
       return this.PopupData[index];
     },
@@ -184,6 +286,9 @@ export default {
 </script>
 
 <style scoped lang="less">
+.chart {
+  height: 400px;
+}
 .el-progress {
   margin-top: 20px;
   margin-left: 30px;
