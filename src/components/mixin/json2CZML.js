@@ -37,7 +37,10 @@ export default {
         }
 
         // init the vehicle model
-        let vehicleEntity = await Cesium.IonResource.fromAssetId(1669983);
+        // 1679941
+        // let vehicleEntity = await Cesium.IonResource.fromAssetId(1669983); // Cesium Man
+        let vehicleEntity = await Cesium.IonResource.fromAssetId(1679969);
+
         window.vehicleEntity = vehicleEntity;
         // init a CZML file
         const czmlPath = [

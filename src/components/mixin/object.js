@@ -147,7 +147,8 @@ export default {
     // still not working
     addGeoJSON() {
       const tileset = new Cesium.Cesium3DTileset({
-        url: Cesium.IonResource.fromAssetId(1606578),
+        url: Cesium.IonResource.fromAssetId(1679941),
+        // url: Cesium.IonResource.fromAssetId(1606578),
       });
       tileset.readyPromise.then((tileset) => {
         window.viewer.scene.primitives.add(tileset);
