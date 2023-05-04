@@ -16,6 +16,7 @@
           :percentage="percentage"
           :color="colors"
           :format="format"
+          v-show="false"
         >
         </el-progress>
         <div id="chart" style="height: 300px" ref="chart"></div>
@@ -40,7 +41,6 @@ export default {
       PopupData: [],
       percentage: 0,
       thermal_value: 0,
-      thermal_array: [],
       title: "",
       time: [],
       Show: true,
@@ -83,7 +83,7 @@ export default {
       var myChart = echarts.init(document.getElementById("chart"), "dark");
 
       const time = this.time;
-      const dataOne = this.thermal_array;
+      const dataOne = [];
 
       let options = {
         title: {
@@ -130,30 +130,42 @@ export default {
           },
         ],
       };
-      setInterval(() => {
-        // time.shift();
-        if (window.CZMLDataSource.entities.getById("Person")) {
-          if (window.viewer.clock.currentTime) {
-            time.push(window.viewer.clock.currentTime.toString());
+      let stopTime = window.CZMLDataSource.entities.values[0].availability.stop;
+      let chartInterval = setInterval(() => {
+        // If we're past the stop time, remove the CZML data source and stop the interval.
+        // IDK why its not working
+        if (
+          Cesium.JulianDate.greaterThan(
+            window.viewer.clock.currentTime,
+            stopTime
+          )
+        ) {
+          console.log("CZML done！");
+          window.viewer.dataSources.remove(window.CZMLDataSource);
+          clearInterval(chartInterval);
+        } else {
+          if (window.CZMLDataSource.entities.getById("Person")) {
+            if (window.viewer.clock.currentTime) {
+              time.push(window.viewer.clock.currentTime.toString());
+            }
+            // dataOne.shift();
+            if (this.thermal_value) {
+              dataOne.push(this.thermal_value);
+            }
           }
-          // dataOne.shift();
-          if (this.thermal_value) {
-            dataOne.push(this.thermal_value);
-          }
+          myChart.setOption({
+            xAxis: [
+              {
+                data: time,
+              },
+            ],
+            series: [
+              {
+                data: dataOne,
+              },
+            ],
+          });
         }
-
-        myChart.setOption({
-          xAxis: [
-            {
-              data: time,
-            },
-          ],
-          series: [
-            {
-              data: dataOne,
-            },
-          ],
-        });
       }, 1);
       myChart.setOption(options);
     },
@@ -165,56 +177,63 @@ export default {
      */
     open(title, fid) {
       this.title = title;
-
       this.PopupData.push({
         id: this.createRandomId(),
         title,
         fid, // this value match the data(checked) id
       });
-      // set the clock and get the attribute
-      window.viewer.clock.onTick.addEventListener((clock) => {
-        if (!window.CZMLDataSource.entities.getById("Person")) {
-          this.Show = false;
-          Cesium.Event.RemoveCallback();
-        }
-        if (window.czmlPath && title) {
-          const properties = window.czmlPath[1].properties;
-          const name = title;
-          this.time.push(clock.currentTime.toString());
-          // get the start time of the CZML
-          let startTime = Cesium.JulianDate.fromIso8601(properties.epoch);
-          let interval = Cesium.JulianDate.secondsDifference(
-            clock.currentTime,
-            startTime
-          );
-          // get the attribute value according to the time interval
-          for (let i = 0; i < properties[name].number.length; i++) {
-            if (properties[name].number.indexOf(parseInt(interval)) !== -1) {
-              let timeIndex = properties[name].number.indexOf(
-                parseInt(interval)
-              );
-              // value is followed by the time interval in the CZML
-              let value = properties[name].number[timeIndex + 1];
-              if (value) {
-                this.thermal_value = value;
-                this.thermal_array.push(value);
+
+      if (!window.CZMLDataSource.entities.getById("Person")) {
+        this.$message({
+          message: `Please Load the CZML file first!`,
+          type: "warning",
+        });
+      } else {
+        // set the clock and get the attribute
+        window.viewer.clock.onTick.addEventListener((clock) => {
+          window.viewer.clock.currentTime.toString();
+          if (!window.CZMLDataSource.entities.getById("Person")) {
+            this.Show = false;
+            Cesium.Event.RemoveCallback();
+          }
+          if (window.czmlPath && title) {
+            const properties = window.czmlPath[1].properties;
+            const name = title;
+            this.time.push(clock.currentTime.toString());
+            // get the start time of the CZML
+            let startTime = Cesium.JulianDate.fromIso8601(properties.epoch);
+            let interval = Cesium.JulianDate.secondsDifference(
+              clock.currentTime,
+              startTime
+            );
+            // get the attribute value according to the time interval
+            for (let i = 0; i < properties[name].number.length; i++) {
+              if (properties[name].number.indexOf(parseInt(interval)) !== -1) {
+                let timeIndex = properties[name].number.indexOf(
+                  parseInt(interval)
+                );
+                // value is followed by the time interval in the CZML
+                let value = properties[name].number[timeIndex + 1];
+                if (value) {
+                  this.thermal_value = value;
+                }
+                // let the attribute table change
+                // Bus.$emit("change");
+                this.change();
               }
-              // let the attribute table change
-              // Bus.$emit("change");
-              this.change();
             }
           }
-        }
-      });
+        });
 
-      setTimeout(() => {
-        this.initChart();
-      }, 1);
-      let index = this.PopupData.length - 1;
-      this.$nextTick(() => {
-        this.$refs.pop[index].open();
-      });
-      return this.PopupData[index];
+        setTimeout(() => {
+          this.initChart();
+        }, 10);
+        let index = this.PopupData.length - 1;
+        this.$nextTick(() => {
+          this.$refs.pop[index].open();
+        });
+        return this.PopupData[index];
+      }
     },
 
     /**

@@ -51,7 +51,7 @@ export default {
           },
           {
             id: "Person",
-            availability: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
+            availability: "2012-08-04T10:00:00Z/2012-08-04T12:25:00Z",
             label: {
               fillColor: [
                 {

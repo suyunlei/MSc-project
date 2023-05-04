@@ -97,6 +97,7 @@ export default {
       let num = this.$refs.tree.getCheckedNodes().length;
       // store the checked nodes
       window.attributeArray = this.$refs.tree.getCheckedNodes();
+      console.log(window.attributeArray);
       if (num > this.maxChecked) {
         // cancel the last checked node
         this.$refs.tree.setChecked(

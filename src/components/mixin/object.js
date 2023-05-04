@@ -83,13 +83,13 @@ export default {
       window.viewer.clock.startTime = Cesium.JulianDate.fromIso8601(
         "2012-08-04T16:00:00Z"
       );
-      window.viewer.clock.stopTime = Cesium.JulianDate.fromIso8601(
-        "2012-08-04T16:30:00Z"
-      );
+      // window.viewer.clock.stopTime = Cesium.JulianDate.fromIso8601(
+      //   "2012-08-04T16:30:00Z"
+      // );
       window.viewer.clock.currentTime = Cesium.JulianDate.fromIso8601(
         "2012-08-04T16:00:00Z"
       );
-      window.viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP; // loop at the end
+      // window.viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP; // loop at the end
       window.viewer.clock.multiplier = 0.1;
 
       // Add a blank CzmlDataSource to hold our multi-part entity/entities.
@@ -98,7 +98,7 @@ export default {
       window.CZMLDataSource = dataSource;
       const partsToLoad = [
         {
-          range: [0, 1200],
+          // range: [0, 1200],
           requested: false,
           loaded: false,
         },
@@ -135,7 +135,6 @@ export default {
     processPart(part) {
       part.requested = true;
       window.CZMLDataSource.process(window.czmlPath).then(function () {
-        console.log(window.czmlPath);
         part.loaded = true;
         // Follow the vehicle with the camera. something to fix
         if (!window.viewer.trackedEntity) {
