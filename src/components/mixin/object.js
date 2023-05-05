@@ -134,12 +134,12 @@ export default {
     },
     processPart(part) {
       part.requested = true;
-      window.CZMLDataSource.process(window.czmlPath).then(function () {
+      window.CZMLDataSource.process(window.czmlPath).then(function (ds) {
         part.loaded = true;
+        // let person = ds.entities.getById("Person").model;
         // Follow the vehicle with the camera. something to fix
         if (!window.viewer.trackedEntity) {
-          window.viewer.trackedEntity =
-            window.CZMLDataSource.entities.getById("Person");
+          window.viewer.trackedEntity = ds.entities.getById("Person");
         }
       });
     },

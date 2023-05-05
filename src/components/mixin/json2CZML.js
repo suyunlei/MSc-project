@@ -36,10 +36,33 @@ export default {
           data[i].time = parseFloat(i * 100);
         }
 
+        // get the total time interval
+        // let totalTime = 0;
+        // for (let i = 0; i < data.length; i++) {
+        //   totalTime += data[i].time;
+        // }
+
         // init the vehicle model
-        // 1679941
-        // let vehicleEntity = await Cesium.IonResource.fromAssetId(1669983); // Cesium Man
-        let vehicleEntity = await Cesium.IonResource.fromAssetId(1679969);
+        let vehicleEntity = await Cesium.IonResource.fromAssetId(1669983); // Cesium Man
+        // let vehicleEntity = await Cesium.IonResource.fromAssetId(1681154);
+
+        // not working
+        // let animations;
+
+        // const model = await Cesium.Model.fromGltfAsync({
+        //   url: vehicleEntity.url,
+        //   gltfCallback: (gltf) => {
+        //     animations = gltf.animations;
+        //   },
+        // });
+        // window.viewer.scene.primitives.add(model);
+        // model.readyEvent.addEventListener(() => {
+        //   model.activeAnimations.add({
+        //     index: animations.length - 1,
+        //     loop: Cesium.ModelAnimationLoop.REPEAT,
+        //     multiplier: 0.1,
+        //   });
+        // });
 
         window.vehicleEntity = vehicleEntity;
         // init a CZML file
@@ -51,11 +74,10 @@ export default {
           },
           {
             id: "Person",
-            availability: "2012-08-04T10:00:00Z/2012-08-04T12:25:00Z",
+            availability: "2012-08-04T10:00:00Z/2012-08-04T12:21:40Z",
             label: {
               fillColor: [
                 {
-                  interval: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
                   rgba: [166, 30, 77, 255],
                 },
               ],
@@ -70,7 +92,6 @@ export default {
               scale: 1.0,
               show: [
                 {
-                  interval: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
                   boolean: true,
                 },
               ],
@@ -80,8 +101,9 @@ export default {
             },
             model: {
               gltf: vehicleEntity,
-              minimumPixelSize: 100,
-              maximumScale: 50,
+              minimumPixelSize: 200,
+              maximumScale: 20,
+              // animationSpeed: 0.1,
             },
             orientation: {
               velocityReference: "#position",
@@ -102,20 +124,17 @@ export default {
               material: {
                 solidColor: {
                   color: {
-                    interval: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
                     rgba: [166, 30, 77, 255],
                   },
                 },
               },
               width: [
                 {
-                  interval: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
                   number: 5.0,
                 },
               ],
               show: [
                 {
-                  interval: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
                   boolean: true,
                 },
               ],
