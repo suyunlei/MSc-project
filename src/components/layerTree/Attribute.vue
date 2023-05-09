@@ -193,6 +193,7 @@ export default {
             this.Show = false;
             Cesium.Event.RemoveCallback();
           }
+
           if (window.czmlPath && title) {
             const properties = window.czmlPath[1].properties;
             const name = title;
@@ -219,19 +220,22 @@ export default {
               }
             }
           }
-          // not working
+
           // If the current time is equal to the stopTime, clear the timer and remove the onTick event
+          let endTime = new Cesium.JulianDate.fromIso8601(
+            "2012-08-04T12:15:35.000Z"
+          );
           if (
-            Cesium.JulianDate.equals(
+            Cesium.JulianDate.greaterThan(
               window.viewer.clock.currentTime,
-              window.viewer.clock.stopTime
+              endTime
             )
           ) {
-            debugger;
             // If we're past the stop time, remove the CZML data source and stop the interval.
             window.viewer.dataSources.remove(window.CZMLDataSource);
             clearInterval(window.chartInterval);
             window.viewer.clock.onTick.removeEventListener();
+            console.log("done");
           }
         });
 
