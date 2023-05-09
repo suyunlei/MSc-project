@@ -81,21 +81,25 @@ export default {
       }
       // set the Cesium Clock time to match the CZML data time interval
       window.viewer.clock.startTime = Cesium.JulianDate.fromIso8601(
-        "2012-08-04T16:00:00Z"
+        "2012-08-04T10:00:00Z"
       );
-      // window.viewer.clock.stopTime = Cesium.JulianDate.fromIso8601(
-      //   "2012-08-04T16:30:00Z"
-      // );
+
+      window.viewer.clock.stopTime = Cesium.JulianDate.fromIso8601(
+        "2012-08-04T12:15:40Z"
+      );
+
       window.viewer.clock.currentTime = Cesium.JulianDate.fromIso8601(
-        "2012-08-04T16:00:00Z"
+        "2012-08-04T10:00:00Z"
       );
-      // window.viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP; // loop at the end
-      window.viewer.clock.multiplier = 0.1;
+
+      window.viewer.clock.clockRange = Cesium.ClockRange.CLAMPED; // Stop at the end
+      // window.viewer.clock.multiplier = 0.1;
 
       // Add a blank CzmlDataSource to hold our multi-part entity/entities.
       const dataSource = new Cesium.CzmlDataSource();
       window.viewer.dataSources.add(dataSource);
       window.CZMLDataSource = dataSource;
+
       const partsToLoad = [
         {
           // range: [0, 1200],
@@ -137,7 +141,11 @@ export default {
       window.CZMLDataSource.process(window.czmlPath).then(function (ds) {
         part.loaded = true;
         // let person = ds.entities.getById("Person").model;
-        // Follow the vehicle with the camera. something to fix
+
+        // cancel the loop of the CZML
+        // let loopProperty = ds.clock.multiplier;
+        // loopProperty.set(false);
+
         if (!window.viewer.trackedEntity) {
           window.viewer.trackedEntity = ds.entities.getById("Person");
         }

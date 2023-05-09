@@ -36,12 +36,6 @@ export default {
           data[i].time = parseFloat(i * 100);
         }
 
-        // get the total time interval
-        // let totalTime = 0;
-        // for (let i = 0; i < data.length; i++) {
-        //   totalTime += data[i].time;
-        // }
-
         // init the vehicle model
         let vehicleEntity = await Cesium.IonResource.fromAssetId(1669983); // Cesium Man
         // let vehicleEntity = await Cesium.IonResource.fromAssetId(1681154);
@@ -74,7 +68,12 @@ export default {
           },
           {
             id: "Person",
-            availability: "2012-08-04T10:00:00Z/2012-08-04T12:21:40Z",
+            availability: "2012-08-04T10:00:00Z/2012-08-04T12:15:40Z",
+            clock: {
+              interval: "2012-08-04T10:00:00Z/2012-08-04T12:15:40Z",
+              currentTime: "2012-08-04T10:00:00Z",
+              range: "CLAMPED",
+            },
             label: {
               fillColor: [
                 {

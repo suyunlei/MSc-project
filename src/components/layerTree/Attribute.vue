@@ -42,7 +42,6 @@ export default {
       percentage: 0,
       thermal_value: 0,
       title: "",
-      time: [],
       Show: true,
       colors: [
         { color: "#f56c6c", percentage: 20 },
@@ -82,7 +81,7 @@ export default {
     initChart() {
       var myChart = echarts.init(document.getElementById("chart"), "dark");
 
-      const time = this.time;
+      const time = [];
       const dataOne = [];
 
       let options = {
@@ -107,12 +106,6 @@ export default {
           data: time,
           boundaryGap: true,
         },
-        yAxis: {
-          type: "value",
-          max: 120,
-          min: 40,
-          interval: 10,
-        },
         series: [
           {
             data: dataOne,
@@ -130,43 +123,48 @@ export default {
           },
         ],
       };
-      let stopTime = window.CZMLDataSource.entities.values[0].availability.stop;
-      let chartInterval = setInterval(() => {
-        // If we're past the stop time, remove the CZML data source and stop the interval.
-        // IDK why its not working
-        if (
-          Cesium.JulianDate.greaterThan(
-            window.viewer.clock.currentTime,
-            stopTime
-          )
-        ) {
-          console.log("CZML done！");
-          window.viewer.dataSources.remove(window.CZMLDataSource);
-          clearInterval(chartInterval);
-        } else {
-          if (window.CZMLDataSource.entities.getById("Person")) {
-            if (window.viewer.clock.currentTime) {
-              time.push(window.viewer.clock.currentTime.toString());
-            }
-            // dataOne.shift();
-            if (this.thermal_value) {
-              dataOne.push(this.thermal_value);
-            }
+
+      // change the y axis according to the title
+      if (this.title === "Heart Rate") {
+        options.yAxis = {
+          type: "value",
+          max: 150,
+          min: 80,
+          interval: 10,
+        };
+      } else if (this.title === "Noise") {
+        options.yAxis = {
+          type: "value",
+          max: 80,
+          min: 40,
+          interval: 10,
+        };
+      }
+
+      window.chartInterval = setInterval(() => {
+        if (window.CZMLDataSource.entities.getById("Person")) {
+          let string = window.viewer.clock.currentTime.toString();
+          let timeValue = string.substring(11, 19);
+          if (this.thermal_value) {
+            time.push(timeValue);
+            dataOne.push(this.thermal_value);
           }
-          myChart.setOption({
-            xAxis: [
-              {
-                data: time,
-              },
-            ],
-            series: [
-              {
-                data: dataOne,
-              },
-            ],
-          });
+
+          // dataOne.shift();
         }
-      }, 1);
+        myChart.setOption({
+          xAxis: [
+            {
+              data: time,
+            },
+          ],
+          series: [
+            {
+              data: dataOne,
+            },
+          ],
+        });
+      }, 1000);
       myChart.setOption(options);
     },
     /**
@@ -191,7 +189,6 @@ export default {
       } else {
         // set the clock and get the attribute
         window.viewer.clock.onTick.addEventListener((clock) => {
-          window.viewer.clock.currentTime.toString();
           if (!window.CZMLDataSource.entities.getById("Person")) {
             this.Show = false;
             Cesium.Event.RemoveCallback();
@@ -199,7 +196,6 @@ export default {
           if (window.czmlPath && title) {
             const properties = window.czmlPath[1].properties;
             const name = title;
-            this.time.push(clock.currentTime.toString());
             // get the start time of the CZML
             let startTime = Cesium.JulianDate.fromIso8601(properties.epoch);
             let interval = Cesium.JulianDate.secondsDifference(
@@ -219,19 +215,33 @@ export default {
                 }
                 // let the attribute table change
                 // Bus.$emit("change");
-                this.change();
+                // this.change();
               }
             }
+          }
+          // 如果当前时间等于stopTime，清除定时器,并且remove掉onTick事件
+          if (
+            Cesium.JulianDate.equals(
+              window.viewer.clock.currentTime,
+              window.viewer.clock.stopTime
+            )
+          ) {
+            debugger;
+            // If we're past the stop time, remove the CZML data source and stop the interval.
+            window.viewer.dataSources.remove(window.CZMLDataSource);
+            clearInterval(window.chartInterval);
+            window.viewer.clock.onTick.removeEventListener();
           }
         });
 
         setTimeout(() => {
           this.initChart();
-        }, 10);
+        }, 1000);
         let index = this.PopupData.length - 1;
         this.$nextTick(() => {
           this.$refs.pop[index].open();
         });
+
         return this.PopupData[index];
       }
     },
