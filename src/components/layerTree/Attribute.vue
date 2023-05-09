@@ -219,7 +219,8 @@ export default {
               }
             }
           }
-          // 如果当前时间等于stopTime，清除定时器,并且remove掉onTick事件
+          // not working
+          // If the current time is equal to the stopTime, clear the timer and remove the onTick event
           if (
             Cesium.JulianDate.equals(
               window.viewer.clock.currentTime,
@@ -236,7 +237,7 @@ export default {
 
         setTimeout(() => {
           this.initChart();
-        }, 1000);
+        }, 100);
         let index = this.PopupData.length - 1;
         this.$nextTick(() => {
           this.$refs.pop[index].open();
