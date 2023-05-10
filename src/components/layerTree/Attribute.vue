@@ -269,7 +269,7 @@ export default {
         data.close && data.close();
 
         this.thermal_value = 0;
-
+        // uncheck the node in the layer tree
         Bus.$emit("unsetChecked", data);
         window.viewer.trackedEntity = undefined;
       }

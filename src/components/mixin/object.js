@@ -145,7 +145,7 @@ export default {
         // cancel the loop of the CZML
         // let loopProperty = ds.clock.multiplier;
         // loopProperty.set(false);
-
+        Bus.$emit("openPerspective");
         if (!window.viewer.trackedEntity) {
           window.viewer.trackedEntity = ds.entities.getById("Person");
         }

@@ -1,13 +1,13 @@
 <template>
   <div>
     <Popup
-      ref="perspective"
+      ref="popup"
       :title="title"
       left="calc(80% - 200px)"
       top="5%"
       @close="close"
     >
-      <div class="perspectiveContainer">
+      <div class="perspectiveContainer" v-if="show">
         <el-row>
           <el-button type="primary" plain @click="ToGod">
             God Perspective
@@ -34,24 +34,30 @@ export default {
   data() {
     return {
       title: "Perspective",
+      show: false,
     };
   },
   mounted() {
-    this.$refs.perspective.open();
-    this.init();
+    this.$nextTick(() => {
+      this.initBusEvent();
+    });
   },
   methods: {
-    init() {
+    initBusEvent() {
       // Bus.$off("togod");
       // Bus.$on("togod", this.ToGod);
       // Bus.$off("tofirstperson");
       // Bus.$on("tofirstperson", this.ToFirstPerson);
+      Bus.$off("openPerspective");
+      Bus.$on("openPerspective", this.open);
     },
     open() {
-      this.$refs.perspective.open();
+      this.$refs.popup.open();
+      this.show = true;
+      // debugger;
     },
     close() {
-      this.$refs.perspective.close();
+      // this.$refs.popup.close();
     },
     // God Perspective
     ToGod() {
