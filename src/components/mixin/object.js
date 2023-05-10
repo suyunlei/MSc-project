@@ -28,7 +28,10 @@ export default {
       );
       window.tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
     },
-    // load the NUS building model (3D Tiles, not cloud point model)
+    /**
+     * load the NUS model
+     * @returns {void}
+     */
     loadNUS() {
       console.log("start load NUS model");
       const tileset = new Cesium.Cesium3DTileset({
@@ -51,7 +54,6 @@ export default {
       window.tileset.readyPromise.then((tileset) => {
         // this.changeHeight(-120);
         window.viewer.scene.primitives.add(tileset);
-        console.log(tileset);
         window.viewer.zoomTo(
           tileset,
           new Cesium.HeadingPitchRange(
@@ -69,7 +71,9 @@ export default {
       });
       Bus.$emit("updateTreeData", window.treeData);
     },
-    // add a CZML
+    /**
+     * load the thermal comfort data (CZML file)
+     */
     addCZML() {
       // force the user to select a file
       if (!window.czmlPath) {
@@ -79,10 +83,10 @@ export default {
           duration: 2000,
         });
       }
-      // set the Cesium Clock time to match the CZML data time interval
+
       window.viewer.clock.startTime = Cesium.JulianDate.fromIso8601(
         "2012-08-04T10:00:00Z"
-      );
+      ); // set the Cesium Clock time to match the CZML data time interval
 
       window.viewer.clock.stopTime = Cesium.JulianDate.fromIso8601(
         "2012-08-04T12:15:40Z"
@@ -95,8 +99,7 @@ export default {
       window.viewer.clock.clockRange = Cesium.ClockRange.CLAMPED; // Stop at the end
       // window.viewer.clock.multiplier = 0.1;
 
-      // Add a blank CzmlDataSource to hold our multi-part entity/entities.
-      const dataSource = new Cesium.CzmlDataSource();
+      const dataSource = new Cesium.CzmlDataSource(); // Add a blank CzmlDataSource to hold our multi-part entity/entities.
       window.viewer.dataSources.add(dataSource);
       window.CZMLDataSource = dataSource;
 
@@ -107,51 +110,23 @@ export default {
           loaded: false,
         },
       ];
-      this.processPart(partsToLoad[0]);
-
-      // set the clock and get the attribute
-      // window.viewer.clock.onTick.addEventListener(function (clock) {
-      //   if (window.czmlPath && window.checked_name) {
-      //     const properties = window.czmlPath[1].properties;
-      //     const name = window.checked_name;
-      //     // get the start time of the CZML
-      //     let startTime = Cesium.JulianDate.fromIso8601(properties.epoch);
-      //     let interval = Cesium.JulianDate.secondsDifference(
-      //       clock.currentTime,
-      //       startTime
-      //     );
-      //     // get the attribute value according to the time interval
-      //     for (let i = 0; i < properties[name].number.length; i++) {
-      //       if (properties[name].number.indexOf(parseInt(interval)) !== -1) {
-      //         let timeIndex = properties[name].number.indexOf(
-      //           parseInt(interval)
-      //         );
-      //         // value is followed by the time interval in the CZML
-      //         let value = properties[name].number[timeIndex + 1];
-      //         window.thermal_value = value;
-      //         // let the attribute table change
-      //         Bus.$emit("change");
-      //       }
-      //     }
-      //   }
-      // });
+      this.processPart(partsToLoad[0]); // process the first part
     },
+    /**
+     * process the CZML file
+     * @param {Object} part - the CZML file
+     */
     processPart(part) {
       part.requested = true;
       window.CZMLDataSource.process(window.czmlPath).then(function (ds) {
-        part.loaded = true;
-        // let person = ds.entities.getById("Person").model;
-
-        // cancel the loop of the CZML
-        // let loopProperty = ds.clock.multiplier;
-        // loopProperty.set(false);
-        Bus.$emit("openPerspective");
+        part.loaded = true; // mark this part as loaded
+        Bus.$emit("openPerspective"); // open the perspective table
         if (!window.viewer.trackedEntity) {
-          window.viewer.trackedEntity = ds.entities.getById("Person");
+          window.viewer.trackedEntity = ds.entities.getById("Person"); // track the person model
         }
       });
     },
-    // still not working
+    // under development
     addGeoJSON() {
       const tileset = new Cesium.Cesium3DTileset({
         url: Cesium.IonResource.fromAssetId(1679941),
@@ -162,7 +137,10 @@ export default {
         console.log(tileset);
       });
     },
-    // add animations to the building model
+    /**
+     * add the animation to the building model
+     * @returns {void}
+     */
     addAnimation() {
       const handler = new Cesium.ScreenSpaceEventHandler(
         window.viewer.scene.canvas

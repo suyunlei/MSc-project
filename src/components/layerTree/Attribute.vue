@@ -221,21 +221,23 @@ export default {
             }
           }
 
-          // If the current time is equal to the stopTime, clear the timer and remove the onTick event
           let endTime = new Cesium.JulianDate.fromIso8601(
-            "2012-08-04T12:15:35.000Z"
-          );
+            "2012-08-04T12:15:39.000Z"
+          ); // set a nearest end time
           if (
             Cesium.JulianDate.greaterThan(
               window.viewer.clock.currentTime,
               endTime
-            )
+            ) // if the current time is greater than the end time
           ) {
-            // If we're past the stop time, remove the CZML data source and stop the interval.
+            // remove the CZML data source and stop the interval.
             window.viewer.dataSources.remove(window.CZMLDataSource);
             clearInterval(window.chartInterval);
             window.viewer.clock.onTick.removeEventListener();
-            console.log("done");
+            this.$message({
+              message: `The animation is over!`,
+              type: "success",
+            });
           }
         });
 
