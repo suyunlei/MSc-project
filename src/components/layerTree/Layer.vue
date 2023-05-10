@@ -61,7 +61,7 @@ export default {
       defaultExpanded: [],
 
       treeData: [],
-      maxChecked: 3, // max checked number of nodes
+      maxChecked: 1, // max checked number of nodes
       defaultProps: {
         children: "children",
         label: "label",
@@ -145,8 +145,13 @@ export default {
       // uncheck the node
       Bus.$off("unsetChecked");
       Bus.$on("unsetChecked", (data) => {
-        // this.$refs.tree.setChecked(data.id, false);
         this.$refs.tree.setChecked(data.fid, false);
+      });
+
+      // clear the checked node
+      Bus.$off("clearCheckedNode");
+      Bus.$on("clearCheckedNode", () => {
+        this.$refs.tree.setCheckedKeys([]);
       });
     },
     // ergodic Node

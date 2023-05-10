@@ -3,12 +3,14 @@
     <Layer />
     <Attribute />
     <Perspective />
+    <finalChart />
   </div>
 </template>
 
 <script>
 import Layer from "../layerTree/Layer.vue";
 import Attribute from "../layerTree/Attribute.vue";
+import finalChart from "../layerTree/finalChart.vue";
 import Bus from "@tools/Bus";
 import object from "../mixin/object";
 import Perspective from "../adds_on/Perspective.vue";
@@ -20,6 +22,7 @@ export default {
     Bus,
     Attribute,
     Perspective,
+    finalChart,
   },
   data() {
     return {

@@ -10,7 +10,7 @@
       width="500px"
       @close="close(data.id)"
     >
-      <div class="attributeContainer" v-if="Show">
+      <div class="attributeContainer" v-if="Show" ref="attributeTable">
         <el-progress
           type="dashboard"
           :percentage="percentage"
@@ -19,7 +19,7 @@
           v-show="false"
         >
         </el-progress>
-        <div id="chart" style="height: 300px" ref="chart"></div>
+        <div id="chart" style="height: 400px" ref="chart"></div>
       </div>
     </Popup>
   </div>
@@ -139,6 +139,21 @@ export default {
           min: 40,
           interval: 10,
         };
+      } else if (this.title === "Solar Intensity") {
+        options.yAxis = {
+          type: "value",
+          max: 50000,
+          min: 0,
+          interval: 10000,
+        };
+      } else {
+        // other thermal attribute
+        options.yAxis = {
+          type: "value",
+          max: 100,
+          min: 0,
+          interval: 10,
+        };
       }
 
       window.chartInterval = setInterval(() => {
@@ -181,11 +196,13 @@ export default {
         fid, // this value match the data(checked) id
       });
 
-      if (!window.CZMLDataSource.entities.getById("Person")) {
+      if (!window.CZMLDataSource) {
+        // if the CZML file is not loaded, then show the warning message
         this.$message({
           message: `Please Load the CZML file first!`,
           type: "warning",
         });
+        Bus.$emit("clearCheckedNode");
       } else {
         // set the clock and get the attribute
         window.viewer.clock.onTick.addEventListener((clock) => {

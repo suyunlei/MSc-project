@@ -124,6 +124,8 @@ export default {
         if (!window.viewer.trackedEntity) {
           window.viewer.trackedEntity = ds.entities.getById("Person"); // track the person model
         }
+        // for testing
+        Bus.$emit("showResults");
       });
     },
     // under development
