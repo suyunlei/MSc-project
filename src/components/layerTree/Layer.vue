@@ -138,8 +138,15 @@ export default {
       });
       Bus.$off("updateTreeData");
       Bus.$on("updateTreeData", (data) => {
-        // 更新树数据
+        // update the tree data
         this.updateTreeData(data);
+      });
+
+      // uncheck the node
+      Bus.$off("unsetChecked");
+      Bus.$on("unsetChecked", (data) => {
+        // this.$refs.tree.setChecked(data.id, false);
+        this.$refs.tree.setChecked(data.fid, false);
       });
     },
     // ergodic Node

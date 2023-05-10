@@ -258,7 +258,7 @@ export default {
      */
     close(value) {
       // if this.PopupDatd doesn't have the item with value, return
-      if (!this.PopupData.some((item) => item.fid === value)) {
+      if (!this.PopupData.some((item) => item.id === value)) {
         return;
       } else {
         let index = this.PopupData.findIndex((item) => {
@@ -267,9 +267,12 @@ export default {
 
         let data = this.PopupData.splice(index, 1)[0];
         data.close && data.close();
+
+        this.thermal_value = 0;
+
+        Bus.$emit("unsetChecked", data);
+        window.viewer.trackedEntity = undefined;
       }
-      this.thermal_value = 0;
-      window.viewer.trackedEntity = undefined;
     },
     /**
      * @description: create a random id
