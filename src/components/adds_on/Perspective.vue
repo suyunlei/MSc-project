@@ -15,6 +15,9 @@
           <el-button type="success" plain @click="ToFirstPerson">
             First-Person Perspective
           </el-button>
+          <el-button type="info" @click="showResults"
+            >Show the Whole Results</el-button
+          >
         </el-row>
       </div>
     </Popup>
@@ -33,7 +36,7 @@ export default {
   },
   data() {
     return {
-      title: "Perspective",
+      title: "Toolbar",
       show: false,
     };
   },
@@ -43,23 +46,26 @@ export default {
     });
   },
   methods: {
+    /**
+     * @description init the bus event
+     * @returns {void}
+     */
     initBusEvent() {
-      // Bus.$off("togod");
-      // Bus.$on("togod", this.ToGod);
-      // Bus.$off("tofirstperson");
-      // Bus.$on("tofirstperson", this.ToFirstPerson);
       Bus.$off("openPerspective");
       Bus.$on("openPerspective", this.open);
     },
     open() {
       this.$refs.popup.open();
       this.show = true;
-      // debugger;
     },
     close() {
       // this.$refs.popup.close();
     },
-    // God Perspective
+    /**
+     * God Perspective
+     * @param {*} e
+     * @returns {void}
+     */
     ToGod() {
       if (!window.CZMLDataSource) {
         this.$message({
@@ -73,7 +79,11 @@ export default {
         );
       }
     },
-    // First-Person Perspective
+    /**
+     * First-Person Perspective
+     * @param {*} e
+     * @returns {void}
+     */
     ToFirstPerson() {
       if (!window.CZMLDataSource) {
         this.$message({
@@ -86,6 +96,12 @@ export default {
         );
       }
     },
+    /**
+     * Update the view
+     * @param {number} heading
+     * @param {number} pitch
+     * @param {number} roll
+     */
     updateView(heading, pitch, roll) {
       let trackEntity = window.CZMLDataSource.entities.getById("Person");
       let center = trackEntity.position.getValue(
@@ -103,6 +119,13 @@ export default {
         transform,
         new Cesium.Cartesian3(heading, pitch, roll)
       );
+    },
+    /**
+     * Show the Whole Results
+     * @param {*} e
+     */
+    showResults() {
+      Bus.$emit("showResults");
     },
   },
 };
