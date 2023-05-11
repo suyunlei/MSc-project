@@ -290,26 +290,23 @@ export default {
      * @return {void}
      */
     close(value) {
-      // if this.PopupDatd doesn't have the item with value, return
-      if (!this.PopupData.some((item) => item.id === value)) {
-        return;
-      } else {
-        /** this for the many popup close */
-        let index = this.PopupData.findIndex((item) => {
-          return item.title === value || item.fid === value;
-        });
-        let data = this.PopupData.splice(index, 1)[0];
-        debugger;
-        data.close && data.close();
+      // if this.PopupData doesn't have the item with value, return
+      // if (!this.PopupData.some((item) => item.id === value)) {
+      //   return;
+      // } else {
+      /** this for the many popup close */
+      let index = this.PopupData.findIndex((item) => {
+        return item.title === value || item.fid === value;
+      });
+      let data = this.PopupData.splice(index, 1)[0];
+      data.close && data.close();
 
-        window.viewer.clock.onTick.removeEventListener(
-          window.clockEventListener
-        );
-        this.thermal_value = 0;
-        // uncheck the node in the layer tree
-        Bus.$emit("unsetChecked", data);
-        window.viewer.trackedEntity = undefined;
-      }
+      window.viewer.clock.onTick.removeEventListener(window.clockEventListener);
+      this.thermal_value = 0;
+      // uncheck the node in the layer tree
+      Bus.$emit("unsetChecked", data);
+      window.viewer.trackedEntity = undefined;
+      // }
     },
     /**
      * @description: create a random id
