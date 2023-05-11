@@ -114,7 +114,8 @@ export default {
           // window.checked_name = data.label;
           Bus.$emit("showAttribute", data.label, data.id);
         } else {
-          Bus.$emit("closeAttribute", data.id);
+          Bus.$emit("closeAttribute", data.label);
+          console.log("close");
         }
       }
     },

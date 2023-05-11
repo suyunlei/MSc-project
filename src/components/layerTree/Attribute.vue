@@ -71,7 +71,9 @@ export default {
       Bus.$off("showAttribute");
       Bus.$on("showAttribute", this.open);
       Bus.$off("closeAttribute");
-      Bus.$on("closeAttribute", this.close);
+      Bus.$on("closeAttribute", (data) => {
+        this.close(data);
+      });
     },
 
     /**
@@ -204,8 +206,15 @@ export default {
         });
         Bus.$emit("clearCheckedNode");
       } else {
-        // set the clock and get the attribute
-        window.viewer.clock.onTick.addEventListener((clock) => {
+        /**
+         * @description
+         * 1. get the attribute value according to the time interval
+         * 2. create a clock event to listen the time change
+         * 3. show the attribute value in the chart
+         * get the attribute value according to the time interval
+         * @param {Cesium.Viewer.Clock} clock
+         */
+        window.clockEventListener = (clock) => {
           if (!window.CZMLDataSource.entities.getById("Person")) {
             this.Show = false;
             Cesium.Event.RemoveCallback();
@@ -231,6 +240,7 @@ export default {
                 if (value) {
                   this.thermal_value = value;
                 }
+
                 // let the attribute table change
                 // Bus.$emit("change");
                 // this.change();
@@ -250,13 +260,17 @@ export default {
             // remove the CZML data source and stop the interval.
             window.viewer.dataSources.remove(window.CZMLDataSource);
             clearInterval(window.chartInterval);
-            window.viewer.clock.onTick.removeEventListener();
+            window.viewer.clock.onTick.removeEventListener(
+              window.clockEventListener
+            );
             this.$message({
               message: `The animation is over!`,
               type: "success",
             });
           }
-        });
+        };
+
+        window.viewer.clock.onTick.addEventListener(window.clockEventListener);
 
         setTimeout(() => {
           this.initChart();
@@ -280,13 +294,17 @@ export default {
       if (!this.PopupData.some((item) => item.id === value)) {
         return;
       } else {
+        /** this for the many popup close */
         let index = this.PopupData.findIndex((item) => {
-          return item.fid === value;
+          return item.title === value || item.fid === value;
         });
-
         let data = this.PopupData.splice(index, 1)[0];
+        debugger;
         data.close && data.close();
 
+        window.viewer.clock.onTick.removeEventListener(
+          window.clockEventListener
+        );
         this.thermal_value = 0;
         // uncheck the node in the layer tree
         Bus.$emit("unsetChecked", data);
