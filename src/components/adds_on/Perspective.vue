@@ -3,7 +3,7 @@
     <Popup
       ref="popup"
       :title="title"
-      left="calc(80% - 200px)"
+      left="calc(80% - 250px)"
       top="5%"
       @close="close"
     >
