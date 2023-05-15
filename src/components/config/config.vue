@@ -14,10 +14,10 @@ export default {
           name: "addCZML",
           label: "Thermal Comfort",
         },
-        // {
-        //   name: "addGeoJSON",
-        //   label: "addGeoJSON (under development)",
-        // },
+        {
+          name: "addGeoJSON",
+          label: "addGeoJSON",
+        },
       ],
     },
   ],

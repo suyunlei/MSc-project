@@ -1,4 +1,5 @@
 import Bus from "@tools/Bus";
+import axios from "axios";
 
 export default {
   methods: {
@@ -128,14 +129,29 @@ export default {
     },
     // under development
     addGeoJSON() {
-      const tileset = new Cesium.Cesium3DTileset({
-        url: Cesium.IonResource.fromAssetId(1679941),
-        // url: Cesium.IonResource.fromAssetId(1606578),
-      });
-      tileset.readyPromise.then((tileset) => {
-        window.viewer.scene.primitives.add(tileset);
-        console.log(tileset);
-      });
+      const apiUrl =
+        "https://dbc-91034050-29f6.cloud.databricks.com/?o=6826440352802628/api/2.0";
+      const token = "dapib93d3d12501be524f4e69051c5417567";
+      const endpoint =
+        "/dbfs/FileStore/shared_uploads/suyunlei@u.nus.edu/output_merged_1.json";
+      axios
+        .get(`${apiUrl}/dbfs/read`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          params: {
+            path: encodeURIComponent(endpoint),
+          },
+        })
+        .then(function (response) {
+          // handle success
+          console.log(response);
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        });
     },
     /**
      * add the animation to the building model
