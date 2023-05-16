@@ -10,14 +10,6 @@ export default {
           name: "loadNUS",
           label: "NUS Building",
         },
-        // {
-        //   name: "addCZML",
-        //   label: "Thermal Comfort",
-        // },
-        // {
-        //   name: "addGeoJSON",
-        //   label: "addGeoJSON",
-        // },
       ],
     },
     {
