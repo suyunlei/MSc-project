@@ -132,7 +132,7 @@ export default {
       const apiUrl = "https://dbc-91034050-29f6.cloud.databricks.com/api/2.0";
       const token = "dapib93d3d12501be524f4e69051c5417567";
       const endpoint =
-        "dbfs:/FileStore/shared_uploads/suyunlei@u.nus.edu/output_merged_1.json";
+        "dbfs:/FileStore/shared_uploads/suyunlei@u.nus.edu/comfort/output_merged_1.json";
       axios
         .get(`${apiUrl}/dbfs/read`, {
           headers: {
