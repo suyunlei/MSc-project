@@ -129,11 +129,10 @@ export default {
     },
     // under development
     addGeoJSON() {
-      const apiUrl =
-        "https://dbc-91034050-29f6.cloud.databricks.com/?o=6826440352802628/api/2.0";
+      const apiUrl = "https://dbc-91034050-29f6.cloud.databricks.com/api/2.0";
       const token = "dapib93d3d12501be524f4e69051c5417567";
       const endpoint =
-        "/dbfs/FileStore/shared_uploads/suyunlei@u.nus.edu/output_merged_1.json";
+        "dbfs:/FileStore/shared_uploads/suyunlei@u.nus.edu/output_merged_1.json";
       axios
         .get(`${apiUrl}/dbfs/read`, {
           headers: {
@@ -141,12 +140,24 @@ export default {
             "Content-Type": "application/json",
           },
           params: {
-            path: encodeURIComponent(endpoint),
+            path: endpoint,
           },
         })
         .then(function (response) {
           // handle success
-          console.log(response);
+          console.log(response.data);
+          // Base64 to Uint8Array
+          const base64ToUint8Array = (base64) =>
+            Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+          const bytes = base64ToUint8Array(response.data.data);
+
+          // decode as utf-8 string
+          const decoder = new TextDecoder("utf-8");
+          const decodedString = decoder.decode(bytes);
+
+          // decode as json
+          const jsonData = JSON.parse(decodedString);
+          console.log(jsonData);
         })
         .catch(function (error) {
           // handle error
