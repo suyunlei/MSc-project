@@ -1,0 +1,162 @@
+[
+  {
+    "ID": 1,
+    "Lat ": 103.768245,
+    "Long": 1.300821,
+    "Location": " Kent Vale (Rooftop)",
+    "Type": "Rooftop",
+    "Description": null
+  },
+  {
+    "ID": 2,
+    "Lat ": 103.773209,
+    "Long": 1.299893,
+    "Location": " Raffles Hall",
+    "Type": "Ground",
+    "Description": "Between RH2 and RH3, covered walkway post"
+  },
+  {
+    "ID": 3,
+    "Lat ": 103.770795,
+    "Long": 1.298818,
+    "Location": " Between E1 and EW 1",
+    "Type": "Ground",
+    "Description": "The balcony on the second floor of E1 (Facing EW 1)"
+  },
+  {
+    "ID": 4,
+    "Lat ": 103.772678,
+    "Long": 1.298462,
+    "Location": " Between E4 & E4A",
+    "Type": "Ground",
+    "Description": "Lamp post (No. E4-DB-04)"
+  },
+  {
+    "ID": 5,
+    "Lat ": 103.774266,
+    "Long": 1.297614,
+    "Location": " S2S (Rooftop)",
+    "Type": "Rooftop",
+    "Description": "Rooftop of the S2S building"
+  },
+  {
+    "ID": 6,
+    "Lat ": 103.772312,
+    "Long": 1.296408,
+    "Location": " Central Library",
+    "Type": "Ground",
+    "Description": "Walkway post next to the Central Library Bus Stop"
+  },
+  {
+    "ID": 7,
+    "Lat ": 103.769825,
+    "Long": 1.295043,
+    "Location": " Ventus Carpark",
+    "Type": "Ground",
+    "Description": "Lamp post (No. VT-OG2-01)"
+  },
+  {
+    "ID": 8,
+    "Lat ": 103.772115,
+    "Long": 1.295015,
+    "Location": " Between AS1 & AS3",
+    "Type": "Ground",
+    "Description": "Top of the covered walkway between AS1 & AS 3"
+  },
+  {
+    "ID": 9,
+    "Lat ": 103.776018,
+    "Long": 1.294459,
+    "Location": " i4 (Rooftop)",
+    "Type": "Rooftop",
+    "Description": "Rooftop of i4"
+  },
+  {
+    "ID": 10,
+    "Lat ": 103.7718,
+    "Long": 1.292612,
+    "Location": " Temasek Hall (Rooftop)",
+    "Type": "Rooftop",
+    "Description": null
+  },
+  {
+    "ID": 11,
+    "Lat ": 103.772713,
+    "Long": 1.297254,
+    "Location": " IT Bus Stop",
+    "Type": "Ground",
+    "Description": null
+  },
+  {
+    "ID": 12,
+    "Lat ": 103.778576,
+    "Long": 1.292662,
+    "Location": " Green area next to PGP",
+    "Type": "Ground",
+    "Description": "Greenery ground behind Office of Campus Security"
+  },
+  {
+    "ID": 13,
+    "Lat ": 103.780762,
+    "Long": 1.291102,
+    "Location": " PGP Residences 1",
+    "Type": "Ground",
+    "Description": "Lamp post (No. Mercury-R1-19)"
+  },
+  {
+    "ID": 14,
+    "Lat ": 103.78276,
+    "Long": 1.29142,
+    "Location": " PGP Residences 2 (Rooftop)",
+    "Type": "Rooftop",
+    "Description": null
+  },
+  {
+    "ID": 15,
+    "Lat ": 103.781893,
+    "Long": 1.29636,
+    "Location": " MD10 (Rooftop)",
+    "Type": "Rooftop",
+    "Description": "3rd floor rooftop of MD 10"
+  },
+  {
+    "ID": 16,
+    "Lat ": 103.781166,
+    "Long": 1.294635,
+    "Location": " Between Tahir and SICS",
+    "Type": "Ground",
+    "Description": "Lamp post"
+  },
+  {
+    "ID": 17,
+    "Lat ": 103.780151,
+    "Long": 1.296682,
+    "Location": " Science Drive 2",
+    "Type": "Ground",
+    "Description": "Lamp post (No. S16-1)"
+  },
+  {
+    "ID": 18,
+    "Lat ": 103.777999,
+    "Long": 1.297994,
+    "Location": " Sports Field",
+    "Type": "Ground",
+    "Description": null
+  },
+  {
+    "ID": 19,
+    "Lat ": 103.775329,
+    "Long": 1.300497,
+    "Location": " Wind Tunnel",
+    "Type": "Ground",
+    "Description": "Lamp post (No. MP-SH-OG- 24)"
+  },
+  {
+    "ID": 20,
+    "Lat ": 103.771746,
+    "Long": 1.302332,
+    "Location": " Cultural Centre",
+    "Type": "Ground",
+    "Description": "Lamp post (No. MP-SH-OG- 01)"
+  }
+]
