@@ -132,7 +132,7 @@ export default {
       const apiUrl = "https://dbc-91034050-29f6.cloud.databricks.com/api/2.0";
       const token = "dapib93d3d12501be524f4e69051c5417567";
       const endpoint =
-        "dbfs:/FileStore/shared_uploads/suyunlei@u.nus.edu/comfort/output_merged_1.json";
+        "dbfs:/FileStore/shared_uploads/suyunlei@u.nus.edu/weather/points.json";
       axios
         .get(`${apiUrl}/dbfs/read`, {
           headers: {
@@ -244,6 +244,90 @@ export default {
           feature.color = Cesium.Color.LIME;
         }
       }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+    },
+
+    /**
+     * load the weather data
+     * @returns {void}
+     */
+    loadWeatherData() {
+      const apiUrl = "https://dbc-91034050-29f6.cloud.databricks.com/api/2.0";
+      const token = "dapib93d3d12501be524f4e69051c5417567";
+      const endpoint =
+        "dbfs:/FileStore/shared_uploads/suyunlei@u.nus.edu/weather/points.json";
+      axios
+        .get(`${apiUrl}/dbfs/read`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          params: {
+            path: endpoint,
+          },
+        })
+        .then(function (response) {
+          // Base64 to Uint8Array
+          const base64ToUint8Array = (base64) =>
+            Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+          const bytes = base64ToUint8Array(response.data.data);
+
+          // decode as utf-8 string
+          const decoder = new TextDecoder("utf-8");
+          const decodedString = decoder.decode(bytes);
+
+          // decode as json
+          const jsonData = JSON.parse(decodedString);
+          console.log(jsonData);
+          window.weatherStations = jsonData;
+
+          window.weatherStations.forEach((station) => {
+            // 数据里写反了
+            let lat = station.Long;
+            let lon = station.Lat;
+
+            // add the weather station billboard
+            window.viewer.entities.add({
+              position: Cesium.Cartesian3.fromDegrees(lon, lat),
+              billboard: {
+                image: "https://i.328888.xyz/2023/05/17/Vi1uuz.png",
+                width: 80,
+                height: 80,
+              },
+              // add label
+              label: {
+                text: station.Location,
+                font: "14pt monospace",
+                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                outlineWidth: 2,
+                verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
+                pixelOffset: new Cesium.Cartesian2(0, -29),
+              },
+              // add description
+              description: `
+              <div class="cesium-infoBox-description">
+                <table class="cesium-infoBox-defaultTable">
+                  <tbody>
+                    <tr>
+                      <th>Station Name</th>
+                      <td>${station.Location}</td> 
+                    </tr>
+                    <tr>
+                      <th>Type</th>
+                      <td>${station.Type}</td> 
+                    </tr>
+                    <tr>
+                      <th>Description</th>
+                      <td>${station.Description}</td> 
+                    </tr>
+                    <tr>
+                `,
+            });
+          });
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        });
     },
   },
 };
