@@ -5,6 +5,7 @@
     "Long": 1.300821,
     "Location": " Kent Vale (Rooftop)",
     "Type": "Rooftop",
+    "height": 8,
     "Description": null
   },
   {
@@ -37,6 +38,7 @@
     "Long": 1.297614,
     "Location": " S2S (Rooftop)",
     "Type": "Rooftop",
+    "height":9,
     "Description": "Rooftop of the S2S building"
   },
   {
@@ -69,6 +71,7 @@
     "Long": 1.294459,
     "Location": " i4 (Rooftop)",
     "Type": "Rooftop",
+    "height":15,
     "Description": "Rooftop of i4"
   },
   {
@@ -77,6 +80,7 @@
     "Long": 1.292612,
     "Location": " Temasek Hall (Rooftop)",
     "Type": "Rooftop",
+    "height": 8,
     "Description": null
   },
   {
@@ -109,6 +113,7 @@
     "Long": 1.29142,
     "Location": " PGP Residences 2 (Rooftop)",
     "Type": "Rooftop",
+    "height": 21,
     "Description": null
   },
   {
@@ -117,6 +122,7 @@
     "Long": 1.29636,
     "Location": " MD10 (Rooftop)",
     "Type": "Rooftop",
+    "height":9,
     "Description": "3rd floor rooftop of MD 10"
   },
   {

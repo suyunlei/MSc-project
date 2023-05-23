@@ -280,14 +280,24 @@ export default {
           console.log(jsonData);
           window.weatherStations = jsonData;
 
+          // add the weather stations into the scene
           window.weatherStations.forEach((station) => {
             // 数据里写反了
             let lat = station.Long;
             let lon = station.Lat;
+            let height;
+
+            // if the station is on the rooftop, give it a height
+            if (station.height) {
+              height = station.height + 2;
+            } else {
+              height = 0;
+            }
 
             // add the weather station billboard
             window.viewer.entities.add({
-              position: Cesium.Cartesian3.fromDegrees(lon, lat),
+              name: station.ID,
+              position: Cesium.Cartesian3.fromDegrees(lon, lat, height),
               billboard: {
                 image: "https://i.328888.xyz/2023/05/17/Vi1uuz.png",
                 width: 80,
@@ -295,8 +305,8 @@ export default {
               },
               // add label
               label: {
-                text: station.Location,
-                font: "14pt monospace",
+                text: station.Location + "\n" + station.ID,
+                font: "12pt monospace",
                 style: Cesium.LabelStyle.FILL_AND_OUTLINE,
                 outlineWidth: 2,
                 verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
@@ -322,6 +332,74 @@ export default {
                     <tr>
                 `,
             });
+          });
+
+          // add the weather stations to the treeData
+          window.treeData.push({
+            id: "weatherStations",
+            label: "Weather Stations",
+            disabled: true,
+          });
+          Bus.$emit("updateTreeData", window.treeData);
+
+          // add the click event to the weather stations
+          window.viewer.selectedEntityChanged.addEventListener(function (
+            selectedEntity
+          ) {
+            if (Cesium.defined(selectedEntity)) {
+              window.viewer.infoBox.viewModel.description =
+                selectedEntity.description.getValue();
+
+              let entityID = selectedEntity.name;
+              console.log(entityID);
+
+              // get the weather data of the selected weather station through the ID
+              axios
+                .get(`${apiUrl}/dbfs/read`, {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                  },
+                  params: {
+                    path: `${
+                      "dbfs:/FileStore/shared_uploads/suyunlei@u.nus.edu/weather/weather" +
+                      entityID +
+                      ".json"
+                    }`,
+                  },
+                })
+                .then(function (response) {
+                  // Base64 to Uint8Array
+                  const base64ToUint8Array = (base64) =>
+                    Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+                  const bytes = base64ToUint8Array(response.data.data);
+
+                  // decode as utf-8 string
+                  const decoder = new TextDecoder("utf-8");
+                  const decodedString = decoder.decode(bytes);
+
+                  // decode as json
+                  const jsonData = JSON.parse(decodedString);
+                  console.log(jsonData);
+
+                  // get the current time
+                  let currentTime = new Date();
+                  let month = currentTime.getMonth() + 1;
+                  let hour = currentTime.getHours();
+
+                  console.log(month);
+                  console.log(hour);
+
+                  // get the temparature and humidity of the current time
+                  let temparature, humidity;
+
+                  jsonData.forEach((data) => {
+                    //
+                  });
+                });
+            } else {
+              viewer.infoBox.viewModel.description = "";
+            }
           });
         })
         .catch(function (error) {
