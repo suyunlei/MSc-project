@@ -5,7 +5,7 @@
       :title="title"
       left="calc(100% - 600px)"
       :top="300 + 'px'"
-      width="500px"
+      width="200px"
       @close="close"
     >
       <div class="attributeContainer" ref="attributeTable">
@@ -14,7 +14,6 @@
           :percentage="temperature"
           :color="temp_colors"
           :format="format"
-          v-show="false"
         >
         </el-progress>
       </div>
@@ -36,7 +35,13 @@ export default {
     return {
       title: "weather attributes",
       temperature: 0,
-      temp_colors: [],
+      temp_colors: [
+        { color: "#f56c6c", percentage: 20 },
+        { color: "#e6a23c", percentage: 40 },
+        { color: "#5cb87a", percentage: 60 },
+        { color: "#1989fa", percentage: 80 },
+        { color: "#6f7ad3", percentage: 100 },
+      ],
     };
   },
   mounted() {
@@ -52,7 +57,13 @@ export default {
      * @return {void}
      * @Date: 2021-04-27 17:48:00
      */
-    init() {},
+    init() {
+      Bus.$off("visualizeTemperature");
+      Bus.$on("visualizeTemperature", (data) => {
+        this.temperature = data;
+        this.open();
+      });
+    },
 
     /**
      *
@@ -60,8 +71,8 @@ export default {
      * @param {*} value
      * @param {*} style
      */
-    open(title) {
-      this.title = title;
+    open() {
+      this.$refs.weather.open();
     },
 
     /**

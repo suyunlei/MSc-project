@@ -356,6 +356,11 @@ export default {
               window.viewer.infoBox.viewModel.description =
                 selectedEntity.description.getValue();
 
+              // 如果没有properties, 返回
+              if (!selectedEntity.properties) {
+                return;
+              }
+
               let entityID = selectedEntity.properties.id._value;
 
               // get the weather data of the selected weather station through the ID
@@ -412,7 +417,7 @@ export default {
                           humidity = data[key];
                         }
                       });
-
+                      Bus.$emit("visualizeTemperature", temparature);
                       console.log(temparature);
                       console.log(humidity);
                     }
