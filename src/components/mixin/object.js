@@ -297,6 +297,12 @@ export default {
             // add the weather station billboard
             window.viewer.entities.add({
               name: station.ID,
+              properties: {
+                id: station.ID,
+                name: station.Location,
+                type: station.Type,
+                description: station.Description,
+              },
               position: Cesium.Cartesian3.fromDegrees(lon, lat, height),
               billboard: {
                 image: "https://i.328888.xyz/2023/05/17/Vi1uuz.png",
@@ -350,8 +356,7 @@ export default {
               window.viewer.infoBox.viewModel.description =
                 selectedEntity.description.getValue();
 
-              let entityID = selectedEntity.name;
-              console.log(entityID);
+              let entityID = selectedEntity.properties.id._value;
 
               // get the weather data of the selected weather station through the ID
               axios
@@ -387,14 +392,30 @@ export default {
                   let month = currentTime.getMonth() + 1;
                   let hour = currentTime.getHours();
 
-                  console.log(month);
-                  console.log(hour);
-
                   // get the temparature and humidity of the current time
                   let temparature, humidity;
 
                   jsonData.forEach((data) => {
-                    //
+                    if (entityID < 10) {
+                      entityID = "0" + entityID;
+                    } else {
+                      entityID = entityID.toString();
+                    }
+
+                    // get the data of the current month and hour
+                    if (data.Month == month && data.Hour == hour) {
+                      let keys = Object.keys(data);
+                      keys.forEach((key) => {
+                        if (key.includes("Temperature")) {
+                          temparature = data[key];
+                        } else if (key.includes("RH")) {
+                          humidity = data[key];
+                        }
+                      });
+
+                      console.log(temparature);
+                      console.log(humidity);
+                    }
                   });
                 });
             } else {
