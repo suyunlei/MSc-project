@@ -417,7 +417,9 @@ export default {
                           humidity = data[key];
                         }
                       });
-                      Bus.$emit("visualizeTemperature", temparature);
+
+                      let weatherData = [temparature, humidity];
+                      Bus.$emit("visualizeWeatherData", weatherData);
                       console.log(temparature);
                       console.log(humidity);
                     }

@@ -5,17 +5,32 @@
       :title="title"
       left="calc(100% - 600px)"
       :top="300 + 'px'"
-      width="200px"
       @close="close"
     >
       <div class="attributeContainer" ref="attributeTable">
-        <el-progress
-          type="dashboard"
-          :percentage="temperature"
-          :color="temp_colors"
-          :format="format"
-        >
-        </el-progress>
+        <div class="temp">
+          <el-tag type="warning">Temperature</el-tag>
+          <el-progress
+            type="dashboard"
+            :percentage="temperature"
+            :color="temp_colors"
+            :format="temp_format"
+            :stroke-width="strokeWidth"
+          >
+          </el-progress>
+        </div>
+
+        <div class="RH">
+          <el-tag>Relative Humidity</el-tag>
+          <el-progress
+            type="dashboard"
+            :percentage="RH"
+            :color="RH_colors"
+            :format="RH_format"
+            :stroke-width="strokeWidth"
+          >
+          </el-progress>
+        </div>
       </div>
     </Popup>
   </div>
@@ -33,14 +48,17 @@ export default {
   },
   data() {
     return {
-      title: "weather attributes",
+      title: "Real-time Weather",
       temperature: 0,
-      temp_colors: [
+      RH: 0,
+      strokeWidth: 12,
+      temp_colors: [{ color: "#e6a23c", percentage: 30 }],
+      RH_colors: [
         { color: "#f56c6c", percentage: 20 },
         { color: "#e6a23c", percentage: 40 },
         { color: "#5cb87a", percentage: 60 },
-        { color: "#1989fa", percentage: 80 },
-        { color: "#6f7ad3", percentage: 100 },
+        { color: "#6f7ad3", percentage: 80 },
+        { color: "#1989fa", percentage: 100 },
       ],
     };
   },
@@ -58,9 +76,10 @@ export default {
      * @Date: 2021-04-27 17:48:00
      */
     init() {
-      Bus.$off("visualizeTemperature");
-      Bus.$on("visualizeTemperature", (data) => {
-        this.temperature = data;
+      Bus.$off("visualizeWeatherData");
+      Bus.$on("visualizeWeatherData", (array) => {
+        this.temperature = array[0];
+        this.RH = array[1];
         this.open();
       });
     },
@@ -104,18 +123,56 @@ export default {
      */
     change() {},
     /**
-     * @description: format the percentage
+     * @description: format the temperature
      * @param {Number}
      * @return {String}
      */
-    format(percentage) {
-      return `${percentage}`;
+    temp_format(percentage) {
+      return `${percentage.toFixed(2)}℃`;
+    },
+    /**
+     *
+     * @param {*} percentage
+     * @returns
+     * @description: format the RH
+     */
+    RH_format(percentage) {
+      return `${percentage.toFixed(2)}%`;
     },
   },
 };
 </script>
 
 <style scoped lang="less">
+.attributeContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+  margin-left: 30px;
+  margin-right: 30px;
+}
+.temp {
+  width: 180px;
+  height: 200px;
+}
+
+.RH {
+  width: 180px;
+  height: 200px;
+}
+
+.el-tag {
+  // 使用flex使其水平居中
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+}
 .el-progress {
   margin-top: 20px;
   margin-left: 30px;
