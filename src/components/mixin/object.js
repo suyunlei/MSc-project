@@ -312,11 +312,14 @@ export default {
               // add label
               label: {
                 text: station.Location + "\n" + station.ID,
-                font: "12pt monospace",
-                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                fillColor: Cesium.Color.AQUA,
+                font: "18px sans-serif",
+                outlineColor: Cesium.Color.BLACK,
                 outlineWidth: 2,
-                verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                pixelOffset: new Cesium.Cartesian2(0, -29),
+                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                verticalOrigin: Cesium.VerticalOrigin.CENTER,
+                horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
+                pixelOffset: new Cesium.Cartesian2(0, -50),
               },
               // add description
               description: `
