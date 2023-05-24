@@ -41,9 +41,9 @@ export default {
       tileset.style = new Cesium.Cesium3DTileStyle({
         color: {
           conditions: [
-            ["${height} >= 20", 'color("ORANGERED")'],
-            ["${height} >= 10", 'color("DARKORANGE")'],
-            ["true", 'color("blue")'],
+            // ["${height} >= 20", 'color("ORANGERED")'],
+            // ["${height} >= 10", 'color("DARKORANGE")'],
+            // ["true", 'color("blue")'],
           ],
         },
         show: "${height} > 0",
