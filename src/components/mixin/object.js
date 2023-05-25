@@ -438,5 +438,26 @@ export default {
           console.log(error);
         });
     },
+
+    /**
+     * get the cozie participants menu
+     * @returns {void}
+     */
+
+    get_participant_menu(experiment_id) {
+      console.log(experiment_id);
+      let participants = [];
+      axios
+        .get("cozie/api")
+        .then(function (response) {
+          console.log(response.data);
+          participants = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+      Bus.$emit("cozieTreeData", participants);
+    },
   },
 };

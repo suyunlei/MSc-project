@@ -40,6 +40,21 @@ export default {
         },
       ],
     },
+
+    {
+      title: "Cozie Data",
+      name: "cozie",
+      content: [
+        {
+          name: "get_participant_menu",
+          label: "Participant Menu",
+        },
+        {
+          name: "load_participant_data",
+          label: "Trace the Participant",
+        },
+      ],
+    },
   ],
 };
 </script>
