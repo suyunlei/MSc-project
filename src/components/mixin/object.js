@@ -43,7 +43,7 @@ export default {
           conditions: [
             // ["${height} >= 20", 'color("ORANGERED")'],
             // ["${height} >= 10", 'color("DARKORANGE")'],
-            // ["true", 'color("blue")'],
+            // ["true", 'color("white")'],
           ],
         },
         show: "${height} > 0",
@@ -444,20 +444,95 @@ export default {
      * @returns {void}
      */
 
-    get_participant_menu(experiment_id) {
-      console.log(experiment_id);
+    get_participant_menu() {
+      // loading animation
+      const rLoading = this.openLoading();
+
+      const url =
+        "https://c3sclddcgcwy5tvzpfumcuggoa0unbuf.lambda-url.ap-southeast-1.on.aws/";
+
+      var data = {
+        api_key: "bqXYG83JNPa2l2uCi2zXZp08xxx",
+        id_experiment: "dev", // might change to "dev, anna, anto"
+      };
       let participants = [];
       axios
-        .get("cozie/api")
-        .then(function (response) {
-          console.log(response.data);
-          participants = response.data;
+        .post(url, data)
+        .then((res) => {
+          console.log(`Status: ${res.status}`);
+          participants = res.data;
+          Bus.$emit("cozieTreeData", participants);
+          rLoading.close(); // close the loading animation
         })
-        .catch(function (error) {
-          console.log(error);
+        .catch((err) => {
+          console.error(err);
         });
 
-      Bus.$emit("cozieTreeData", participants);
+      // Get data for one participant with start and end date
+
+      // var data = {
+      //   api_key: "bqXYG83JNPa2l2uCi2zXZp08xxx",
+      //   id_experiment: "dev",
+      //   id_participant: "dev16",
+      //   time_start: "2023-05-01T00:00:00+08:00",
+      //   time_end: "2023-05-31T23:59:59+08:00",
+      // };
+
+      // axios
+      //   .post(url, data)
+      //   .then((res) => {
+      //     console.log(`Status: ${res.status}`);
+      //     console.log("Body: ", res.data);
+
+      //     res.data.forEach((data) => {
+      //       let lat = data.ws_latitude;
+      //       let lon = data.ws_longitude;
+      //       let height = data.ws_altitude;
+      //       window.viewer.entities.add({
+      //         name: "Participant",
+      //         position: Cesium.Cartesian3.fromDegrees(lon, lat, height),
+      //         point: {
+      //           pixelSize: 10,
+      //           color: Cesium.Color.RED,
+      //           outlineColor: Cesium.Color.WHITE,
+      //           outlineWidth: 3,
+      //         },
+      //         description: `
+      //                       <div class="cesium-infoBox-description">
+      //                         <table class="cesium-infoBox-defaultTable">
+      //                           <tbody>
+      //                             <tr>
+      //                               <th>q_location</th>
+      //                               <td>${data.q_location}</td>
+      //                             </tr>
+      //                             <tr>
+      //                               <th>acoustic_condition</th>
+      //                               <td>${data.acoustic_condition}</td>
+      //                             </tr>
+      //                             <tr>
+      //                               <th>q_thermal_condition</th>
+      //                               <td>${data.q_thermal_condition}</td>
+      //                             </tr>
+      //                             <tr>
+      //                               <th>q_visual_condition</th>
+      //                               <td>${data.q_visual_condition}</td>
+      //                             </tr>
+      //                             <tr>
+      //                               <th>q_air_quality_condition</th>
+      //                               <td>${data.q_air_quality_condition}</td>
+      //                             </tr>
+      //                             <tr>
+      //                               <th>general_comfort_condition</th>
+      //                               <td>${data.q_general_comfort_condition}</td>
+      //                             </tr>
+      //                             <tr>
+      //                         `,
+      //       });
+      //     });
+      //   })
+      //   .catch((err) => {
+      //     console.error(err);
+      //   });
     },
   },
 };

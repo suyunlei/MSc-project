@@ -5,6 +5,7 @@
     <Perspective />
     <finalChart />
     <Weather_Attribute />
+    <cozie />
   </div>
 </template>
 
@@ -13,6 +14,7 @@ import Layer from "../layerTree/Layer.vue";
 import Attribute from "../layerTree/Attribute.vue";
 import finalChart from "../layerTree/finalChart.vue";
 import Weather_Attribute from "../layerTree/weatherPopup.vue";
+import cozie from "../layerTree/cozie.vue";
 import Bus from "@tools/Bus";
 import object from "../mixin/object";
 import Perspective from "../adds_on/Perspective.vue";
@@ -26,6 +28,7 @@ export default {
     Perspective,
     finalChart,
     Weather_Attribute,
+    cozie,
   },
   data() {
     return {

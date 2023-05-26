@@ -9,6 +9,7 @@
     >
       <el-tree
         :data="treeData"
+        empty-text="No Data"
         lazy
         show-checkbox
         @check-change="handleCheckChange"
@@ -42,13 +43,18 @@ export default {
       Bus.$off("cozieTreeData");
       Bus.$on("cozieTreeData", (data) => {
         this.updateTreeData(data);
+        this.$refs.coziePopup.open();
       });
     },
     updateTreeData(data) {
       this.treeData = data;
+      console.log(this.treeData);
     },
     handleCheckChange(data, checked) {
       Bus.$emit("cozieCheckChange", data, checked);
+    },
+    close() {
+      //
     },
   },
 };
