@@ -45,6 +45,7 @@
       </div>
       <div class="submit_btn">
         <el-button type="primary">Submit</el-button>
+        <!--还需要增加一个获取最新数值的按钮, 还不知道怎么放置-->
       </div>
     </Popup>
   </div>
