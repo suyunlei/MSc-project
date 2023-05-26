@@ -7,14 +7,45 @@
       :top="100 + 'px'"
       @close="close"
     >
-      <el-tree
-        :data="cozieData"
-        empty-text="No Data"
-        show-checkbox
-        icon-class="el-icon-s-custom"
-        @check-change="handleCheckChange"
-      >
-      </el-tree>
+      <div class="participant_panel">
+        <p>participant Panel</p>
+        <el-tree
+          :data="cozieData"
+          empty-text="No Data"
+          show-checkbox
+          icon-class="el-icon-s-custom"
+          @check-change="handleCheckChange"
+          class="scrollbar"
+        >
+        </el-tree>
+      </div>
+
+      <div class="timeStamp">
+        <p>Time Range</p>
+        <el-date-picker
+          v-model="time_start"
+          type="datetime"
+          placeholder="Select time start"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          :picker-options="{
+            selectableRange: '00:00:00 - 23:59:59',
+          }"
+        >
+        </el-date-picker>
+        <el-date-picker
+          v-model="time_end"
+          type="datetime"
+          placeholder="Select time end"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          :picker-options="{
+            selectableRange: '00:00:00 - 23:59:59',
+          }"
+        >
+        </el-date-picker>
+      </div>
+      <div class="submit_btn">
+        <el-button type="primary">Submit</el-button>
+      </div>
     </Popup>
   </div>
 </template>
@@ -90,10 +121,9 @@ export default {
     background: transparent;
     color: #fff;
     width: 500px;
+    height: 80px;
     display: flex;
-    // 横着排列元素 一行三个
     flex-wrap: wrap;
-
     justify-content: center;
     align-items: center;
     gap: 10px;
@@ -105,6 +135,31 @@ export default {
     background-color: rgba(245, 247, 250, 0.2);
   }
 
+  /deep/ .scrollbar {
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+      scrollbar-arrow-color: red;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      -webkit-box-shadow: inset 0 0 5px rgba(218, 218, 218, 0.2);
+      box-shadow: inset 0 0 5px rgba(218, 218, 218, 0.2);
+      background: #797979;
+      scrollbar-arrow-color: red;
+    }
+
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 5px rgba(218, 218, 218, 0.2);
+      box-shadow: inset 0 0 5px rgba(218, 218, 218, 0.2);
+      border-radius: 0;
+      background: rgba(218, 218, 218, 0.1);
+    }
+  }
   /deep/ .el-tree-node {
     width: 30%;
     box-sizing: border-box;
