@@ -3,6 +3,7 @@ import App from "./App.vue";
 import less from "less";
 import router from "./router/index";
 import ElementUI from "element-ui";
+import locale from "element-ui/lib/locale/lang/en";
 import "element-ui/lib/theme-chalk/index.css"; //element-ui css
 
 // loading animation
@@ -10,7 +11,7 @@ import { Loading } from "element-ui";
 
 Vue.config.productionTip = false;
 Vue.use(less);
-Vue.use(ElementUI);
+Vue.use(ElementUI, { locale });
 Vue.use(router);
 Vue.use(Loading);
 Vue.use(Loading.directive);
