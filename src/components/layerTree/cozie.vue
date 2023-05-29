@@ -8,7 +8,7 @@
       @close="close"
     >
       <div class="participant_panel">
-        <p>participant Panel</p>
+        <p>Participant Panel</p>
         <el-tree
           :data="cozieData"
           empty-text="No Data"
@@ -16,6 +16,7 @@
           icon-class="el-icon-s-custom"
           @check-change="handleCheckChange"
           class="scrollbar"
+          ref="cozieTree"
         >
         </el-tree>
       </div>
@@ -44,7 +45,7 @@
         </el-date-picker>
       </div>
       <div class="submit_btn">
-        <el-button type="primary">Submit</el-button>
+        <el-button type="primary" @click="submit">Submit</el-button>
         <!--还需要增加一个获取最新数值的按钮, 还不知道怎么放置-->
       </div>
     </Popup>
@@ -54,6 +55,8 @@
 <script>
 import Bus from "@tools/Bus";
 import Popup from "@tools/Popup";
+import axios from "axios";
+
 export default {
   name: "Layer",
   components: {
@@ -64,6 +67,8 @@ export default {
     return {
       title: "Cozie Manager",
       cozieData: [],
+      time_start: "",
+      time_end: "",
     };
   },
   mounted() {
@@ -92,9 +97,7 @@ export default {
       });
     },
 
-    handleCheckChange(data, checked) {
-      Bus.$emit("cozieCheckChange", data, checked);
-    },
+    handleCheckChange(data, checked) {},
 
     close() {
       //
@@ -111,6 +114,143 @@ export default {
         "-" +
         Math.random().toString().substr(2, 5)
       );
+    },
+
+    /**
+     * @description: submit the data
+     * @param {*}
+     * @return {void}
+     */
+    submit() {
+      let checkedNodes = this.$refs.cozieTree.getCheckedNodes(); //[{},{}]
+      let start_day = this.time_start.split(" ")[0];
+      let start_time = this.time_start.split(" ")[1];
+      let end_day = this.time_end.split(" ")[0];
+      let end_time = this.time_end.split(" ")[1];
+
+      let start = start_day + "T" + start_time + "+08:00";
+      let end = end_day + "T" + end_time + "+08:00";
+
+      this.get_participant_data(checkedNodes, start, end);
+    },
+
+    /**
+     * @description: Get data for one participant with start and end date
+     * @param {Array[]} ids
+     * @param {String} start
+     * @param {String} end
+     */
+    get_participant_data(ids, start, end) {
+      // loading animation
+      const rLoading = this.openLoading();
+
+      let requestCount = ids.length;
+
+      // Add request interceptor
+      axios.interceptors.request.use(
+        function (config) {
+          // Request starts, increment the request counter
+          requestCount++;
+          return config;
+        },
+        function (error) {
+          return Promise.reject(error);
+        }
+      );
+
+      // Add response interceptor
+      axios.interceptors.response.use(
+        function (response) {
+          // Request ends, decrement the request counter
+          requestCount--;
+          // If the request counter is 0, it means all requests have completed, execute custom code
+          if (requestCount === 0) {
+            // Execute your code here
+            console.log("All axios requests have completed");
+            rLoading.close(); // Close the loading animation
+          }
+          return response;
+        },
+        function (error) {
+          return Promise.reject(error);
+        }
+      );
+
+      const url =
+        "https://c3sclddcgcwy5tvzpfumcuggoa0unbuf.lambda-url.ap-southeast-1.on.aws/";
+
+      ids.forEach((id) => {
+        var data = {
+          api_key: "bqXYG83JNPa2l2uCi2zXZp08xxx",
+          id_experiment: "dev",
+          id_participant: id.label,
+          time_start: start,
+          time_end: end,
+        };
+
+        axios
+          .post(url, data)
+          .then((res) => {
+            console.log(`Status: ${res.status}`);
+            console.log("Body: ", res.data);
+
+            // res.data might be empty
+            if (!Array.isArray(res.data)) {
+              console.log("res.data is not an array");
+              return;
+            }
+
+            // if it's not empty, add the data to the viewer
+            res.data.forEach((data) => {
+              let lat = data.ws_latitude;
+              let lon = data.ws_longitude;
+              let height = data.ws_altitude;
+              window.viewer.entities.add({
+                name: "Participant",
+                position: Cesium.Cartesian3.fromDegrees(lon, lat, height),
+                point: {
+                  pixelSize: 10,
+                  color: Cesium.Color.RED,
+                  outlineColor: Cesium.Color.WHITE,
+                  outlineWidth: 3,
+                },
+                description: `
+                              <div class="cesium-infoBox-description">
+                                <table class="cesium-infoBox-defaultTable">
+                                  <tbody>
+                                    <tr>
+                                      <th>q_location</th>
+                                      <td>${data.q_location}</td>
+                                    </tr>
+                                    <tr>
+                                      <th>acoustic_condition</th>
+                                      <td>${data.acoustic_condition}</td>
+                                    </tr>
+                                    <tr>
+                                      <th>q_thermal_condition</th>
+                                      <td>${data.q_thermal_condition}</td>
+                                    </tr>
+                                    <tr>
+                                      <th>q_visual_condition</th>
+                                      <td>${data.q_visual_condition}</td>
+                                    </tr>
+                                    <tr>
+                                      <th>q_air_quality_condition</th>
+                                      <td>${data.q_air_quality_condition}</td>
+                                    </tr>
+                                    <tr>
+                                      <th>general_comfort_condition</th>
+                                      <td>${data.q_general_comfort_condition}</td>
+                                    </tr>
+                                    <tr>
+                                `,
+              });
+            });
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      });
     },
   },
 };
@@ -194,6 +334,42 @@ export default {
 
   /deep/ .el-checkbox > .is-disabled {
     display: none;
+  }
+
+  /deep/ .el-button {
+    width: 100px;
+    height: auto;
+    margin: 0 10px;
+    font-size: large;
+  }
+
+  .timeStamp {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+
+  .participant_panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    margin-left: 30px;
+    margin-right: 30px;
+  }
+  .submit_btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
   }
 }
 </style>
