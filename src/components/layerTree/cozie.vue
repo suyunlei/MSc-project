@@ -210,6 +210,8 @@ export default {
           time_end: end,
         };
 
+        let color = Cesium.Color.fromRandom(); // different color for each participant
+
         axios
           .post(url, data)
           .then((res) => {
@@ -222,18 +224,26 @@ export default {
               return;
             }
 
+            window.treeData.push({
+              id: this.createRandomId(),
+              label: `Cozie Participant ${id.label}`,
+              disabled: true,
+            });
+
+            Bus.$emit("updateTreeData", window.treeData);
+
             // if it's not empty, add the data to the viewer
             res.data.forEach((data) => {
               let lat = data.ws_latitude;
               let lon = data.ws_longitude;
               let height = data.ws_altitude;
               window.viewer.entities.add({
-                name: "Participant",
+                name: `${id.label}`,
                 position: Cesium.Cartesian3.fromDegrees(lon, lat, height),
                 point: {
                   pixelSize: 10,
-                  color: Cesium.Color.RED,
-                  outlineColor: Cesium.Color.WHITE,
+                  color: color,
+                  outlineColor: Cesium.Color.BLACK,
                   outlineWidth: 3,
                 },
                 description: `
@@ -336,6 +346,8 @@ export default {
           rows: nrows,
         };
 
+        let color = Cesium.Color.fromRandom(); // different color for each participant
+
         axios
           .post(url, data)
           .then((res) => {
@@ -348,6 +360,15 @@ export default {
               return;
             }
 
+            // add the participant to the tree
+            window.treeData.push({
+              id: this.createRandomId(),
+              label: `Cozie Participant ${id.label}`,
+              disabled: true,
+            });
+
+            Bus.$emit("updateTreeData", window.treeData);
+
             // if it's not empty, add the data to the viewer
             res.data.forEach((data) => {
               let lat = data.ws_latitude;
@@ -358,7 +379,7 @@ export default {
                 position: Cesium.Cartesian3.fromDegrees(lon, lat, height),
                 point: {
                   pixelSize: 10,
-                  color: Cesium.Color.RED,
+                  color: color,
                   outlineColor: Cesium.Color.WHITE,
                   outlineWidth: 3,
                 },
