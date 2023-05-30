@@ -296,6 +296,7 @@ export default {
             }
 
             // add the weather station billboard
+
             window.viewer.entities.add({
               name: station.ID,
               properties: {
@@ -343,8 +344,6 @@ export default {
                 `,
             });
           });
-
-          window.viewer.scene.requestRender();
 
           // add the weather stations to the treeData
           window.treeData.push({
