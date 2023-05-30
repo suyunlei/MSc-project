@@ -344,6 +344,8 @@ export default {
             });
           });
 
+          window.viewer.scene.requestRender();
+
           // add the weather stations to the treeData
           window.treeData.push({
             id: "weatherStations",
