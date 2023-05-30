@@ -10,6 +10,10 @@ export default {
           name: "loadNUS",
           label: "NUS Building",
         },
+        {
+          name: "clearAll",
+          label: "Clear All",
+        },
       ],
     },
     {

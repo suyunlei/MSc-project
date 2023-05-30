@@ -263,6 +263,7 @@ export default {
           },
           params: {
             path: endpoint,
+            cache: false,
           },
         })
         .then(function (response) {
@@ -277,8 +278,8 @@ export default {
 
           // decode as json
           const jsonData = JSON.parse(decodedString);
-          console.log(jsonData);
           window.weatherStations = jsonData;
+          console.log(window.weatherStations);
 
           // add the weather stations into the scene
           window.weatherStations.forEach((station) => {
@@ -350,6 +351,8 @@ export default {
             disabled: true,
           });
           Bus.$emit("updateTreeData", window.treeData);
+
+          console.log(window.viewer.entities);
 
           // add the click event to the weather stations
           window.viewer.selectedEntityChanged.addEventListener(function (
@@ -467,6 +470,31 @@ export default {
         .catch((err) => {
           console.error(err);
         });
+    },
+
+    /**
+     * @description: clear all the data in the scene
+     * @returns {void}
+     * @param {*}
+     * */
+    clearAll() {
+      // clear the treeData
+      window.treeData = [];
+      Bus.$emit("updateTreeData", window.treeData);
+
+      // clear all the models in the scene
+      window.viewer.scene.primitives.removeAll();
+
+      // 以下代码在添加新的数据后会不显示
+      window.viewer.entities.removeAll();
+      window.viewer.dataSources.removeAll();
+      window.viewer.trackedEntity = undefined;
+      window.viewer.resize();
+      window.viewer.scene.requestRender();
+      // delete window.czmlPath;
+      // delete window.tileset;
+      // delete window.CZMLDataSource;
+      // delete window.weatherStations;
     },
   },
 };
