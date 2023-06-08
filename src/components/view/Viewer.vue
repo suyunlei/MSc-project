@@ -56,25 +56,25 @@ export default {
         shadows: true,
         timeline: false,
         // OSM baseMap
-        // imageryProvider: new Cesium.OpenStreetMapImageryProvider({
-        //   url: "https://a.tile.openstreetmap.org/",
-        // }),
+        imageryProvider: new Cesium.OpenStreetMapImageryProvider({
+          url: "https://a.tile.openstreetmap.org/",
+        }),
 
         // watercolor baseMap
-        imageryProviderViewModels:
-          Cesium.createDefaultImageryProviderViewModels(),
-        selectedImageryProviderViewModel: new Cesium.ProviderViewModel({
-          name: "Stamen Watercolor",
-          iconUrl: Cesium.buildModuleUrl(
-            "Widgets/Images/ImageryProviders/stamenWatercolor.png"
-          ),
-          tooltip: "Stamen Watercolor",
-          creationFunction: function () {
-            return new Cesium.UrlTemplateImageryProvider({
-              url: "https://stamen-tiles.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.png",
-            });
-          },
-        }),
+        // imageryProviderViewModels:
+        //   Cesium.createDefaultImageryProviderViewModels(),
+        // selectedImageryProviderViewModel: new Cesium.ProviderViewModel({
+        //   name: "Stamen Watercolor",
+        //   iconUrl: Cesium.buildModuleUrl(
+        //     "Widgets/Images/ImageryProviders/stamenWatercolor.png"
+        //   ),
+        //   tooltip: "Stamen Watercolor",
+        //   creationFunction: function () {
+        //     return new Cesium.UrlTemplateImageryProvider({
+        //       url: "https://stamen-tiles.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.png",
+        //     });
+        //   },
+        // }),
         // terrainProvider: Cesium.createWorldTerrain(),
       });
       // HDR rendering

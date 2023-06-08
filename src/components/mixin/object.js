@@ -300,7 +300,7 @@ export default {
             // add the weather station billboard
 
             window.viewer.entities.add({
-              name: station.ID,
+              name: `weather+${station.ID}`,
               properties: {
                 id: station.ID,
                 name: station.Location,
@@ -361,10 +361,17 @@ export default {
           // add the click event to the weather stations
           window.viewer.selectedEntityChanged.addEventListener(
             (selectedEntity) => {
+              console.log(selectedEntity);
               if (Cesium.defined(selectedEntity)) {
                 window.viewer.infoBox.viewModel.description =
                   selectedEntity.description.getValue();
-                const tLoading = this.openLoading();
+
+                let tLoading = 1;
+                if (selectedEntity.name.includes("weather")) {
+                  // open the loading
+                  tLoading = this.openLoading();
+                }
+
                 // 如果没有properties, 返回
                 if (!selectedEntity.properties) {
                   return;
@@ -388,7 +395,10 @@ export default {
                     },
                   })
                   .then(function (response) {
-                    tLoading.close();
+                    console.log(tLoading);
+                    if (tLoading !== 1) {
+                      tLoading.close();
+                    }
 
                     // Base64 to Uint8Array
                     const base64ToUint8Array = (base64) =>
