@@ -506,9 +506,12 @@ export default {
       Bus.$emit("updateTreeData", window.treeData);
 
       // clear all the models in the scene
-      // window.viewer.scene.primitives.removeAll();
-      window.viewer.entities.removeAll();
       window.viewer.dataSources.removeAll();
+
+      window.viewer.entities.removeAll();
+
+      // window.viewer.scene.primitives.removeAll();
+
       window.viewer.trackedEntity = undefined;
       delete window.czmlPath;
       delete window.tileset;
