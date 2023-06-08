@@ -255,6 +255,8 @@ export default {
       const token = "dapib93d3d12501be524f4e69051c5417567";
       const endpoint =
         "dbfs:/FileStore/shared_uploads/suyunlei@u.nus.edu/weather/points.json";
+
+      const rLoading = this.openLoading();
       axios
         .get(`${apiUrl}/dbfs/read`, {
           headers: {
@@ -266,7 +268,7 @@ export default {
             cache: false,
           },
         })
-        .then(function (response) {
+        .then((response) => {
           // Base64 to Uint8Array
           const base64ToUint8Array = (base64) =>
             Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
@@ -355,87 +357,90 @@ export default {
 
           console.log(window.viewer.entities);
 
+          rLoading.close();
           // add the click event to the weather stations
-          window.viewer.selectedEntityChanged.addEventListener(function (
-            selectedEntity
-          ) {
-            if (Cesium.defined(selectedEntity)) {
-              window.viewer.infoBox.viewModel.description =
-                selectedEntity.description.getValue();
+          window.viewer.selectedEntityChanged.addEventListener(
+            (selectedEntity) => {
+              if (Cesium.defined(selectedEntity)) {
+                window.viewer.infoBox.viewModel.description =
+                  selectedEntity.description.getValue();
+                const tLoading = this.openLoading();
+                // 如果没有properties, 返回
+                if (!selectedEntity.properties) {
+                  return;
+                }
 
-              // 如果没有properties, 返回
-              if (!selectedEntity.properties) {
-                return;
-              }
+                let entityID = selectedEntity.properties.id._value;
 
-              let entityID = selectedEntity.properties.id._value;
+                // get the weather data of the selected weather station through the ID
+                axios
+                  .get(`${apiUrl}/dbfs/read`, {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                      "Content-Type": "application/json",
+                    },
+                    params: {
+                      path: `${
+                        "dbfs:/FileStore/shared_uploads/suyunlei@u.nus.edu/weather/weather" +
+                        entityID +
+                        ".json"
+                      }`,
+                    },
+                  })
+                  .then(function (response) {
+                    tLoading.close();
 
-              // get the weather data of the selected weather station through the ID
-              axios
-                .get(`${apiUrl}/dbfs/read`, {
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                  },
-                  params: {
-                    path: `${
-                      "dbfs:/FileStore/shared_uploads/suyunlei@u.nus.edu/weather/weather" +
-                      entityID +
-                      ".json"
-                    }`,
-                  },
-                })
-                .then(function (response) {
-                  // Base64 to Uint8Array
-                  const base64ToUint8Array = (base64) =>
-                    Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
-                  const bytes = base64ToUint8Array(response.data.data);
+                    // Base64 to Uint8Array
+                    const base64ToUint8Array = (base64) =>
+                      Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+                    const bytes = base64ToUint8Array(response.data.data);
 
-                  // decode as utf-8 string
-                  const decoder = new TextDecoder("utf-8");
-                  const decodedString = decoder.decode(bytes);
+                    // decode as utf-8 string
+                    const decoder = new TextDecoder("utf-8");
+                    const decodedString = decoder.decode(bytes);
 
-                  // decode as json
-                  const jsonData = JSON.parse(decodedString);
-                  console.log(jsonData);
+                    // decode as json
+                    const jsonData = JSON.parse(decodedString);
+                    console.log(jsonData);
 
-                  // get the current time
-                  let currentTime = new Date();
-                  let month = currentTime.getMonth() + 1;
-                  let hour = currentTime.getHours();
+                    // get the current time
+                    let currentTime = new Date();
+                    let month = currentTime.getMonth() + 1;
+                    let hour = currentTime.getHours();
 
-                  // get the temparature and humidity of the current time
-                  let temparature, humidity;
+                    // get the temparature and humidity of the current time
+                    let temparature, humidity;
 
-                  jsonData.forEach((data) => {
-                    if (entityID < 10) {
-                      entityID = "0" + entityID;
-                    } else {
-                      entityID = entityID.toString();
-                    }
+                    jsonData.forEach((data) => {
+                      if (entityID < 10) {
+                        entityID = "0" + entityID;
+                      } else {
+                        entityID = entityID.toString();
+                      }
 
-                    // get the data of the current month and hour
-                    if (data.Month == month && data.Hour == hour) {
-                      let keys = Object.keys(data);
-                      keys.forEach((key) => {
-                        if (key.includes("Temperature")) {
-                          temparature = data[key];
-                        } else if (key.includes("RH")) {
-                          humidity = data[key];
-                        }
-                      });
+                      // get the data of the current month and hour
+                      if (data.Month == month && data.Hour == hour) {
+                        let keys = Object.keys(data);
+                        keys.forEach((key) => {
+                          if (key.includes("Temperature")) {
+                            temparature = data[key];
+                          } else if (key.includes("RH")) {
+                            humidity = data[key];
+                          }
+                        });
 
-                      let weatherData = [temparature, humidity];
-                      Bus.$emit("visualizeWeatherData", weatherData);
-                      console.log(temparature);
-                      console.log(humidity);
-                    }
+                        let weatherData = [temparature, humidity];
+                        Bus.$emit("visualizeWeatherData", weatherData);
+                        console.log(temparature);
+                        console.log(humidity);
+                      }
+                    });
                   });
-                });
-            } else {
-              viewer.infoBox.viewModel.description = "";
+              } else {
+                viewer.infoBox.viewModel.description = "";
+              }
             }
-          });
+          );
         })
         .catch(function (error) {
           // handle error
