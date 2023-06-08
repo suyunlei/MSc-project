@@ -12,7 +12,7 @@ export default {
         },
         {
           name: "clearAll",
-          label: "Clear All",
+          label: "Clear Entities",
         },
       ],
     },
