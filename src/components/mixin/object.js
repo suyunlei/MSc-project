@@ -495,22 +495,25 @@ export default {
      * */
     clearAll() {
       // clear the treeData
-      window.treeData = [];
+      window.treeData = [
+        {
+          id: 1,
+          disabled: true,
+          label: "NUS Building Model",
+        },
+      ];
+
       Bus.$emit("updateTreeData", window.treeData);
 
       // clear all the models in the scene
-      window.viewer.scene.primitives.removeAll();
-
-      // 以下代码在添加新的数据后会不显示
+      // window.viewer.scene.primitives.removeAll();
       window.viewer.entities.removeAll();
       window.viewer.dataSources.removeAll();
       window.viewer.trackedEntity = undefined;
-      window.viewer.resize();
-      window.viewer.scene.requestRender();
-      // delete window.czmlPath;
-      // delete window.tileset;
-      // delete window.CZMLDataSource;
-      // delete window.weatherStations;
+      delete window.czmlPath;
+      delete window.tileset;
+      delete window.CZMLDataSource;
+      delete window.weatherStations;
     },
   },
 };
