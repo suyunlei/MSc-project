@@ -50,12 +50,16 @@ export default {
       name: "cozie",
       content: [
         {
-          name: "get_participant_menu",
-          label: "Participant Menu",
+          name: "getDev",
+          label: "Dev",
         },
         {
-          name: "load_participant_data",
-          label: "Trace the Participant",
+          name: "getAnna",
+          label: "Anna",
+        },
+        {
+          name: "getAnto",
+          label: "Anto",
         },
       ],
     },

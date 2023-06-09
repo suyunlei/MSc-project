@@ -458,21 +458,31 @@ export default {
         });
     },
 
+    getDev() {
+      this.get_participant_menu("dev");
+    },
+
+    getAnna() {
+      this.get_participant_menu("anna");
+    },
+
+    getAnto() {
+      this.get_participant_menu("anto");
+    },
+
     /**
      * get the cozie participants menu
      * @returns {void}
      */
 
-    get_participant_menu() {
+    get_participant_menu(id_experiment) {
       // loading animation
       const rLoading = this.openLoading();
-
       const url =
         "https://c3sclddcgcwy5tvzpfumcuggoa0unbuf.lambda-url.ap-southeast-1.on.aws/";
-
       var data = {
         api_key: "bqXYG83JNPa2l2uCi2zXZp08xxx",
-        id_experiment: "dev", // might change to "dev, anna, anto"
+        id_experiment: id_experiment, // might change to "dev, anna, anto"
       };
       let participants = [];
       axios
