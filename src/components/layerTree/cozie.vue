@@ -106,6 +106,10 @@ export default {
         if (!data) {
           return;
         }
+        // Preventing bugs that lead to duplicate data due to repeated additions
+        if (this.cozieData.length > 0) {
+          this.cozieData = [];
+        }
         data.forEach((data) => {
           this.cozieData.push({
             id: this.createRandomId(),
