@@ -28,10 +28,10 @@ export default {
           name: "addCZML",
           label: "Load Path",
         },
-        {
-          name: "addGeoJSON",
-          label: "addGeoJSON",
-        },
+        // {
+        //   name: "addGeoJSON",
+        //   label: "addGeoJSON",
+        // },
       ],
     },
     {
