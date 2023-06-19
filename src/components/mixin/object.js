@@ -520,6 +520,7 @@ export default {
 
       window.viewer.entities.removeAll();
 
+      window.viewer.trackedEntity = undefined;
       // window.viewer.scene.primitives.removeAll();
 
       window.viewer.trackedEntity = undefined;

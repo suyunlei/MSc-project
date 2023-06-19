@@ -6,7 +6,7 @@
       left="calc(80%-300px)"
       top="5%"
       width="800px"
-      maxHeight="1000px"
+      maxHeight="500px"
     >
       <div class="finalChart" v-if="show">
         <div id="chart1" style="height: 400px" ref="chart1"></div>
