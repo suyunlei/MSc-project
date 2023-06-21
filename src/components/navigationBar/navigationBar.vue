@@ -7,7 +7,7 @@
           <input type="file" id="fileInput" @change="json2CZML" />
         </div>
       </div>
-      <el-tabs type="border-card" v-model="activeName">
+      <el-tabs type="border-card" v-model="activeName" class="tabs">
         <el-tab-pane
           v-for="tab in tabs"
           :key="tab.name"
@@ -114,9 +114,11 @@ export default {
   border-right: 2px solid rgb(33, 34, 44);
   margin-right: 7px;
 }
+
 .buttonBox {
   font-size: 12px;
   margin-left: 20px;
+  cursor: pointer;
 }
 .buttondiv:last-child {
   border-right: 0;
