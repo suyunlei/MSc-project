@@ -23,7 +23,7 @@ npm run serve
 
 ```
 
-- Once the code has finished compiling, the app link will be automatically generated. Our app will run automatically on your default browser. If not, click the link to open the app for the first time:
+- Once the code has finished compiling, the app link will be automatically generated. Our app will run automatically on your default browser. If not, click the link to open the app for the first time.
 
 ## Description
 
