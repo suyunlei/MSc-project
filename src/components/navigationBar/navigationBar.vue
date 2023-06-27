@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-// 工具栏配置
+// toolbar config
 import tabs from "../config/config.vue";
 import object from "../mixin/object";
 import json2CZML from "../mixin/json2CZML";
@@ -50,7 +50,7 @@ export default {
     this.tabs = tabs.tabs;
   },
   methods: {
-    // 提示信息
+    // reminder messages
     message(type, info) {
       this.$notify({
         message: info,
@@ -59,7 +59,7 @@ export default {
         offset: 140,
       });
     },
-    // 点击事件
+    // click events
     btnEvent(type, btn) {
       if (this[type]) {
         this[type](btn);
