@@ -38,4 +38,4 @@ Welcome to the UAL Digital Twins application. With this app, you can easily visu
 
 1. SU YUNLEI (UAL Research Assistant)
 2. Lei Binyu (UAL PHD Student)
-3. Prof.Filip
+3. Dr Filip Biljecki
