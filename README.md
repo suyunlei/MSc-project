@@ -1,5 +1,10 @@
 # UAL Digital Twin App
 
+# Documentation
+
+You can check the full documentation via:
+https://su-yun-lei.gitbook.io/ual-dt-doc/
+
 ## Before started
 
 - Please make sure you have installed **Node** beforehand. (If you don’t know how to install Node.js, please check [https://nodejs.org/en/download](https://nodejs.org/en/download))
