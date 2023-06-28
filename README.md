@@ -1,6 +1,6 @@
 # UAL Digital Twin App
 
-# Documentation
+## Documentation
 
 You can check the full documentation via:
 https://su-yun-lei.gitbook.io/ual-dt-doc/
@@ -19,7 +19,7 @@ npm i
 
 ---
 
-# Start DT App
+## Start DT App
 
 - After installing all the necessary software and gaining a basic understanding of Vue and Cesium, you can launch our application by running the following command:
 
