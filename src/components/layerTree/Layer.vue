@@ -22,6 +22,7 @@
           :default-expanded-keys="defaultExpanded"
           :default-checked-keys="defaultCheck"
           @check-change="handleCheckChange"
+          :props="defaultProps"
         >
           <span
             class="custom-tree-node"
@@ -30,15 +31,7 @@
           >
             <span>
               <i v-if="data.children" class="el-icon-folder"></i>
-              <i
-                v-else
-                :class="
-                  data.sourceType === 'location'
-                    ? 'el-icon-location-outline'
-                    : ''
-                "
-              >
-              </i>
+              {{ data.label }}
             </span>
           </span>
         </el-tree>
@@ -50,7 +43,6 @@
 <script>
 import Bus from "@tools/Bus";
 import Popup from "@tools/Popup";
-import { debug } from "console";
 // 工程树工具
 let _treeTool;
 export default {
@@ -67,11 +59,13 @@ export default {
       maxHeight: "800px",
       defaultCheck: [],
       defaultExpanded: [],
-      selectNode: undefined,
-      isClickParent: false,
-      isNewFold: false,
+
       treeData: [],
-      maxChecked: 3, // max checked number of nodes
+      maxChecked: 1, // max checked number of nodes
+      defaultProps: {
+        children: "children",
+        label: "label",
+      },
     };
   },
   mounted() {
@@ -81,46 +75,62 @@ export default {
     // 定义中转站事件
     this.initBusEvent();
   },
-  computed: {
-    checkedCount() {
-      let count = 0;
-      this.$refs.tree.getCheckedNodes().forEach((node) => {
-        if (node.checked) {
-          count++;
-        }
-      });
-      return count;
-    },
-  },
   destroyed() {
     _treeTool = undefined;
   },
   methods: {
-    // update the tree data
+    /***
+     * @param {Object} data
+     * @description update the tree node
+     * @returns {void}
+     */
     updateTreeData(data) {
       this.treeData = data;
     },
-    // check the node
-    handleCheckChange(data, checked, indeterminate) {
-      if (this.checkedCount > this.maxChecked) {
-        // 取消勾选最后一个勾选的节点
+    /***
+     * @param {Object} data
+     * @param {Boolean} checked
+     * @description check the node
+     * @returns {void}
+     */
+    handleCheckChange(data, checked) {
+      let num = this.$refs.tree.getCheckedNodes().length;
+      // store the checked nodes
+      window.attributeArray = this.$refs.tree.getCheckedNodes();
+      console.log(window.attributeArray);
+      if (num > this.maxChecked) {
+        // cancel the last checked node
         this.$refs.tree.setChecked(
           this.$refs.tree.getCheckedNodes().pop().id,
           false
         );
+        this.$message({
+          message: `Maximum of ${this.maxChecked}nodes can be ticked`,
+          type: "warning",
+        });
       } else {
         if (checked) {
-          window.checked_id = data.id;
-          window.checked_name = data.name;
+          // window.checked_id = data.id;
+          // window.checked_name = data.label;
+          Bus.$emit("showAttribute", data.label, data.id);
+        } else {
+          Bus.$emit("closeAttribute", data.label);
+          console.log("close");
         }
       }
-      // console.log(data, checked, indeterminate);
     },
     // close the popup
+    /**
+     * @description close the popup
+     * @returns {void}
+     */
     close() {
       Bus.$emit("checkTab", "index/add/treeLayer", false);
     },
-    // init the Bus Event
+    /***
+     * @description init the Bus Event
+     * @returns {void}
+     */
     initBusEvent() {
       Bus.$off("clearFirstParentNode");
       Bus.$on("clearFirstParentNode", (parentName) => {
@@ -129,8 +139,20 @@ export default {
       });
       Bus.$off("updateTreeData");
       Bus.$on("updateTreeData", (data) => {
-        // 更新树数据
+        // update the tree data
         this.updateTreeData(data);
+      });
+
+      // uncheck the node
+      Bus.$off("unsetChecked");
+      Bus.$on("unsetChecked", (data) => {
+        this.$refs.tree.setChecked(data.fid, false);
+      });
+
+      // clear the checked node
+      Bus.$off("clearCheckedNode");
+      Bus.$on("clearCheckedNode", () => {
+        this.$refs.tree.setCheckedKeys([]);
       });
     },
     // ergodic Node
@@ -202,23 +224,6 @@ export default {
     clearFirstParentNode(name) {
       let parentnode = this.getParentNodeByName(name);
       parentnode && this.remove(parentnode);
-    },
-
-    appendTreeNode() {
-      this.append(this.selectNode);
-    },
-    expandedNode(node) {
-      if (node && node.children && !node.expanded) {
-        let treeNode = this.$refs.tree.getNode(node.id);
-        if (treeNode) {
-          treeNode.expanded = true;
-          this.updataTreeNode({
-            id: node.id,
-            key: "expanded",
-            value: true,
-          });
-        }
-      }
     },
   },
 };

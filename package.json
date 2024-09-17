@@ -9,17 +9,21 @@
   },
   "main": "background.js",
   "dependencies": {
+    "axios": "^1.4.0",
     "cesium": "^1.88.0",
     "console": "^0.7.2",
     "core-js": "^3.6.5",
+    "echarts": "^5.4.2",
     "element-ui": "^2.15.6",
     "less-loader": "^11.1.0",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-echarts": "^6.5.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^5.0.8",
     "@vue/cli-plugin-eslint": "^5.0.8",
     "@vue/cli-service": "^5.0.8",
+    "@vue/composition-api": "^1.7.1",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",

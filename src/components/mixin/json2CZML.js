@@ -8,7 +8,8 @@ export default {
       }
       window.treeData.push({
         id: file.name,
-        name: file.name,
+        label: file.name,
+        disabled: true,
         children: [],
       });
       const reader = new FileReader();
@@ -25,7 +26,7 @@ export default {
           for (let i = 3; i < attributes.length; i++) {
             window.treeData[index].children.push({
               id: i + 2,
-              name: attributes[i],
+              label: attributes[i],
             });
           }
         }
@@ -36,7 +37,27 @@ export default {
         }
 
         // init the vehicle model
-        let vehicleEntity = await Cesium.IonResource.fromAssetId(1669983);
+        let vehicleEntity = await Cesium.IonResource.fromAssetId(1669983); // Cesium Man
+        // let vehicleEntity = await Cesium.IonResource.fromAssetId(1681154);
+
+        // not working
+        // let animations;
+
+        // const model = await Cesium.Model.fromGltfAsync({
+        //   url: vehicleEntity.url,
+        //   gltfCallback: (gltf) => {
+        //     animations = gltf.animations;
+        //   },
+        // });
+        // window.viewer.scene.primitives.add(model);
+        // model.readyEvent.addEventListener(() => {
+        //   model.activeAnimations.add({
+        //     index: animations.length - 1,
+        //     loop: Cesium.ModelAnimationLoop.REPEAT,
+        //     multiplier: 0.1,
+        //   });
+        // });
+
         window.vehicleEntity = vehicleEntity;
         // init a CZML file
         const czmlPath = [
@@ -47,11 +68,15 @@ export default {
           },
           {
             id: "Person",
-            availability: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
+            availability: "2012-08-04T10:00:00Z/2012-08-04T12:15:40Z",
+            clock: {
+              interval: "2012-08-04T10:00:00Z/2012-08-04T12:15:40Z",
+              currentTime: "2012-08-04T10:00:00Z",
+              range: "CLAMPED",
+            },
             label: {
               fillColor: [
                 {
-                  interval: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
                   rgba: [166, 30, 77, 255],
                 },
               ],
@@ -66,18 +91,18 @@ export default {
               scale: 1.0,
               show: [
                 {
-                  interval: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
                   boolean: true,
                 },
               ],
               style: "FILL",
-              text: "Participant",
+              text: "Person",
               verticalOrigin: "CENTER",
             },
             model: {
               gltf: vehicleEntity,
-              minimumPixelSize: 100,
-              maximumScale: 50,
+              minimumPixelSize: 200,
+              maximumScale: 20,
+              // animationSpeed: 0.1,
             },
             orientation: {
               velocityReference: "#position",
@@ -98,20 +123,17 @@ export default {
               material: {
                 solidColor: {
                   color: {
-                    interval: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
                     rgba: [166, 30, 77, 255],
                   },
                 },
               },
               width: [
                 {
-                  interval: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
                   number: 5.0,
                 },
               ],
               show: [
                 {
-                  interval: "2012-08-04T10:00:00Z/2012-08-04T14:00:00Z",
                   boolean: true,
                 },
               ],

@@ -1,13 +1,13 @@
 <template>
   <div>
     <Popup
-      ref="perspective"
+      ref="popup"
       :title="title"
-      left="calc(80% - 200px)"
+      left="calc(80% - 250px)"
       top="5%"
       @close="close"
     >
-      <div class="perspectiveContainer">
+      <div class="perspectiveContainer" v-if="show">
         <el-row>
           <el-button type="primary" plain @click="ToGod">
             God Perspective
@@ -15,6 +15,9 @@
           <el-button type="success" plain @click="ToFirstPerson">
             First-Person Perspective
           </el-button>
+          <el-button type="info" @click="showResults"
+            >Show the Whole Results</el-button
+          >
         </el-row>
       </div>
     </Popup>
@@ -33,27 +36,36 @@ export default {
   },
   data() {
     return {
-      title: "Perspective",
+      title: "Toolbar",
+      show: false,
     };
   },
   mounted() {
-    this.$refs.perspective.open();
-    this.init();
+    this.$nextTick(() => {
+      this.initBusEvent();
+    });
   },
   methods: {
-    init() {
-      // Bus.$off("togod");
-      // Bus.$on("togod", this.ToGod);
-      // Bus.$off("tofirstperson");
-      // Bus.$on("tofirstperson", this.ToFirstPerson);
+    /**
+     * @description init the bus event
+     * @returns {void}
+     */
+    initBusEvent() {
+      Bus.$off("openPerspective");
+      Bus.$on("openPerspective", this.open);
     },
     open() {
-      this.$refs.perspective.open();
+      this.$refs.popup.open();
+      this.show = true;
     },
     close() {
-      this.$refs.perspective.close();
+      // this.$refs.popup.close();
     },
-    // God Perspective
+    /**
+     * God Perspective
+     * @param {*} e
+     * @returns {void}
+     */
     ToGod() {
       if (!window.CZMLDataSource) {
         this.$message({
@@ -67,7 +79,11 @@ export default {
         );
       }
     },
-    // First-Person Perspective
+    /**
+     * First-Person Perspective
+     * @param {*} e
+     * @returns {void}
+     */
     ToFirstPerson() {
       if (!window.CZMLDataSource) {
         this.$message({
@@ -80,6 +96,12 @@ export default {
         );
       }
     },
+    /**
+     * Update the view
+     * @param {number} heading
+     * @param {number} pitch
+     * @param {number} roll
+     */
     updateView(heading, pitch, roll) {
       let trackEntity = window.CZMLDataSource.entities.getById("Person");
       let center = trackEntity.position.getValue(
@@ -97,6 +119,13 @@ export default {
         transform,
         new Cesium.Cartesian3(heading, pitch, roll)
       );
+    },
+    /**
+     * Show the Whole Results
+     * @param {*} e
+     */
+    showResults() {
+      Bus.$emit("showResults");
     },
   },
 };

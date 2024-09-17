@@ -1,4 +1,5 @@
 import Bus from "@tools/Bus";
+import axios from "axios";
 
 export default {
   methods: {
@@ -28,7 +29,10 @@ export default {
       );
       window.tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation);
     },
-    // load the NUS building model (3D Tiles, not cloud point model)
+    /**
+     * load the NUS model
+     * @returns {void}
+     */
     loadNUS() {
       console.log("start load NUS model");
       const tileset = new Cesium.Cesium3DTileset({
@@ -37,9 +41,9 @@ export default {
       tileset.style = new Cesium.Cesium3DTileStyle({
         color: {
           conditions: [
-            ["${height} >= 20", 'color("ORANGERED")'],
-            ["${height} >= 10", 'color("DARKORANGE")'],
-            ["true", 'color("blue")'],
+            // ["${height} >= 20", 'color("ORANGERED")'],
+            // ["${height} >= 10", 'color("DARKORANGE")'],
+            // ["true", 'color("white")'],
           ],
         },
         show: "${height} > 0",
@@ -51,7 +55,6 @@ export default {
       window.tileset.readyPromise.then((tileset) => {
         // this.changeHeight(-120);
         window.viewer.scene.primitives.add(tileset);
-        console.log(tileset);
         window.viewer.zoomTo(
           tileset,
           new Cesium.HeadingPitchRange(
@@ -64,12 +67,14 @@ export default {
       // add the NUS model to the treeData
       window.treeData.push({
         id: 1,
-        name: "NUS Building Model",
+        label: "NUS Building Model",
         disabled: true,
       });
       Bus.$emit("updateTreeData", window.treeData);
     },
-    // add a CZML
+    /**
+     * load the thermal comfort data (CZML file)
+     */
     addCZML() {
       // force the user to select a file
       if (!window.czmlPath) {
@@ -79,82 +84,90 @@ export default {
           duration: 2000,
         });
       }
-      // set the Cesium Clock time to match the CZML data time interval
-      window.viewer.clock.startTime = Cesium.JulianDate.fromIso8601(
-        "2012-08-04T16:00:00Z"
-      );
-      window.viewer.clock.stopTime = Cesium.JulianDate.fromIso8601(
-        "2012-08-04T16:30:00Z"
-      );
-      window.viewer.clock.currentTime = Cesium.JulianDate.fromIso8601(
-        "2012-08-04T16:00:00Z"
-      );
-      window.viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP; // loop at the end
-      window.viewer.clock.multiplier = 0.1;
 
-      // Add a blank CzmlDataSource to hold our multi-part entity/entities.
-      const dataSource = new Cesium.CzmlDataSource();
+      window.viewer.clock.startTime = Cesium.JulianDate.fromIso8601(
+        "2012-08-04T10:00:00Z"
+      ); // set the Cesium Clock time to match the CZML data time interval
+
+      window.viewer.clock.stopTime = Cesium.JulianDate.fromIso8601(
+        "2012-08-04T12:15:40Z"
+      );
+
+      window.viewer.clock.currentTime = Cesium.JulianDate.fromIso8601(
+        "2012-08-04T10:00:00Z"
+      );
+
+      window.viewer.clock.clockRange = Cesium.ClockRange.CLAMPED; // Stop at the end
+      // window.viewer.clock.multiplier = 0.1;
+
+      const dataSource = new Cesium.CzmlDataSource(); // Add a blank CzmlDataSource to hold our multi-part entity/entities.
       window.viewer.dataSources.add(dataSource);
       window.CZMLDataSource = dataSource;
+
       const partsToLoad = [
         {
-          range: [0, 1200],
+          // range: [0, 1200],
           requested: false,
           loaded: false,
         },
       ];
-      this.processPart(partsToLoad[0]);
-
-      // set the clock and get the attribute
-      window.viewer.clock.onTick.addEventListener(function (clock) {
-        if (window.czmlPath && window.checked_name) {
-          const properties = window.czmlPath[1].properties;
-          const name = window.checked_name;
-          // get the start time of the CZML
-          let startTime = Cesium.JulianDate.fromIso8601(properties.epoch);
-          let interval = Cesium.JulianDate.secondsDifference(
-            clock.currentTime,
-            startTime
-          );
-          // get the attribute value according to the time interval
-          for (let i = 0; i < properties[name].number.length; i++) {
-            if (properties[name].number.indexOf(parseInt(interval)) !== -1) {
-              let timeIndex = properties[name].number.indexOf(
-                parseInt(interval)
-              );
-              // value is followed by the time interval in the CZML
-              let value = properties[name].number[timeIndex + 1];
-              window.thermal_value = value;
-              // let the attribute table change
-              Bus.$emit("change");
-            }
-          }
-        }
-      });
+      this.processPart(partsToLoad[0]); // process the first part
     },
+    /**
+     * process the CZML file
+     * @param {Object} part - the CZML file
+     */
     processPart(part) {
       part.requested = true;
-      window.CZMLDataSource.process(window.czmlPath).then(function () {
-        console.log(window.czmlPath);
-        part.loaded = true;
-        // Follow the vehicle with the camera. something to fix
+      window.CZMLDataSource.process(window.czmlPath).then(function (ds) {
+        part.loaded = true; // mark this part as loaded
+        Bus.$emit("openPerspective"); // open the perspective table
         if (!window.viewer.trackedEntity) {
-          window.viewer.trackedEntity =
-            window.CZMLDataSource.entities.getById("Person");
+          window.viewer.trackedEntity = ds.entities.getById("Person"); // track the person model
         }
       });
     },
-    // still not working
+    // under development
     addGeoJSON() {
-      const tileset = new Cesium.Cesium3DTileset({
-        url: Cesium.IonResource.fromAssetId(1606578),
-      });
-      tileset.readyPromise.then((tileset) => {
-        window.viewer.scene.primitives.add(tileset);
-        console.log(tileset);
-      });
+      const apiUrl = "https://dbc-91034050-29f6.cloud.databricks.com/api/2.0";
+      const token = "dapib93d3d12501be524f4e69051c5417567";
+      const endpoint =
+        "dbfs:/FileStore/shared_uploads/suyunlei@u.nus.edu/weather/points.json";
+      axios
+        .get(`${apiUrl}/dbfs/read`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          params: {
+            path: endpoint,
+          },
+        })
+        .then(function (response) {
+          // handle success
+          console.log(response.data);
+          // Base64 to Uint8Array
+          const base64ToUint8Array = (base64) =>
+            Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+          const bytes = base64ToUint8Array(response.data.data);
+
+          // decode as utf-8 string
+          const decoder = new TextDecoder("utf-8");
+          const decodedString = decoder.decode(bytes);
+
+          // decode as json
+          const jsonData = JSON.parse(decodedString);
+          console.log(jsonData);
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        });
     },
-    // add animations to the building model
+    /**
+     * add the animation to the building model
+     * @returns {void}
+     */
     addAnimation() {
       const handler = new Cesium.ScreenSpaceEventHandler(
         window.viewer.scene.canvas
@@ -231,6 +244,290 @@ export default {
           feature.color = Cesium.Color.LIME;
         }
       }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+    },
+
+    /**
+     * load the weather data
+     * @returns {void}
+     */
+    loadWeatherData() {
+      const apiUrl = "https://dbc-91034050-29f6.cloud.databricks.com/api/2.0";
+      const token = "dapib93d3d12501be524f4e69051c5417567";
+      const endpoint =
+        "dbfs:/FileStore/shared_uploads/suyunlei@u.nus.edu/weather/points.json";
+
+      const rLoading = this.openLoading();
+      axios
+        .get(`${apiUrl}/dbfs/read`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          params: {
+            path: endpoint,
+            cache: false,
+          },
+        })
+        .then((response) => {
+          // Base64 to Uint8Array
+          const base64ToUint8Array = (base64) =>
+            Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+          const bytes = base64ToUint8Array(response.data.data);
+
+          // decode as utf-8 string
+          const decoder = new TextDecoder("utf-8");
+          const decodedString = decoder.decode(bytes);
+
+          // decode as json
+          const jsonData = JSON.parse(decodedString);
+          window.weatherStations = jsonData;
+          console.log(window.weatherStations);
+
+          // add the weather stations into the scene
+          window.weatherStations.forEach((station) => {
+            // 数据里写反了
+            let lat = station.Long;
+            let lon = station.Lat;
+            let height;
+
+            // if the station is on the rooftop, give it a height
+            if (station.height) {
+              height = station.height + 2;
+            } else {
+              height = 0;
+            }
+
+            // add the weather station billboard
+
+            window.viewer.entities.add({
+              name: `weather+${station.ID}`,
+              properties: {
+                id: station.ID,
+                name: station.Location,
+                type: station.Type,
+                description: station.Description,
+              },
+              position: Cesium.Cartesian3.fromDegrees(lon, lat, height),
+              billboard: {
+                image: "https://i.328888.xyz/2023/05/17/Vi1uuz.png",
+                width: 80,
+                height: 80,
+              },
+              // add label
+              label: {
+                text: station.Location + "\n" + station.ID,
+                fillColor: Cesium.Color.AQUA,
+                font: "18px sans-serif",
+                outlineColor: Cesium.Color.BLACK,
+                outlineWidth: 2,
+                style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+                verticalOrigin: Cesium.VerticalOrigin.CENTER,
+                horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
+                pixelOffset: new Cesium.Cartesian2(0, -50),
+              },
+              // add description
+              description: `
+              <div class="cesium-infoBox-description">
+                <table class="cesium-infoBox-defaultTable">
+                  <tbody>
+                    <tr>
+                      <th>Station Name</th>
+                      <td>${station.Location}</td> 
+                    </tr>
+                    <tr>
+                      <th>Type</th>
+                      <td>${station.Type}</td> 
+                    </tr>
+                    <tr>
+                      <th>Description</th>
+                      <td>${station.Description}</td> 
+                    </tr>
+                    <tr>
+                `,
+            });
+          });
+
+          // add the weather stations to the treeData
+          window.treeData.push({
+            id: "weatherStations",
+            label: "Weather Stations",
+            disabled: true,
+          });
+          Bus.$emit("updateTreeData", window.treeData);
+
+          console.log(window.viewer.entities);
+
+          rLoading.close();
+          // add the click event to the weather stations
+          window.viewer.selectedEntityChanged.addEventListener(
+            (selectedEntity) => {
+              console.log(selectedEntity);
+              if (Cesium.defined(selectedEntity)) {
+                window.viewer.infoBox.viewModel.description =
+                  selectedEntity.description.getValue();
+
+                let tLoading = 1;
+                if (selectedEntity.name.includes("weather")) {
+                  // open the loading
+                  tLoading = this.openLoading();
+                }
+
+                // 如果没有properties, 返回
+                if (!selectedEntity.properties) {
+                  return;
+                }
+
+                let entityID = selectedEntity.properties.id._value;
+
+                // get the weather data of the selected weather station through the ID
+                axios
+                  .get(`${apiUrl}/dbfs/read`, {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                      "Content-Type": "application/json",
+                    },
+                    params: {
+                      path: `${
+                        "dbfs:/FileStore/shared_uploads/suyunlei@u.nus.edu/weather/weather" +
+                        entityID +
+                        ".json"
+                      }`,
+                    },
+                  })
+                  .then(function (response) {
+                    console.log(tLoading);
+                    if (tLoading !== 1) {
+                      tLoading.close();
+                    }
+
+                    // Base64 to Uint8Array
+                    const base64ToUint8Array = (base64) =>
+                      Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+                    const bytes = base64ToUint8Array(response.data.data);
+
+                    // decode as utf-8 string
+                    const decoder = new TextDecoder("utf-8");
+                    const decodedString = decoder.decode(bytes);
+
+                    // decode as json
+                    const jsonData = JSON.parse(decodedString);
+                    console.log(jsonData);
+
+                    // get the current time
+                    let currentTime = new Date();
+                    let month = currentTime.getMonth() + 1;
+                    let hour = currentTime.getHours();
+
+                    // get the temparature and humidity of the current time
+                    let temparature, humidity;
+
+                    jsonData.forEach((data) => {
+                      if (entityID < 10) {
+                        entityID = "0" + entityID;
+                      } else {
+                        entityID = entityID.toString();
+                      }
+
+                      // get the data of the current month and hour
+                      if (data.Month == month && data.Hour == hour) {
+                        let keys = Object.keys(data);
+                        keys.forEach((key) => {
+                          if (key.includes("Temperature")) {
+                            temparature = data[key];
+                          } else if (key.includes("RH")) {
+                            humidity = data[key];
+                          }
+                        });
+
+                        let weatherData = [temparature, humidity];
+                        Bus.$emit("visualizeWeatherData", weatherData);
+                        console.log(temparature);
+                        console.log(humidity);
+                      }
+                    });
+                  });
+              } else {
+                viewer.infoBox.viewModel.description = "";
+              }
+            }
+          );
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        });
+    },
+
+    getDev() {
+      this.get_participant_menu("dev");
+    },
+
+    getAnna() {
+      this.get_participant_menu("anna");
+    },
+
+    getAnto() {
+      this.get_participant_menu("anto");
+    },
+
+    /**
+     * get the cozie participants menu
+     * @returns {void}
+     */
+
+    get_participant_menu(id_experiment) {
+      // loading animation
+      const rLoading = this.openLoading();
+      const url =
+        "https://c3sclddcgcwy5tvzpfumcuggoa0unbuf.lambda-url.ap-southeast-1.on.aws/";
+      var data = {
+        api_key: "bqXYG83JNPa2l2uCi2zXZp08xxx",
+        id_experiment: id_experiment, // might change to "dev, anna, anto"
+      };
+      let participants = [];
+      axios
+        .post(url, data)
+        .then((res) => {
+          console.log(`Status: ${res.status}`);
+          participants = res.data;
+          Bus.$emit("cozieTreeData", participants);
+          rLoading.close(); // close the loading animation
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+
+    /**
+     * @description: clear all the data in the scene
+     * @returns {void}
+     * @param {*}
+     * */
+    clearAll() {
+      // clear the treeData
+      window.treeData = [
+        {
+          id: 1,
+          disabled: true,
+          label: "NUS Building Model",
+        },
+      ];
+
+      Bus.$emit("updateTreeData", window.treeData);
+
+      // clear all the models in the scene
+      window.viewer.dataSources.removeAll();
+
+      window.viewer.entities.removeAll();
+
+      window.viewer.trackedEntity = undefined;
+      // window.viewer.scene.primitives.removeAll();
+
+      window.viewer.trackedEntity = undefined;
+      delete window.czmlPath;
+      delete window.tileset;
+      delete window.CZMLDataSource;
+      delete window.weatherStations;
     },
   },
 };

@@ -1,12 +1,12 @@
+/* packages/widgets/Source/shared.css */
 .cesium-svgPath-svg {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden
+  overflow: hidden;
 }
-
 .cesium-button {
   display: inline-block;
   position: relative;
@@ -22,63 +22,54 @@
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-  user-select: none
+  user-select: none;
 }
-
 .cesium-button:focus {
   color: #fff;
   fill: #fff;
   border-color: #ea4;
-  outline: 0
+  outline: none;
 }
-
 .cesium-button:hover {
   color: #fff;
   fill: #fff;
   background: #48b;
   border-color: #aef;
-  box-shadow: 0 0 8px #fff
+  box-shadow: 0 0 8px #fff;
 }
-
 .cesium-button:active {
   color: #000;
   fill: #000;
   background: #adf;
   border-color: #fff;
-  box-shadow: 0 0 8px #fff
+  box-shadow: 0 0 8px #fff;
 }
-
+.cesium-button:disabled,
 .cesium-button-disabled,
-.cesium-button-disabled:active,
 .cesium-button-disabled:focus,
 .cesium-button-disabled:hover,
-.cesium-button:disabled {
+.cesium-button-disabled:active {
   background: #303336;
   border-color: #444;
   color: #646464;
   fill: #646464;
   box-shadow: none;
-  cursor: default
+  cursor: default;
 }
-
 .cesium-button option {
   background-color: #000;
-  color: #eee
+  color: #eee;
 }
-
 .cesium-button option:disabled {
-  color: #777
+  color: #777;
 }
-
 .cesium-button input,
 .cesium-button label {
-  cursor: pointer
+  cursor: pointer;
 }
-
 .cesium-button input {
-  vertical-align: sub
+  vertical-align: sub;
 }
-
 .cesium-toolbar-button {
   box-sizing: border-box;
   width: 32px;
@@ -86,204 +77,168 @@
   border-radius: 14%;
   padding: 0;
   vertical-align: middle;
-  z-index: 0
+  z-index: 0;
 }
-
 .cesium-performanceDisplay-defaultContainer {
   position: absolute;
   top: 50px;
   right: 10px;
-  text-align: right
+  text-align: right;
 }
-
 .cesium-performanceDisplay {
-  background-color: rgba(40, 40, 40, .7);
+  background-color: rgba(40, 40, 40, 0.7);
   padding: 7px;
   border-radius: 5px;
   border: 1px solid #444;
-  font: bold 12px sans-serif
+  font: bold 12px sans-serif;
 }
-
 .cesium-performanceDisplay-fps {
-  color: #e52
+  color: #e52;
 }
-
 .cesium-performanceDisplay-throttled {
-  color: #a42
+  color: #a42;
 }
-
 .cesium-performanceDisplay-ms {
-  color: #de3
+  color: #de3;
 }
 
+/* packages/widgets/Source/Animation/Animation.css */
 .cesium-animation-theme {
   visibility: hidden;
   display: block;
   position: absolute;
-  z-index: -100
+  z-index: -100;
 }
-
 .cesium-animation-themeNormal {
-  color: #222
+  color: #222;
 }
-
 .cesium-animation-themeHover {
-  color: #4488b0
+  color: #4488b0;
 }
-
 .cesium-animation-themeSelect {
-  color: #242
+  color: #242;
 }
-
 .cesium-animation-themeDisabled {
-  color: #333
+  color: #333;
 }
-
 .cesium-animation-themeKnob {
-  color: #222
+  color: #222;
 }
-
 .cesium-animation-themePointer {
-  color: #2e2
+  color: #2e2;
 }
-
 .cesium-animation-themeSwoosh {
-  color: #8ac
+  color: #8ac;
 }
-
 .cesium-animation-themeSwooshHover {
-  color: #aef
+  color: #aef;
 }
-
 .cesium-animation-svgText {
   fill: #edffff;
   font-family: Sans-Serif;
   font-size: 15px;
-  text-anchor: middle
+  text-anchor: middle;
 }
-
 .cesium-animation-blank {
   fill: #000;
-  fill-opacity: .01;
-  stroke: none
+  fill-opacity: 0.01;
+  stroke: none;
 }
-
 .cesium-animation-rectButton {
   cursor: pointer;
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-  user-select: none
+  user-select: none;
 }
-
 .cesium-animation-rectButton .cesium-animation-buttonGlow {
   fill: #fff;
   stroke: none;
-  display: none
+  display: none;
 }
-
 .cesium-animation-rectButton:hover .cesium-animation-buttonGlow {
-  display: block
+  display: block;
 }
-
 .cesium-animation-rectButton .cesium-animation-buttonPath {
-  fill: #edffff
+  fill: #edffff;
 }
-
 .cesium-animation-rectButton .cesium-animation-buttonMain {
   stroke: #444;
-  stroke-width: 1.2
+  stroke-width: 1.2;
 }
-
 .cesium-animation-rectButton:hover .cesium-animation-buttonMain {
-  stroke: #aef
+  stroke: #aef;
 }
-
 .cesium-animation-rectButton:active .cesium-animation-buttonMain {
-  fill: #abd6ff
+  fill: #abd6ff;
 }
-
 .cesium-animation-buttonDisabled {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-  user-select: none
+  user-select: none;
 }
-
 .cesium-animation-buttonDisabled .cesium-animation-buttonMain {
-  stroke: #555
+  stroke: #555;
 }
-
 .cesium-animation-buttonDisabled .cesium-animation-buttonPath {
-  fill: #818181
+  fill: #818181;
 }
-
 .cesium-animation-buttonDisabled .cesium-animation-buttonGlow {
-  display: none
+  display: none;
 }
-
 .cesium-animation-buttonToggled .cesium-animation-buttonGlow {
   display: block;
-  fill: #2e2
+  fill: #2e2;
 }
-
 .cesium-animation-buttonToggled .cesium-animation-buttonMain {
-  stroke: #2e2
+  stroke: #2e2;
 }
-
 .cesium-animation-buttonToggled:hover .cesium-animation-buttonGlow {
-  fill: #fff
+  fill: #fff;
 }
-
 .cesium-animation-buttonToggled:hover .cesium-animation-buttonMain {
-  stroke: #2e2
+  stroke: #2e2;
 }
-
 .cesium-animation-shuttleRingG {
-  cursor: pointer
+  cursor: pointer;
 }
-
 .cesium-animation-shuttleRingPointer {
-  cursor: pointer
+  cursor: pointer;
 }
-
 .cesium-animation-shuttleRingPausePointer {
-  cursor: pointer
+  cursor: pointer;
 }
-
 .cesium-animation-shuttleRingBack {
   fill: #181818;
-  fill-opacity: .8;
+  fill-opacity: 0.8;
   stroke: #333;
-  stroke-width: 1.2
+  stroke-width: 1.2;
 }
-
 .cesium-animation-shuttleRingSwoosh line {
   stroke: #8ac;
   stroke-width: 3;
-  stroke-opacity: .2;
-  stroke-linecap: round
+  stroke-opacity: 0.2;
+  stroke-linecap: round;
 }
-
 .cesium-animation-knobOuter {
   cursor: pointer;
   stroke: #444;
-  stroke-width: 1.2
+  stroke-width: 1.2;
 }
-
 .cesium-animation-knobInner {
-  cursor: pointer
+  cursor: pointer;
 }
 
+/* packages/widgets/Source/BaseLayerPicker/BaseLayerPicker.css */
 .cesium-baseLayerPicker-selected {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  border: none
+  border: none;
 }
-
 .cesium-baseLayerPicker-dropDown {
   display: block;
   position: absolute;
@@ -293,7 +248,7 @@
   width: 320px;
   max-height: 500px;
   margin-top: 5px;
-  background-color: rgba(38, 38, 38, .75);
+  background-color: rgba(38, 38, 38, 0.75);
   border: 1px solid #444;
   padding: 6px;
   overflow: auto;
@@ -305,50 +260,46 @@
   transform: translate(0, -20%);
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0s .2s, opacity .2s ease-in, transform .2s ease-in
+  transition:
+    visibility 0s 0.2s,
+    opacity 0.2s ease-in,
+    transform 0.2s ease-in;
 }
-
 .cesium-baseLayerPicker-dropDown-visible {
   transform: translate(0, 0);
   visibility: visible;
   opacity: 1;
-  transition: opacity .2s ease-out, transform .2s ease-out
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
 }
-
 .cesium-baseLayerPicker-sectionTitle {
   display: block;
   font-family: sans-serif;
   font-size: 16pt;
   text-align: left;
   color: #edffff;
-  margin-bottom: 4px
+  margin-bottom: 4px;
 }
-
 .cesium-baseLayerPicker-choices {
-  margin-bottom: 5px
+  margin-bottom: 5px;
 }
-
 .cesium-baseLayerPicker-categoryTitle {
   color: #edffff;
-  font-size: 11pt
+  font-size: 11pt;
 }
-
 .cesium-baseLayerPicker-choices {
   display: block;
   border: 1px solid #888;
   border-radius: 5px;
-  padding: 5px 0
+  padding: 5px 0;
 }
-
 .cesium-baseLayerPicker-item {
   display: inline-block;
   vertical-align: top;
   margin: 2px 5px;
   width: 64px;
   text-align: center;
-  cursor: pointer
+  cursor: pointer;
 }
-
 .cesium-baseLayerPicker-itemLabel {
   display: block;
   font-family: sans-serif;
@@ -357,14 +308,12 @@
   vertical-align: middle;
   color: #edffff;
   cursor: pointer;
-  word-wrap: break-word
+  word-wrap: break-word;
 }
-
-.cesium-baseLayerPicker-item:focus .cesium-baseLayerPicker-itemLabel,
-.cesium-baseLayerPicker-item:hover .cesium-baseLayerPicker-itemLabel {
-  text-decoration: underline
+.cesium-baseLayerPicker-item:hover .cesium-baseLayerPicker-itemLabel,
+.cesium-baseLayerPicker-item:focus .cesium-baseLayerPicker-itemLabel {
+  text-decoration: underline;
 }
-
 .cesium-baseLayerPicker-itemIcon {
   display: inline-block;
   position: relative;
@@ -377,33 +326,37 @@
   margin: 0;
   padding: 0;
   cursor: pointer;
-  box-sizing: border-box
+  box-sizing: border-box;
 }
-
 .cesium-baseLayerPicker-item:hover .cesium-baseLayerPicker-itemIcon {
   border-color: #fff;
-  box-shadow: 0 0 8px #fff, 0 0 8px #fff
+  box-shadow: 0 0 8px #fff, 0 0 8px #fff;
 }
-
 .cesium-baseLayerPicker-selectedItem .cesium-baseLayerPicker-itemLabel {
-  color: #bdecf8
+  color: rgb(189, 236, 248);
 }
-
 .cesium-baseLayerPicker-selectedItem .cesium-baseLayerPicker-itemIcon {
-  border: double 4px #bdecf8
+  border: double 4px rgb(189, 236, 248);
 }
 
+/* packages/engine/Source/Widget/CesiumWidget.css */
 .cesium-widget {
-  position: relative
+  font-family: sans-serif;
+  font-size: 16px;
+  overflow: hidden;
+  display: block;
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
-
 .cesium-widget,
 .cesium-widget canvas {
   width: 100%;
   height: 100%;
-  touch-action: none
+  touch-action: none;
 }
-
 .cesium-widget-credits {
   display: block;
   position: absolute;
@@ -411,15 +364,13 @@
   left: 0;
   color: #fff;
   font-size: 10px;
-  text-shadow: 0 0 2px #000;
-  padding-right: 5px
+  text-shadow: 0px 0px 2px #000000;
+  padding-right: 5px;
 }
-
 .cesium-widget-credits a,
 .cesium-widget-credits a:visited {
-  color: #fff
+  color: #fff;
 }
-
 .cesium-widget-errorPanel {
   position: absolute;
   top: 0;
@@ -427,17 +378,15 @@
   bottom: 0;
   left: 0;
   text-align: center;
-  background: rgba(0, 0, 0, .7);
-  z-index: 99999
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 99999;
 }
-
 .cesium-widget-errorPanel:before {
   display: inline-block;
   vertical-align: middle;
   height: 100%;
-  content: ""
+  content: "";
 }
-
 .cesium-widget-errorPanel-content {
   width: 75%;
   max-width: 500px;
@@ -448,75 +397,74 @@
   border-radius: 7px;
   background-color: #f0d9d5;
   font-size: 14px;
-  color: #510c00
+  color: #510c00;
 }
-
 .cesium-widget-errorPanel-content.expanded {
-  max-width: 75%
+  max-width: 75%;
 }
-
 .cesium-widget-errorPanel-header {
   font-size: 18px;
-  font-family: "Open Sans", Verdana, Geneva, sans-serif;
+  font-family:
+    "Open Sans",
+    Verdana,
+    Geneva,
+    sans-serif;
   background: #d69d93;
   border-bottom: 2px solid #510c00;
   padding-bottom: 10px;
   border-radius: 3px 3px 0 0;
-  padding: 15px
+  padding: 15px;
 }
-
 .cesium-widget-errorPanel-scroll {
   overflow: auto;
-  font-family: "Open Sans", Verdana, Geneva, sans-serif;
+  font-family:
+    "Open Sans",
+    Verdana,
+    Geneva,
+    sans-serif;
   white-space: pre-wrap;
   padding: 0 15px;
-  margin: 10px 0 20px 0
+  margin: 10px 0 20px 0;
 }
-
 .cesium-widget-errorPanel-buttonPanel {
   padding: 0 15px;
   margin: 10px 0 20px 0;
-  text-align: right
+  text-align: right;
 }
-
 .cesium-widget-errorPanel-buttonPanel button {
   border-color: #510c00;
   background: #d69d93;
   color: #202020;
-  margin: 0
+  margin: 0;
 }
-
 .cesium-widget-errorPanel-buttonPanel button:focus {
   border-color: #510c00;
   background: #f0d9d5;
-  color: #510c00
+  color: #510c00;
 }
-
 .cesium-widget-errorPanel-buttonPanel button:hover {
   border-color: #510c00;
   background: #f0d9d5;
-  color: #510c00
+  color: #510c00;
 }
-
 .cesium-widget-errorPanel-buttonPanel button:active {
   border-color: #510c00;
   background: #b17b72;
-  color: #510c00
+  color: #510c00;
 }
-
 .cesium-widget-errorPanel-more-details {
   text-decoration: underline;
-  cursor: pointer
+  cursor: pointer;
 }
-
 .cesium-widget-errorPanel-more-details:hover {
-  color: #2b0700
+  color: #2b0700;
 }
 
+/* packages/widgets/Source/CesiumInspector/CesiumInspector.css */
 .cesium-cesiumInspector {
   border-radius: 5px;
-  transition: width ease-in-out .25s;
-  background: rgba(48, 51, 54, .8);
+  transition: width ease-in-out 0.25s;
+  background: rgba(48, 51, 54, 0.8);
   border: 1px solid #444;
   color: #edffff;
   display: inline-block;
@@ -526,59 +474,49 @@
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  overflow: hidden
+  overflow: hidden;
 }
-
 .cesium-cesiumInspector-button {
   text-align: center;
-  font-size: 11pt
+  font-size: 11pt;
 }
-
 .cesium-cesiumInspector-visible .cesium-cesiumInspector-button {
   border-bottom: 1px solid #aaa;
-  padding-bottom: 3px
+  padding-bottom: 3px;
 }
-
 .cesium-cesiumInspector input:enabled,
 .cesium-cesiumInspector-button {
-  cursor: pointer
+  cursor: pointer;
 }
-
 .cesium-cesiumInspector-visible {
   width: 185px;
-  height: auto
+  height: auto;
 }
-
 .cesium-cesiumInspector-hidden {
   width: 122px;
-  height: 17px
+  height: 17px;
 }
-
 .cesium-cesiumInspector-sectionContent {
-  max-height: 500px
+  max-height: 600px;
 }
-
 .cesium-cesiumInspector-section-collapsed .cesium-cesiumInspector-sectionContent {
   max-height: 0;
   padding: 0 !important;
-  overflow: hidden
+  overflow: hidden;
 }
-
 .cesium-cesiumInspector-dropDown {
   margin: 5px 0;
   font-family: sans-serif;
   font-size: 10pt;
-  width: 185px
+  width: 185px;
 }
-
 .cesium-cesiumInspector-frustumStatistics {
   padding-left: 10px;
   padding: 5px;
-  background-color: rgba(80, 80, 80, .75)
+  background-color: rgba(80, 80, 80, 0.75);
 }
-
 .cesium-cesiumInspector-pickButton {
-  background-color: rgba(0, 0, 0, .3);
+  background-color: rgba(0, 0, 0, 0.3);
   border: 1px solid #444;
   color: #edffff;
   border-radius: 5px;
@@ -588,199 +526,197 @@
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  margin: 0 auto
+  margin: 0 auto;
 }
-
 .cesium-cesiumInspector-pickButton:focus {
-  outline: 0
+  outline: none;
 }
-
 .cesium-cesiumInspector-pickButton:active,
 .cesium-cesiumInspector-pickButtonHighlight {
   color: #000;
   background: #adf;
   border-color: #fff;
-  box-shadow: 0 0 8px #fff
+  box-shadow: 0 0 8px #fff;
 }
-
 .cesium-cesiumInspector-center {
-  text-align: center
+  text-align: center;
 }
-
 .cesium-cesiumInspector-sectionHeader {
-  font-weight: 700;
+  font-weight: bold;
   font-size: 10pt;
   margin: 0;
-  cursor: pointer
+  cursor: pointer;
 }
-
 .cesium-cesiumInspector-pickSection {
   border: 1px solid #aaa;
   border-radius: 5px;
   padding: 3px;
-  margin-bottom: 5px
+  margin-bottom: 5px;
 }
-
 .cesium-cesiumInspector-sectionContent {
   margin-bottom: 10px;
-  transition: max-height .25s
+  transition: max-height 0.25s;
 }
-
 .cesium-cesiumInspector-tileText {
   padding-bottom: 10px;
-  border-bottom: 1px solid #aaa
+  border-bottom: 1px solid #aaa;
 }
-
 .cesium-cesiumInspector-relativeText {
-  padding-top: 10px
+  padding-top: 10px;
 }
-
 .cesium-cesiumInspector-sectionHeader::before {
   margin-right: 5px;
   content: "-";
   width: 1ch;
-  display: inline-block
+  display: inline-block;
 }
-
 .cesium-cesiumInspector-section-collapsed .cesium-cesiumInspector-sectionHeader::before {
-  content: "+"
+  content: "+";
 }
 
+/* packages/widgets/Source/Cesium3DTilesInspector/Cesium3DTilesInspector.css */
 ul.cesium-cesiumInspector-statistics {
   margin: 0;
   padding-top: 3px;
-  padding-bottom: 3px
+  padding-bottom: 3px;
 }
-
-ul.cesium-cesiumInspector-statistics+ul.cesium-cesiumInspector-statistics {
-  border-top: 1px solid #aaa
+ul.cesium-cesiumInspector-statistics + ul.cesium-cesiumInspector-statistics {
+  border-top: 1px solid #aaa;
 }
-
 .cesium-cesiumInspector-slider {
-  margin-top: 5px
+  margin-top: 5px;
 }
-
 .cesium-cesiumInspector-slider input[type=number] {
   text-align: left;
   background-color: #222;
-  outline: 0;
+  outline: none;
   border: 1px solid #444;
   color: #edffff;
   width: 100px;
   border-radius: 3px;
   padding: 1px;
   margin-left: 10px;
-  cursor: auto
+  cursor: auto;
 }
-
-.cesium-cesiumInspector-slider input[type=number]::-webkit-inner-spin-button,
-.cesium-cesiumInspector-slider input[type=number]::-webkit-outer-spin-button {
+.cesium-cesiumInspector-slider input[type=number]::-webkit-outer-spin-button,
+.cesium-cesiumInspector-slider input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
-  margin: 0
+  margin: 0;
 }
-
 .cesium-cesiumInspector-slider input[type=range] {
   margin-left: 5px;
-  vertical-align: middle
+  vertical-align: middle;
 }
-
 .cesium-cesiumInspector-hide .cesium-cesiumInspector-styleEditor {
-  display: none
+  display: none;
 }
-
 .cesium-cesiumInspector-styleEditor {
   padding: 10px;
   border-radius: 5px;
-  background: rgba(48, 51, 54, .8);
-  border: 1px solid #444
+  background: rgba(48, 51, 54, 0.8);
+  border: 1px solid #444;
 }
-
 .cesium-cesiumInspector-styleEditor textarea {
   width: 100%;
   height: 300px;
-  background: 0 0;
+  background: transparent;
   color: #edffff;
   border: none;
   padding: 0;
   white-space: pre;
   overflow-wrap: normal;
-  overflow-x: auto
+  overflow-x: auto;
 }
-
 .cesium-3DTilesInspector {
   width: 300px;
-  pointer-events: all
+  pointer-events: all;
 }
-
 .cesium-3DTilesInspector-statistics {
-  font-size: 11px
+  font-size: 11px;
 }
-
+.cesium-3DTilesInspector-disabledElementsInfo {
+  margin: 5px 0 0 0;
+  padding: 0 0 0 20px;
+  color: #eed202;
+}
 .cesium-3DTilesInspector div,
 .cesium-3DTilesInspector input[type=range] {
   width: 100%;
-  box-sizing: border-box
+  box-sizing: border-box;
 }
-
 .cesium-cesiumInspector-error {
   color: #ff9e9e;
-  overflow: auto
+  overflow: auto;
 }
-
 .cesium-3DTilesInspector .cesium-cesiumInspector-section {
-  margin-top: 3px
+  margin-top: 3px;
 }
-
-.cesium-3DTilesInspector .cesium-cesiumInspector-sectionHeader+.cesium-cesiumInspector-show {
-  border-top: 1px solid #fff
+.cesium-3DTilesInspector .cesium-cesiumInspector-sectionHeader + .cesium-cesiumInspector-show {
+  border-top: 1px solid white;
 }
-
 input.cesium-cesiumInspector-url {
   overflow: hidden;
   white-space: nowrap;
   overflow-x: scroll;
   background-color: transparent;
-  color: #fff;
-  outline: 0;
+  color: white;
+  outline: none;
   border: none;
   height: 1em;
-  width: 100%
+  width: 100%;
 }
-
 .cesium-cesiumInspector .field-group {
-  display: table
+  display: table;
 }
-
-.cesium-cesiumInspector .field-group>label {
+.cesium-cesiumInspector .field-group > label {
   display: table-cell;
-  font-weight: 700
+  font-weight: bold;
 }
-
-.cesium-cesiumInspector .field-group>.field {
+.cesium-cesiumInspector .field-group > .field {
   display: table-cell;
-  width: 100%
+  width: 100%;
 }
 
+/* packages/widgets/Source/VoxelInspector/VoxelInspector.css */
+.cesium-VoxelInspector {
+  width: 300px;
+  pointer-events: all;
+}
+.cesium-VoxelInspector div,
+.cesium-VoxelInspector input[type=range] {
+  width: 100%;
+  box-sizing: border-box;
+}
+.cesium-VoxelInspector .cesium-cesiumInspector-section {
+  margin-top: 3px;
+}
+.cesium-VoxelInspector .cesium-cesiumInspector-sectionHeader + .cesium-cesiumInspector-show {
+  border-top: 1px solid white;
+}
+
+/* packages/widgets/Source/FullscreenButton/FullscreenButton.css */
 .cesium-button.cesium-fullscreenButton {
   display: block;
   width: 100%;
   height: 100%;
   margin: 0;
-  border-radius: 0
+  border-radius: 0;
 }
 
+/* packages/widgets/Source/VRButton/VRButton.css */
 .cesium-button.cesium-vrButton {
   display: block;
   width: 100%;
   height: 100%;
   margin: 0;
-  border-radius: 0
+  border-radius: 0;
 }
 
+/* packages/widgets/Source/Geocoder/Geocoder.css */
 .cesium-viewer-geocoderContainer .cesium-geocoder-input {
   border: solid 1px #444;
-  background-color: rgba(40, 40, 40, .7);
-  color: #fff;
+  background-color: rgba(40, 40, 40, 0.7);
+  color: white;
   display: inline-block;
   vertical-align: middle;
   width: 0;
@@ -789,57 +725,48 @@ input.cesium-cesiumInspector-url {
   padding: 0 32px 0 0;
   border-radius: 0;
   box-sizing: border-box;
-  transition: width ease-in-out .25s, background-color .2s ease-in-out;
-  -webkit-appearance: none
+  transition: width ease-in-out 0.25s, background-color 0.2s ease-in-out;
+  -webkit-appearance: none;
 }
-
 .cesium-viewer-geocoderContainer:hover .cesium-geocoder-input {
   border-color: #aef;
-  box-shadow: 0 0 8px #fff
+  box-shadow: 0 0 8px #fff;
 }
-
 .cesium-viewer-geocoderContainer .cesium-geocoder-input:focus {
   border-color: #ea4;
-  background-color: rgba(15, 15, 15, .9);
+  background-color: rgba(15, 15, 15, 0.9);
   box-shadow: none;
-  outline: 0
+  outline: none;
 }
-
-.cesium-viewer-geocoderContainer .cesium-geocoder-input-wide,
+.cesium-viewer-geocoderContainer:hover .cesium-geocoder-input,
 .cesium-viewer-geocoderContainer .cesium-geocoder-input:focus,
-.cesium-viewer-geocoderContainer:hover .cesium-geocoder-input {
+.cesium-viewer-geocoderContainer .cesium-geocoder-input-wide {
   padding-left: 4px;
-  width: 250px
+  width: 250px;
 }
-
 .cesium-viewer-geocoderContainer .search-results {
   position: absolute;
   background-color: #000;
   color: #eee;
   overflow-y: auto;
-  opacity: .8;
-  width: 100%
+  opacity: 0.8;
+  width: 100%;
 }
-
 .cesium-viewer-geocoderContainer .search-results ul {
   list-style-type: none;
   margin: 0;
-  padding: 0
+  padding: 0;
 }
-
 .cesium-viewer-geocoderContainer .search-results ul li {
   font-size: 14px;
-  padding: 3px 10px
+  padding: 3px 10px;
 }
-
 .cesium-viewer-geocoderContainer .search-results ul li:hover {
-  cursor: pointer
+  cursor: pointer;
 }
-
 .cesium-viewer-geocoderContainer .search-results ul li.active {
-  background: #48b
+  background: #48b;
 }
-
 .cesium-geocoder-searchButton {
   background-color: #303336;
   display: inline-block;
@@ -850,13 +777,13 @@ input.cesium-cesiumInspector-url {
   right: 1px;
   height: 30px;
   vertical-align: middle;
-  fill: #edffff
+  fill: #edffff;
 }
-
 .cesium-geocoder-searchButton:hover {
-  background-color: #48b
+  background-color: #48b;
 }
 
+/* packages/widgets/Source/InfoBox/InfoBox.css */
 .cesium-infoBox {
   display: block;
   position: absolute;
@@ -864,7 +791,7 @@ input.cesium-cesiumInspector-url {
   right: 0;
   width: 40%;
   max-width: 480px;
-  background: rgba(38, 38, 38, .95);
+  background: rgba(38, 38, 38, 0.95);
   color: #edffff;
   border: 1px solid #444;
   border-right: none;
@@ -874,33 +801,32 @@ input.cesium-cesiumInspector-url {
   transform: translate(100%, 0);
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0s .2s, opacity .2s ease-in, transform .2s ease-in
+  transition:
+    visibility 0s 0.2s,
+    opacity 0.2s ease-in,
+    transform 0.2s ease-in;
 }
-
 .cesium-infoBox-visible {
   transform: translate(0, 0);
   visibility: visible;
   opacity: 1;
-  transition: opacity .2s ease-out, transform .2s ease-out
+  transition: opacity 0.2s ease-out, transform 0.2s ease-out;
 }
-
 .cesium-infoBox-title {
   display: block;
   height: 20px;
   padding: 5px 30px 5px 25px;
-  background: #545454;
+  background: rgba(84, 84, 84, 1);
   border-top-left-radius: 7px;
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  box-sizing: content-box
+  box-sizing: content-box;
 }
-
 .cesium-infoBox-bodyless .cesium-infoBox-title {
-  border-bottom-left-radius: 7px
+  border-bottom-left-radius: 7px;
 }
-
 button.cesium-infoBox-camera {
   display: block;
   position: absolute;
@@ -908,191 +834,165 @@ button.cesium-infoBox-camera {
   left: 4px;
   width: 22px;
   height: 22px;
-  background: 0 0;
+  background: transparent;
   border-color: transparent;
   border-radius: 3px;
   padding: 0 5px;
-  margin: 0
+  margin: 0;
 }
-
 button.cesium-infoBox-close {
   display: block;
   position: absolute;
   top: 5px;
   right: 5px;
   height: 20px;
-  background: 0 0;
+  background: transparent;
   border: none;
   border-radius: 2px;
-  font-weight: 700;
+  font-weight: bold;
   font-size: 16px;
   padding: 0 5px;
   margin: 0;
-  color: #edffff
+  color: #edffff;
 }
-
 button.cesium-infoBox-close:focus {
-  background: rgba(238, 136, 0, .44);
-  outline: 0
+  background: rgba(238, 136, 0, 0.44);
+  outline: none;
 }
-
 button.cesium-infoBox-close:hover {
   background: #888;
-  color: #000
+  color: #000;
 }
-
 button.cesium-infoBox-close:active {
   background: #a00;
-  color: #000
+  color: #000;
 }
-
 .cesium-infoBox-bodyless .cesium-infoBox-iframe {
-  display: none
+  display: none;
 }
-
 .cesium-infoBox-iframe {
   border: none;
   width: 100%;
-  width: calc(100% - 2px)
+  width: calc(100% - 2px);
 }
 
+/* packages/widgets/Source/SceneModePicker/SceneModePicker.css */
 span.cesium-sceneModePicker-wrapper {
   display: inline-block;
   position: relative;
-  margin: 0 3px
+  margin: 0 3px;
 }
-
 .cesium-sceneModePicker-visible {
   visibility: visible;
   opacity: 1;
-  transition: opacity .25s linear
+  transition: opacity 0.25s linear;
 }
-
 .cesium-sceneModePicker-hidden {
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0s .25s, opacity .25s linear
+  transition: visibility 0s 0.25s, opacity 0.25s linear;
 }
-
 .cesium-sceneModePicker-wrapper .cesium-sceneModePicker-none {
-  display: none
+  display: none;
 }
-
 .cesium-sceneModePicker-slide-svg {
   transition: left 2s;
   top: 0;
-  left: 0
+  left: 0;
 }
-
 .cesium-sceneModePicker-wrapper .cesium-sceneModePicker-dropDown-icon {
   box-sizing: border-box;
   padding: 0;
-  margin: 3px 0
+  margin: 3px 0;
 }
-
-.cesium-sceneModePicker-wrapper .cesium-sceneModePicker-button2D,
 .cesium-sceneModePicker-wrapper .cesium-sceneModePicker-button3D,
-.cesium-sceneModePicker-wrapper .cesium-sceneModePicker-buttonColumbusView {
-  margin: 0 0 3px 0
+.cesium-sceneModePicker-wrapper .cesium-sceneModePicker-buttonColumbusView,
+.cesium-sceneModePicker-wrapper .cesium-sceneModePicker-button2D {
+  margin: 0 0 3px 0;
 }
-
 .cesium-sceneModePicker-wrapper .cesium-sceneModePicker-button3D .cesium-sceneModePicker-icon2D {
-  left: 100%
+  left: 100%;
 }
-
 .cesium-sceneModePicker-wrapper .cesium-sceneModePicker-button3D .cesium-sceneModePicker-iconColumbusView {
-  left: 200%
+  left: 200%;
 }
-
 .cesium-sceneModePicker-wrapper .cesium-sceneModePicker-buttonColumbusView .cesium-sceneModePicker-icon3D {
-  left: -200%
+  left: -200%;
 }
-
 .cesium-sceneModePicker-wrapper .cesium-sceneModePicker-buttonColumbusView .cesium-sceneModePicker-icon2D {
-  left: -100%
+  left: -100%;
 }
-
 .cesium-sceneModePicker-wrapper .cesium-sceneModePicker-button2D .cesium-sceneModePicker-icon3D {
-  left: -100%
+  left: -100%;
 }
-
 .cesium-sceneModePicker-wrapper .cesium-sceneModePicker-button2D .cesium-sceneModePicker-iconColumbusView {
-  left: 100%
+  left: 100%;
 }
-
 .cesium-sceneModePicker-wrapper .cesium-sceneModePicker-selected {
   border-color: #2e2;
-  box-shadow: 0 0 8px #fff, 0 0 8px #fff
+  box-shadow: 0 0 8px #fff, 0 0 8px #fff;
 }
 
+/* packages/widgets/Source/ProjectionPicker/ProjectionPicker.css */
 span.cesium-projectionPicker-wrapper {
   display: inline-block;
   position: relative;
-  margin: 0 3px
+  margin: 0 3px;
 }
-
 .cesium-projectionPicker-visible {
   visibility: visible;
   opacity: 1;
-  transition: opacity .25s linear
+  transition: opacity 0.25s linear;
 }
-
 .cesium-projectionPicker-hidden {
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0s .25s, opacity .25s linear
+  transition: visibility 0s 0.25s, opacity 0.25s linear;
 }
-
 .cesium-projectionPicker-wrapper .cesium-projectionPicker-none {
-  display: none
+  display: none;
 }
-
 .cesium-projectionPicker-wrapper .cesium-projectionPicker-dropDown-icon {
   box-sizing: border-box;
   padding: 0;
-  margin: 3px 0
+  margin: 3px 0;
 }
-
-.cesium-projectionPicker-wrapper .cesium-projectionPicker-buttonOrthographic,
-.cesium-projectionPicker-wrapper .cesium-projectionPicker-buttonPerspective {
-  margin: 0 0 3px 0
+.cesium-projectionPicker-wrapper .cesium-projectionPicker-buttonPerspective,
+.cesium-projectionPicker-wrapper .cesium-projectionPicker-buttonOrthographic {
+  margin: 0 0 3px 0;
 }
-
 .cesium-projectionPicker-wrapper .cesium-projectionPicker-buttonPerspective .cesium-projectionPicker-iconOrthographic {
-  left: 100%
+  left: 100%;
 }
-
 .cesium-projectionPicker-wrapper .cesium-projectionPicker-buttonOrthographic .cesium-projectionPicker-iconPerspective {
-  left: -100%
+  left: -100%;
 }
-
 .cesium-projectionPicker-wrapper .cesium-projectionPicker-selected {
   border-color: #2e2;
-  box-shadow: 0 0 8px #fff, 0 0 8px #fff
+  box-shadow: 0 0 8px #fff, 0 0 8px #fff;
 }
 
+/* packages/widgets/Source/PerformanceWatchdog/PerformanceWatchdog.css */
 .cesium-performance-watchdog-message-area {
   position: relative;
-  background-color: #ff0;
-  color: #000;
-  padding: 10px
+  background-color: yellow;
+  color: black;
+  padding: 10px;
 }
-
 .cesium-performance-watchdog-message {
-  margin-right: 30px
+  margin-right: 30px;
 }
-
 .cesium-performance-watchdog-message-dismiss {
   position: absolute;
   right: 0;
-  margin: 0 10px 0 0
+  margin: 0 10px 0 0;
 }
 
+/* packages/widgets/Source/NavigationHelpButton/NavigationHelpButton.css */
 .cesium-navigationHelpButton-wrapper {
   position: relative;
-  display: inline-block
+  display: inline-block;
 }
-
 .cesium-navigation-help {
   visibility: hidden;
   position: absolute;
@@ -1100,65 +1000,53 @@ span.cesium-projectionPicker-wrapper {
   right: 2px;
   width: 250px;
   border-radius: 10px;
-  transform: scale(.01);
+  transform: scale(0.01);
   transform-origin: 234px -10px;
-  transition: visibility 0s .25s, transform .25s ease-in
+  transition: visibility 0s 0.25s, transform 0.25s ease-in;
 }
-
 .cesium-navigation-help-visible {
   visibility: visible;
   transform: scale(1);
-  transition: transform .25s ease-out
+  transition: transform 0.25s ease-out;
 }
-
 .cesium-navigation-help-instructions {
   border: 1px solid #444;
-  background-color: rgba(38, 38, 38, .75);
+  background-color: rgba(38, 38, 38, 0.75);
   padding-bottom: 5px;
-  border-radius: 0 0 10px 10px
+  border-radius: 0 0 10px 10px;
 }
-
 .cesium-click-navigation-help {
-  display: none
+  display: none;
 }
-
 .cesium-touch-navigation-help {
   display: none;
-  padding-top: 5px
+  padding-top: 5px;
 }
-
 .cesium-click-navigation-help-visible {
-  display: block
+  display: block;
 }
-
 .cesium-touch-navigation-help-visible {
-  display: block
+  display: block;
 }
-
 .cesium-navigation-help-pan {
-  color: #6cf;
-  font-weight: 700
+  color: #66ccff;
+  font-weight: bold;
 }
-
 .cesium-navigation-help-zoom {
   color: #65fd00;
-  font-weight: 700
+  font-weight: bold;
 }
-
 .cesium-navigation-help-rotate {
   color: #ffd800;
-  font-weight: 700
+  font-weight: bold;
 }
-
 .cesium-navigation-help-tilt {
   color: #d800d8;
-  font-weight: 700
+  font-weight: bold;
 }
-
 .cesium-navigation-help-details {
-  color: #fff
+  color: #ffffff;
 }
-
 .cesium-navigation-button {
   color: #fff;
   background-color: transparent;
@@ -1167,40 +1055,34 @@ span.cesium-projectionPicker-wrapper {
   border-right: 1px solid #444;
   margin: 0;
   width: 50%;
-  cursor: pointer
+  cursor: pointer;
 }
-
 .cesium-navigation-button-icon {
   vertical-align: middle;
-  padding: 5px 1px
+  padding: 5px 1px;
 }
-
 .cesium-navigation-button:focus {
-  outline: 0
+  outline: none;
 }
-
 .cesium-navigation-button-left {
   border-radius: 10px 0 0 0;
-  border-left: 1px solid #444
+  border-left: 1px solid #444;
 }
-
 .cesium-navigation-button-right {
   border-radius: 0 10px 0 0;
-  border-left: none
+  border-left: none;
 }
-
 .cesium-navigation-button-selected {
-  background-color: rgba(38, 38, 38, .75)
+  background-color: rgba(38, 38, 38, 0.75);
 }
-
 .cesium-navigation-button-unselected {
-  background-color: rgba(0, 0, 0, .75)
+  background-color: rgba(0, 0, 0, 0.75);
 }
-
 .cesium-navigation-button-unselected:hover {
-  background-color: rgba(76, 76, 76, .75)
+  background-color: rgba(76, 76, 76, 0.75);
 }
 
+/* packages/widgets/Source/SelectionIndicator/SelectionIndicator.css */
 .cesium-selection-wrapper {
   position: absolute;
   width: 160px;
@@ -1208,54 +1090,53 @@ span.cesium-projectionPicker-wrapper {
   pointer-events: none;
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0s .2s, opacity .2s ease-in
+  transition: visibility 0s 0.2s, opacity 0.2s ease-in;
 }
-
 .cesium-selection-wrapper-visible {
   visibility: visible;
   opacity: 1;
-  transition: opacity .2s ease-out
+  transition: opacity 0.2s ease-out;
 }
-
 .cesium-selection-wrapper svg {
   fill: #2e2;
   stroke: #000;
-  stroke-width: 1.1px
+  stroke-width: 1.1px;
 }
 
+/* packages/widgets/Source/Timeline/Timeline.css */
 .cesium-timeline-main {
   position: relative;
   left: 0;
   bottom: 0;
   overflow: hidden;
-  border: solid 1px #888
+  border: solid 1px #888;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
-
 .cesium-timeline-trackContainer {
   width: 100%;
   overflow: auto;
   border-top: solid 1px #888;
   position: relative;
   top: 0;
-  left: 0
+  left: 0;
 }
-
 .cesium-timeline-tracks {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%
+  width: 100%;
 }
-
 .cesium-timeline-needle {
   position: absolute;
   left: 0;
   top: 1.7em;
   bottom: 0;
   width: 1px;
-  background: red
+  background: #f00;
 }
-
 .cesium-timeline-bar {
   position: relative;
   left: 0;
@@ -1264,68 +1145,62 @@ span.cesium-projectionPicker-wrapper {
   cursor: pointer;
   width: 100%;
   height: 1.7em;
-  background: linear-gradient(to bottom, rgba(116, 117, 119, .8) 0, rgba(58, 68, 82, .8) 11%, rgba(46, 50, 56, .8) 46%, rgba(53, 53, 53, .8) 81%, rgba(53, 53, 53, .8) 100%)
+  background: linear-gradient(to bottom, rgba(116, 117, 119, 0.8) 0%, rgba(58, 68, 82, 0.8) 11%, rgba(46, 50, 56, 0.8) 46%, rgba(53, 53, 53, 0.8) 81%, rgba(53, 53, 53, 0.8) 100%);
 }
-
 .cesium-timeline-ruler {
   visibility: hidden;
   white-space: nowrap;
   font-size: 80%;
-  z-index: -200
+  z-index: -200;
 }
-
 .cesium-timeline-highlight {
   position: absolute;
   bottom: 0;
   left: 0;
-  background: #08f
+  background: #08f;
 }
-
 .cesium-timeline-ticLabel {
   position: absolute;
   top: 0;
   left: 0;
   white-space: nowrap;
   font-size: 80%;
-  color: #eee
+  color: #eee;
 }
-
 .cesium-timeline-ticMain {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 1px;
   height: 50%;
-  background: #eee
+  background: #eee;
 }
-
 .cesium-timeline-ticSub {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 1px;
   height: 33%;
-  background: #aaa
+  background: #aaa;
 }
-
 .cesium-timeline-ticTiny {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 1px;
   height: 25%;
-  background: #888
+  background: #888;
 }
-
 .cesium-timeline-icon16 {
   display: block;
   position: absolute;
   width: 16px;
   height: 16px;
-  background-image: url(Images/TimelineIcons.png);
-  background-repeat: no-repeat
+  background-image: url(data:text/plain;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAYAAAB3AH1ZAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9sIDBITKIVzLEMAAAKNSURBVEjHxdXNSxRhHAfw7zzrqhuoWJnSkrippUVSEKsHI9BTUYdAJA/RoYMREV26rAdn6tAfUARi16hQqkOBQRgUEYFWEC3OwczMjdZd92VmdWfmeelgTjO7q7gb0VzmmZnn85vvPPPMM8B/3qTcE2PPpuTZKB1eWuUQACgXYACYwVFbCTTVeZXB/i55o4LFelcAZfStYD4vpAoPGAGo4GBcQEgSOAUMQyAezwK6iQfDPXnhS/FkHZ+/8VLMWxxqWkfH3gbMRNOYi2roavbja0zHQmoFPYf8ED4Ko4aivm9MOG/u9I8mwrafeK7a/tVrNc/bARYN5noadeq7q0342vXw9CIMU6BmW8rVP9cPBPe52uu+v3O/y9sB4gkTWs6Qsk0mj5ExXMelejvA8WafYmkmGPHanTijdtvif8rx5RiCjdWKs2Cp3jWRDl96KhrbqlBeJqBOLyLQXg0IgbkZDS0dO8EZxZfPSTA9jvDDK3mT0OmP1FXh3XwEEAKdTX5MRWLgjCK4pwH3xt/YnjgLHAv4lHTCAKMMu/wV+KZGob6PoKyMQ0+sgBpZVJZn0NterxQaVqef/DRn+/EXYds/mZx2eVeAW9d65dhCEsaKCb7K8HH0gqTevyh9GDkn0VULRiaLzJKGBu9swfdaiie5RVo9ESURN8E8BE0n7ggACJy8KzghSCzp6DmwWxkaCm24EBXr8wI8Hrkq06QBiRC0t24HALS11IBTCyJl4vb1AXmzpbVYTwoVOXN0h7L8Mwtm8bXPybIQ/5FCX3dA2cr6XowvGCA02CvztAnz9+JiZk1AMxG6fEreSoBiPNmoyNnuWiWVzAIAtISO08E6pZi/3N96AIDn4E3h3P8L/wshP+txtEs4JAAAAABJRU5ErkJggg==);
+  background-repeat: no-repeat;
 }
 
+/* packages/widgets/Source/Viewer/Viewer.css */
 .cesium-viewer {
   font-family: sans-serif;
   font-size: 16px;
@@ -1335,33 +1210,29 @@ span.cesium-projectionPicker-wrapper {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%
+  height: 100%;
 }
-
 .cesium-viewer-cesiumWidgetContainer {
   width: 100%;
-  height: 100%
+  height: 100%;
 }
-
 .cesium-viewer-bottom {
   display: block;
   position: absolute;
   bottom: 0;
   left: 0;
-  padding-right: 5px
+  padding-right: 5px;
 }
-
 .cesium-viewer .cesium-widget-credits {
   display: inline;
   position: static;
   bottom: auto;
   left: auto;
   padding-right: 0;
-  color: #fff;
+  color: #ffffff;
   font-size: 10px;
-  text-shadow: 0 0 2px #000
+  text-shadow: 0 0 2px #000000;
 }
-
 .cesium-viewer-timelineContainer {
   position: absolute;
   bottom: 0;
@@ -1371,18 +1242,16 @@ span.cesium-projectionPicker-wrapper {
   padding: 0;
   margin: 0;
   overflow: hidden;
-  font-size: 14px
+  font-size: 14px;
 }
-
 .cesium-viewer-animationContainer {
   position: absolute;
   bottom: 0;
   left: 0;
   padding: 0;
   width: 169px;
-  height: 112px
+  height: 112px;
 }
-
 .cesium-viewer-fullscreenContainer {
   position: absolute;
   bottom: 0;
@@ -1390,9 +1259,8 @@ span.cesium-projectionPicker-wrapper {
   padding: 0;
   width: 29px;
   height: 29px;
-  overflow: hidden
+  overflow: hidden;
 }
-
 .cesium-viewer-vrContainer {
   position: absolute;
   bottom: 0;
@@ -1400,29 +1268,25 @@ span.cesium-projectionPicker-wrapper {
   padding: 0;
   width: 29px;
   height: 29px;
-  overflow: hidden
+  overflow: hidden;
 }
-
 .cesium-viewer-toolbar {
   display: block;
   position: absolute;
   top: 5px;
-  right: 5px
+  right: 5px;
 }
-
 .cesium-viewer-cesiumInspectorContainer {
   display: block;
   position: absolute;
   top: 50px;
-  right: 10px
+  right: 10px;
 }
-
 .cesium-viewer-geocoderContainer {
   position: relative;
   display: inline-block;
-  margin: 0 3px
+  margin: 0 3px;
 }
-
 .cesium-viewer-cesium3DTilesInspectorContainer {
   display: block;
   position: absolute;
@@ -1431,5 +1295,17 @@ span.cesium-projectionPicker-wrapper {
   max-height: calc(100% - 120px);
   box-sizing: border-box;
   overflow-y: auto;
-  overflow-x: hidden
+  overflow-x: hidden;
 }
+.cesium-viewer-voxelInspectorContainer {
+  display: block;
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  max-height: calc(100% - 120px);
+  box-sizing: border-box;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* packages/widgets/Source/widgets.css */

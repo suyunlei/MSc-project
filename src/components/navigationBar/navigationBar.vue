@@ -7,7 +7,7 @@
           <input type="file" id="fileInput" @change="json2CZML" />
         </div>
       </div>
-      <el-tabs type="border-card" v-model="activeName">
+      <el-tabs type="border-card" v-model="activeName" class="tabs">
         <el-tab-pane
           v-for="tab in tabs"
           :key="tab.name"
@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-// 工具栏配置
+// toolbar config
 import tabs from "../config/config.vue";
 import object from "../mixin/object";
 import json2CZML from "../mixin/json2CZML";
@@ -50,7 +50,7 @@ export default {
     this.tabs = tabs.tabs;
   },
   methods: {
-    // 提示信息
+    // reminder messages
     message(type, info) {
       this.$notify({
         message: info,
@@ -59,7 +59,7 @@ export default {
         offset: 140,
       });
     },
-    // 点击事件
+    // click events
     btnEvent(type, btn) {
       if (this[type]) {
         this[type](btn);
@@ -114,9 +114,11 @@ export default {
   border-right: 2px solid rgb(33, 34, 44);
   margin-right: 7px;
 }
+
 .buttonBox {
   font-size: 12px;
   margin-left: 20px;
+  cursor: pointer;
 }
 .buttondiv:last-child {
   border-right: 0;

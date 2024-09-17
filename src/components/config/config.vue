@@ -11,12 +11,55 @@ export default {
           label: "NUS Building",
         },
         {
-          name: "addCZML",
-          label: "Thermal Comfort",
+          name: "clearAll",
+          label: "Clear Entities",
+        },
+      ],
+    },
+    {
+      title: "Thermal Comfort",
+      name: "comfort",
+      content: [
+        {
+          name: "selectData",
+          label: "Select Participant",
         },
         {
-          name: "addGeoJSON",
-          label: "addGeoJSON (under development)",
+          name: "addCZML",
+          label: "Load Path",
+        },
+        // {
+        //   name: "addGeoJSON",
+        //   label: "addGeoJSON",
+        // },
+      ],
+    },
+    {
+      title: "Weather Data",
+      name: "weather",
+      content: [
+        {
+          name: "loadWeatherData",
+          label: "Load Weather Stations",
+        },
+      ],
+    },
+
+    {
+      title: "Cozie Data",
+      name: "cozie",
+      content: [
+        {
+          name: "getDev",
+          label: "Dev",
+        },
+        {
+          name: "getAnna",
+          label: "Anna",
+        },
+        {
+          name: "getAnto",
+          label: "Anto",
         },
       ],
     },
